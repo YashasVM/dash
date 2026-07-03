@@ -24,7 +24,7 @@
   --line-hot: #2d2d2d;
   --field: #050505;
   --danger: #9a4a42;
-  --content-scale: 1.25;
+  --content-scale: 1.1;
   --smooth: cubic-bezier(0.19, 1, 0.22, 1);
   --quick: cubic-bezier(0.2, 0, 0, 1);
 }
@@ -319,12 +319,14 @@ input:focus {
 .project-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  align-items: center;
+  gap: 11px;
   padding-left: 20px;
   color: #3e3e3e;
   font-size: 13px;
   line-height: 1.25;
-  opacity: 0.62;
+  opacity: 0;
+  transform: translate3d(4px, 0, 0);
   transition:
     color 260ms var(--quick),
     opacity 260ms var(--quick),
@@ -340,6 +342,7 @@ input:focus {
 .project-item:focus-within .project-actions {
   opacity: 1;
   color: var(--muted);
+  transform: translate3d(0, 0, 0);
 }
 
 .mini-button {
@@ -489,7 +492,7 @@ input:focus {
 
 @media (max-width: 560px) {
   :root {
-    --content-scale: 1.04;
+    --content-scale: 1;
   }
 
   .page-shell {

@@ -16,6 +16,7 @@ const projectLinks = [
   },
   {
     name: "wisper-low",
+    website: "https://wisperlow.pages.dev/",
     github: "https://github.com/YashasVM/Wisper-Low",
   },
   {
