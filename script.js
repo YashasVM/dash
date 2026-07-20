@@ -20,13 +20,13 @@ const projectLinks = [
     github: "https://github.com/YashasVM/Wisper-Low",
   },
   {
-    name: "yt-cmd",
-    github: "https://github.com/YashasVM/yt-cmd",
-  },
-  {
     name: "cd",
     website: "https://cd.yvm.workers.dev/",
     github: "https://github.com/YashasVM/cd",
+  },
+  {
+    name: "yt-cmd",
+    github: "https://github.com/YashasVM/yt-cmd",
   },
   {
     name: "img-gen",
