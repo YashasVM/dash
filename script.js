@@ -10,7 +10,7 @@ const projectLinks = [
     github: "https://github.com/YashasVM/OpenStream",
   },
   {
-    name: "Holen",
+    name: "holen",
     website: "https://holen.yvmx.dpdns.org/",
     github: "https://github.com/YashasVM/HOLEN",
   },
@@ -34,7 +34,7 @@ const projectLinks = [
     github: "https://github.com/YashasVM/Img-gen",
   },
   {
-    name: "LocalHost",
+    name: "localhost",
     website: "https://yvmx.dpdns.org/",
     status: true,
   },
