@@ -345,7 +345,7 @@ input:focus {
   white-space: nowrap;
 }
 
-.project-status.online { color: #79b884; }
+.project-status.online { color: #a8d5ad; }
 .project-status.offline { color: #c66a62; }
 
 .project-status[data-tooltip]::after {
