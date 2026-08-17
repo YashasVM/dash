@@ -345,10 +345,10 @@ input:focus {
   white-space: nowrap;
 }
 
-.project-status.online { color: #a8d5ad; }
+.project-status.online { color: #a3a3a3; }
 .project-status.offline { color: #c66a62; }
 .project-item:hover .project-status.online,
-.project-item:focus-within .project-status.online { color: #4f7d56; }
+.project-item:focus-within .project-status.online { color: #3e3e3e; }
 
 .project-status[data-tooltip]::after {
   position: absolute;
