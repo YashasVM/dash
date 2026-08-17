@@ -83,7 +83,7 @@ function renderLinks() {
     }
 
     [
-      ["site", link.website],
+      ...(link.status ? [] : [["site", link.website]]),
       ["gh", link.github],
     ].forEach(([label, url]) => {
       if (!url) return;
