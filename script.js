@@ -49,6 +49,7 @@ function renderLinks() {
     const item = document.createElement("article");
     item.className = "project-item";
     item.style.setProperty("--index", index);
+    if (link.status) item.classList.add("local-host");
 
     const titleLink = document.createElement("a");
     titleLink.className = "project-link";
