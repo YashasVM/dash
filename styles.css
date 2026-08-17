@@ -347,6 +347,8 @@ input:focus {
 
 .project-status.online { color: #a8d5ad; }
 .project-status.offline { color: #c66a62; }
+.project-item:hover .project-status.online,
+.project-item:focus-within .project-status.online { color: #4f7d56; }
 
 .project-status[data-tooltip]::after {
   position: absolute;
