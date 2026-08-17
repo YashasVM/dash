@@ -374,7 +374,6 @@ input:focus {
 .project-item:focus-within .project-status.online { color: #a8d5ad; }
 .project-item:hover .project-status.offline,
 .project-item:focus-within .project-status.offline { color: #e28b82; }
-.project-item.local-host { animation: none; opacity: 1; transform: none; filter: none; }
 .project-item.local-host .project-title strong {
   color: var(--main);
   font-size: 16px;
@@ -449,7 +448,7 @@ input:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  margin-top: 96px;
+  margin-top: 48px;
   padding-top: 29px;
   border-top: 1px solid #111;
   animation: fade-rise 900ms 620ms var(--smooth) both;
