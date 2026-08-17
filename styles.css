@@ -101,7 +101,7 @@ a {
 
 .profile {
   position: relative;
-  margin-bottom: 74px;
+  margin-bottom: 48px;
   animation: fade-rise 900ms 110ms var(--smooth) both;
 }
 
