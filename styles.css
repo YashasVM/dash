@@ -252,28 +252,6 @@ input:focus {
   will-change: opacity, transform, filter;
 }
 
-.project-item::after {
-  position: absolute;
-  right: 0;
-  bottom: -8px;
-  left: 0;
-  height: 1px;
-  background: currentColor;
-  content: "";
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 520ms var(--smooth), opacity 260ms var(--quick);
-}
-
-.project-item:hover::after,
-.project-item:focus-within::after {
-  opacity: 0.42;
-  transform: scaleX(1);
-}
-
-.project-item > .project-link::after { display: none; }
-
 .project-link,
 .footer-links a {
   position: relative;
