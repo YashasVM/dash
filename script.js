@@ -5,11 +5,6 @@ requestAnimationFrame(() => {
 
 const projectLinks = [
   {
-    name: "LocalHost",
-    website: "https://yvmx.dpdns.org/",
-    status: true,
-  },
-  {
     name: "openstream",
     website: "https://openstream.pages.dev",
     github: "https://github.com/YashasVM/OpenStream",
@@ -37,6 +32,11 @@ const projectLinks = [
     name: "img-gen",
     website: "https://img00.pages.dev/",
     github: "https://github.com/YashasVM/Img-gen",
+  },
+  {
+    name: "LocalHost",
+    website: "https://yvmx.dpdns.org/",
+    status: true,
   },
 ];
 
