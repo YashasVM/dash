@@ -345,10 +345,12 @@ input:focus {
   white-space: nowrap;
 }
 
-.project-status.online { color: #3e3e3e; }
-.project-status.offline { color: #c66a62; }
+.project-status.online { color: #416747; }
+.project-status.offline { color: #7f3f3b; }
 .project-item:hover .project-status.online,
-.project-item:focus-within .project-status.online { color: var(--ink); }
+.project-item:focus-within .project-status.online { color: #a8d5ad; }
+.project-item:hover .project-status.offline,
+.project-item:focus-within .project-status.offline { color: #e28b82; }
 .project-item.local-host { animation: none; opacity: 1; transform: none; filter: none; }
 .project-item.local-host .project-status { animation: fade-in 700ms 180ms var(--smooth) both; }
 
