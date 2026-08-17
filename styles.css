@@ -352,6 +352,13 @@ input:focus {
 .project-item:hover .project-status.offline,
 .project-item:focus-within .project-status.offline { color: #e28b82; }
 .project-item.local-host { animation: none; opacity: 1; transform: none; filter: none; }
+.project-item.local-host .project-title strong {
+  color: var(--main);
+  font-size: 16px;
+  font-weight: 400;
+}
+.project-item.local-host:hover .project-title strong,
+.project-item.local-host:focus-within .project-title strong { color: var(--ink); }
 .project-item.local-host .project-status { animation: fade-in 700ms 180ms var(--smooth) both; }
 
 .project-status[data-tooltip]::after {
