@@ -333,6 +333,46 @@ input:focus {
     transform 420ms var(--smooth);
 }
 
+.project-item:has(.project-status) {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.project-status {
+  position: relative;
+  color: #3e3e3e;
+  font-size: 13px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.project-status.online { color: #79b884; }
+.project-status.offline { color: #c66a62; }
+
+.project-status[data-tooltip]::after {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 2;
+  width: max-content;
+  max-width: 220px;
+  padding: 7px 9px;
+  border: 1px solid var(--line-hot);
+  background: #0b0b0b;
+  color: var(--main);
+  content: attr(data-tooltip);
+  font-size: 11px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.project-status:hover::after,
+.project-status:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .project-actions .project-link {
   display: inline-block;
   white-space: nowrap;
