@@ -68,12 +68,6 @@ function renderLinks() {
     name.textContent = link.name;
 
     title.append(name);
-    if (link.status) {
-      const note = document.createElement("span");
-      note.className = "project-note";
-      note.textContent = "self-hosted";
-      title.append(note);
-    }
     titleLink.append(title);
 
     const actions = document.createElement("span");
