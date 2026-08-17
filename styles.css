@@ -258,18 +258,18 @@ input:focus {
   bottom: -5px;
   left: 0;
   height: 1px;
-  background: currentColor;
+  background: #22d3ee;
   content: "";
   opacity: 0;
   z-index: 1;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 520ms var(--smooth), opacity 260ms var(--quick);
+  transition: transform 300ms ease-out, opacity 200ms ease-out;
 }
 
 .project-item:hover::after,
 .project-item:focus-within::after {
-  opacity: 0.8;
+  opacity: 0.4;
   transform: scaleX(1);
 }
 
@@ -382,6 +382,13 @@ input:focus {
 }
 .project-item.local-host:hover .project-title strong,
 .project-item.local-host:focus-within .project-title strong { color: var(--ink); }
+.project-item.local-host .project-note {
+  display: block;
+  margin-top: 4px;
+  color: #3e3e3e;
+  font-size: 11px;
+  line-height: 1.2;
+}
 .project-item.local-host .project-status { animation: fade-in 700ms 180ms var(--smooth) both; }
 
 .project-status[data-tooltip]::after {
