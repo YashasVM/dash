@@ -99,6 +99,14 @@ a {
   animation: page-enter 980ms var(--smooth) both;
 }
 
+.error-card {
+  min-height: 0;
+}
+
+.error-card .footer-links {
+  margin-top: 30px;
+}
+
 .profile {
   position: relative;
   margin-bottom: 48px;
