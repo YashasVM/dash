@@ -2,5 +2,4 @@
   <rect width="64" height="64" rx="8" fill="#050505"/>
   <rect x="3" y="3" width="58" height="58" rx="5" fill="none" stroke="#20242b" stroke-width="2"/>
   <text x="32" y="45" fill="#fafafa" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="38" text-anchor="middle">y.</text>
-  <rect x="17" y="51" width="30" height="2" rx="1" fill="#22d3ee" opacity=".8"/>
 </svg>
