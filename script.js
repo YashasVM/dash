@@ -61,6 +61,11 @@ function renderLinks() {
       `${link.name} ${link.website ? "website" : "GitHub"}`
     );
 
+    item.addEventListener("click", (event) => {
+      if (event.target.closest("a, .project-status")) return;
+      window.open(titleLink.href, "_blank", "noopener,noreferrer");
+    });
+
     const title = document.createElement("span");
     title.className = "project-title";
 
