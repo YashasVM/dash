@@ -250,6 +250,7 @@ input:focus {
   animation: link-enter 920ms var(--smooth) forwards;
   animation-delay: calc(170ms + (var(--index, 0) * 82ms));
   will-change: opacity, transform, filter;
+  cursor: pointer;
 }
 
 .project-item::after {
@@ -362,9 +363,11 @@ input:focus {
 
 .project-status {
   position: relative;
+  justify-self: end;
   color: #3e3e3e;
   font-size: 13px;
   line-height: 1.25;
+  text-align: right;
   white-space: nowrap;
 }
 
