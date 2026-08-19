@@ -105,8 +105,8 @@ function renderLinks() {
     });
 
     item.append(titleLink);
-    if (status) item.append(status);
     item.append(actions);
+    if (status) item.append(status);
     list.append(item);
   });
 }
