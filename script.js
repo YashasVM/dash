@@ -54,7 +54,7 @@ function renderLinks() {
     const titleLink = document.createElement("a");
     titleLink.className = "project-link";
     titleLink.href = link.website ?? link.github;
-    titleLink.target = "_blank";
+    if (!link.status) titleLink.target = "_blank";
     titleLink.rel = "noreferrer";
     titleLink.setAttribute(
       "aria-label",
@@ -63,6 +63,7 @@ function renderLinks() {
 
     item.addEventListener("click", (event) => {
       if (event.target.closest("a, .project-status")) return;
+      if (link.status) return window.location.assign(titleLink.href);
       window.open(titleLink.href, "_blank", "noopener,noreferrer");
     });
 
