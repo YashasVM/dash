@@ -1,60 +1,39 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href="https://yashasvm.pages.dev/" />
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <meta
-      name="description"
-      content="A quiet project links page for collecting work, demos, repos, and socials."
-    />
-    <meta property="og:title" content="yashas." />
-    <meta
-      property="og:description"
-      content="A quiet project links page for collecting work, demos, repos, and socials."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="yashas." />
-    <meta property="og:url" content="https://yashasvm.pages.dev/" />
-    <meta property="og:image" content="https://yashasvm.pages.dev/linkedin-preview.png" />
-    <meta property="og:image:alt" content="yashas. — building, automating, self-hosting." />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1735" />
-    <meta property="og:image:height" content="906" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="yashas." />
-    <meta
-      name="twitter:description"
-      content="A quiet project links page for collecting work, demos, repos, and socials."
-    />
-    <meta name="twitter:image" content="https://yashasvm.pages.dev/linkedin-preview.png" />
-    <meta name="twitter:image:alt" content="yashas. — building, automating, self-hosting." />
-    <title>yashas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d0503" />
+    <meta name="description" content="Saad Basheer — Design Engineer" />
+    <title>Saad Basheer | Design Engineer</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="page-shell">
-      <section class="link-card" aria-labelledby="profile-name">
-        <header class="profile">
-          <div>
-            <h1 id="profile-name">yashas.</h1>
-            <p>builds things</p>
+    <div class="pixel-field" aria-hidden="true"><canvas class="pixel-canvas"></canvas></div>
+    <main class="site-wrap">
+      <section class="intro" id="about">
+        <div class="name-line"><h1>Saad Basheer</h1><span>/saʿd · ba·sheer/</span></div>
+        <div class="role">Design Engineer</div>
+        <div class="bio">
+          <p>I design and build world class interfaces with obsessive attention. A generalist by nature, I learn by breaking things, making things, and connecting dots across disciplines.</p>
+          <p class="dim">Currently focused on the intersection of creation and distribution. The tools, platforms, and infrastructure that power what people make, watch, and share.</p>
+          <p class="dim">Looking for my next thing. Come say hi.</p>
+        </div>
+        <div class="contact-box">
+          <div class="contact-bar">
+            <div class="socials" aria-label="Social links"><a href="https://x.com/sd0br" aria-label="X" target="_blank" rel="noreferrer">𝕏</a><a href="https://github.com/saadbasheer" aria-label="GitHub" target="_blank" rel="noreferrer">⌁</a><a href="https://www.linkedin.com/in/kokadansaad/" aria-label="LinkedIn" target="_blank" rel="noreferrer">in</a><a href="https://letterboxd.com/sabashi/" aria-label="Letterboxd" target="_blank" rel="noreferrer">▦</a></div>
+            <div class="contact-links"><a href="mailto:hello@saadb.me">▱&nbsp; Email</a><a href="https://cal.com/saadbasheer/15min" target="_blank" rel="noreferrer">▣&nbsp; Book a call</a><a href="/cv.pdf">▤&nbsp; CV</a></div>
           </div>
-        </header>
-
-        <nav class="project-list" id="project-list" aria-label="Project links"></nav>
-
-        <footer class="footer-links">
-          <div class="inspo" aria-label="inspo t3.gg">inspo t3.gg</div>
-          <a href="https://github.com/YashasVM" target="_blank" rel="noreferrer">gh</a>
-          <a href="https://x.com/vortxfusion" target="_blank" rel="noreferrer">x</a>
-          <a href="https://instagram.com/yashas.vm" target="_blank" rel="noreferrer">ig</a>
-          <a href="https://www.linkedin.com/in/yashas-vm-718457380/" target="_blank" rel="noreferrer">in</a>
-        </footer>
+          <form class="message-form" id="message-form"><label for="message">A role, a project, an idea, or just a hello. Say what's on your mind.</label><textarea id="message" rows="2" aria-label="Message"></textarea><button type="submit" aria-label="Send message">⌃</button></form>
+        </div>
+        <p class="inbox-note">All queries go straight to my inbox.</p>
+      </section>
+      <section class="work" id="work">
+        <div class="section-head"><h2>Work</h2><div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view">▤</button></div></div>
+        <div class="work-list" id="work-list"></div>
+        <button class="view-all" id="view-all">View all</button>
       </section>
     </main>
-
     <script src="./script.js"></script>
   </body>
 </html>
