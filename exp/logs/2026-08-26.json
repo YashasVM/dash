@@ -1,0 +1,380 @@
+{
+  "date": "2026-08-26",
+  "entries": [
+    {
+      "id": "gh-0746cb98a23d",
+      "time": "17:55",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): harden release retries and onboarding test (#10) — Make Android release replacement retry-safe with fail-closed backup/rollback handling and stabilize onboarding instrumentation timing.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/0746cb98a23df7a8afa4ca686b234b30383b110f"
+      }
+    },
+    {
+      "id": "gh-71d128b2ce4c",
+      "time": "11:52",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): publish correct release metadata (#9) — Use version-specific Android release titles and notes, with HOLEN V5.0.2 release notes.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/71d128b2ce4cf3a9f2a1781293f903743f6a328f"
+      }
+    },
+    {
+      "id": "gh-7daf94662012",
+      "time": "08:52",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): initialize aria2c after engine warmup (#8) — Ensure aria2c initialization is not skipped after yt-dlp/FFmpeg warmup.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/7daf94662012fcf816f4cc49db86df5cd4b0c6e5"
+      }
+    },
+    {
+      "id": "gh-adeb5d1e19de",
+      "time": "05:53",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "perf(android): speed up and harden the download pipeline (#7) — Apply CodeRabbit-reviewed Android download performance, concurrency, notification, MIME detection, aria2c initialization, adaptive estimate,",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/adeb5d1e19de1a3a430df67c8724a065111953f5"
+      }
+    },
+    {
+      "id": "gh-a073883737c1",
+      "time": "05:51",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "perf(android): avoid recreating staging on cleanup",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/a073883737c1493c633f2ee3cf211b1ea4efeaaf"
+      }
+    },
+    {
+      "id": "gh-b1d525d8966b",
+      "time": "05:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "test(android): remove unsupported JVM JSON fixture",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/b1d525d8966bbee0d38b41143d2e42c2332274a5"
+      }
+    },
+    {
+      "id": "gh-3c1d25f50eb5",
+      "time": "05:39",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): normalize media codec detection",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/3c1d25f50eb5f3972435c728efb372aa70a8919b"
+      }
+    },
+    {
+      "id": "gh-0b97edce167d",
+      "time": "05:33",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "test(android): cover adaptive estimate with best video",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/0b97edce167d82c26ca13d5282373bac8b24c1c5"
+      }
+    },
+    {
+      "id": "gh-0e78b1077acc",
+      "time": "05:27",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "test(android): build adaptive fixture from valid JSON",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/0e78b1077acc4bdcedeb702a679a77924fc9e93a"
+      }
+    },
+    {
+      "id": "gh-a0394787a932",
+      "time": "05:21",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "test(android): use long JSON fixture sizes",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/a0394787a932b5c5cf94520cf940dfe1585a52b1"
+      }
+    },
+    {
+      "id": "gh-50133370ec72",
+      "time": "05:15",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "merge(main): resolve latest OutputStore API conflict",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/50133370ec72731a38cb2b57ed0354b3d6f3a6c2"
+      }
+    },
+    {
+      "id": "gh-aec43a8d1e85",
+      "time": "05:14",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): apply CodeRabbit concurrency and media review",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/aec43a8d1e8517e35be3cca0a5bee86b241e7644"
+      }
+    },
+    {
+      "id": "gh-bb34a0885cd8",
+      "time": "04:51",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): restore OutputStore API after cleanup regression",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/bb34a0885cd84af7aae3df6dbd72e61da01cee6a"
+      }
+    },
+    {
+      "id": "gh-50c8af7b0cd8",
+      "time": "04:39",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): use shared filename sanitization",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/50c8af7b0cd8d99d5b83879b785c232261cc6c85"
+      }
+    },
+    {
+      "id": "gh-1a728095bf68",
+      "time": "04:33",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "test(android): align publication helper references",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/1a728095bf6841a77b61a032732dd994d40521a2"
+      }
+    },
+    {
+      "id": "gh-fce6e4da1b83",
+      "time": "04:29",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): reconcile shared download models",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/fce6e4da1b83c0eddb01d67a4975c26cc3171d95"
+      }
+    },
+    {
+      "id": "gh-2453636aad96",
+      "time": "04:24",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "merge(main): resolve Android conflicts and bump app version",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/2453636aad96aece40ed2232d4e7dcb68662dfd7"
+      }
+    },
+    {
+      "id": "gh-0b497a29675a",
+      "time": "03:50",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "perf(android): avoid recreating staging on cleanup",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/0b497a29675ac43040f81b73f2e751596805ca49"
+      }
+    },
+    {
+      "id": "gh-ca6a9ae29309",
+      "time": "02:50",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "perf(android): avoid staging probe directory churn",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/ca6a9ae29309ae865abd675a0f3cf7335916ace8"
+      }
+    },
+    {
+      "id": "gh-770c4f8f14ab",
+      "time": "01:52",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): tolerate malformed download filenames",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/770c4f8f14ab92ff8d3b96c0f755f28e94dc69fa"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-11",
+      "time": "20:54",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#11 fix(android): validate direct download resumes — merged: Direct-file retries could append to a changed remote object and silently corrupt the file.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/11"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-10",
+      "time": "13:58",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#10 fix(android): harden release retries and onboarding test — merged: Fixes two failures observed in the V5.0.1 Android release run:",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/10"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-9",
+      "time": "09:58",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#9 fix(android): publish correct release metadata — merged: Fixes the Android release workflow publishing every tag as **HOLEN V3** with V3 notes.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/9"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-8",
+      "time": "07:08",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#8 fix(android): initialize aria2c after engine warmup — merged: Fixes a warmup regression where yt-dlp/FFmpeg could be initialized while aria2c was still skipped, causing the first accelerated download path to start without ",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/8"
+      }
+    },
+    {
+      "id": "gh-pr-OpenStream-33",
+      "time": "10:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#33 Improve low-latency hardware encoder selection — merged: Improves Android hardware encoder selection for the requested stream profile and applies supported low-latency encoder tuning.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/33"
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "date": "2026-08-25",
+  "entries": [
+    {
+      "id": "gh-6137dca5d1fa",
+      "time": "23:49",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): preserve completed range resumes",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/6137dca5d1fa09e24d842096ef36a79a8b045845"
+      }
+    },
+    {
+      "id": "gh-79e200aad774",
+      "time": "23:04",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "ci(android): build unsigned release APKs on pull requests",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/79e200aad774b8bbf7849b8dde2f1f3bcc64356e"
+      }
+    },
+    {
+      "id": "gh-615a2a2f4b86",
+      "time": "22:59",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): restore queue abort guard",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/615a2a2f4b8683230d08c11104f507c8dc00a0c5"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-7",
+      "time": "22:55",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#7 perf(android): speed up and harden the download pipeline — merged: ## What changed",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/7"
+      }
+    }
+  ]
+}

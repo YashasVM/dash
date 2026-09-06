@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <script>
+      try {
+        var t = localStorage.getItem("agents-theme");
+        if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+      } catch (e) {}
+    </script>
+    <link rel="canonical" href="https://agents.yash0.in/" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <meta
+      name="description"
+      content="agents.yash0.in — calendar ledger of what AI agents did to GitHub repos, per date, per model, per task."
+    />
+    <meta property="og:title" content="agents.yash0.in — agent ledger" />
+    <meta
+      property="og:description"
+      content="Click a date. See which model touched which repo, what task it was given, and what it actually did."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://agents.yash0.in/" />
+    <meta name="twitter:card" content="summary" />
+    <title>agents.yash0.in — agent ledger</title>
+    <link rel="stylesheet" href="./styles.css?v=3" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="ledger" aria-labelledby="ledger-title">
+        <header class="top">
+          <div>
+            <p class="eyebrow">agents.yash0.in · cloudflare pages</p>
+            <h1 id="ledger-title">agent ledger.</h1>
+            <p class="sub">click a date → see which model did what, to which repo, for which task.</p>
+          </div>
+          <div class="top-actions">
+            <button id="theme-btn" type="button" class="ghost-btn" aria-label="Toggle dark mode">dark</button>
+            <button id="today-btn" type="button" class="ghost-btn">today</button>
+            <a class="ghost-btn link" href="./logs/index.json" target="_blank" rel="noreferrer">logs/</a>
+          </div>
+        </header>
+
+        <div class="stats" id="stats" aria-live="polite">
+          <div class="stat"><span class="stat-num" id="stat-runs">–</span><span class="stat-label">runs this month</span></div>
+          <div class="stat"><span class="stat-num" id="stat-models">–</span><span class="stat-label">models</span></div>
+          <div class="stat"><span class="stat-num" id="stat-repos">–</span><span class="stat-label">repos touched</span></div>
+          <div class="stat"><span class="stat-num" id="stat-day">–</span><span class="stat-label" id="stat-day-label">runs on selected day</span></div>
+        </div>
+
+        <div class="filters" role="search" aria-label="Filter runs">
+          <label>source
+            <select id="filter-source">
+              <option value="">all activity</option>
+              <option value="agent">agent logs</option>
+              <option value="github">github</option>
+            </select>
+          </label>
+          <label>model
+            <select id="filter-model"><option value="">all models</option></select>
+          </label>
+          <label>repo
+            <select id="filter-repo"><option value="">all repos</option></select>
+          </label>
+          <label class="grow">search
+            <input id="filter-q" type="search" placeholder="task, model, repo, file…" autocomplete="off" />
+          </label>
+          <label>status
+            <select id="filter-status">
+              <option value="">any</option>
+              <option value="shipped">shipped</option>
+              <option value="wip">wip</option>
+              <option value="blocked">blocked</option>
+              <option value="reverted">reverted</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid-wrap">
+          <section class="cal" aria-label="Calendar">
+            <div class="cal-head">
+              <button id="prev-btn" type="button" class="ghost-btn" aria-label="Previous month">←</button>
+              <h2 id="month-label" aria-live="polite">—</h2>
+              <button id="next-btn" type="button" class="ghost-btn" aria-label="Next month">→</button>
+            </div>
+            <div class="dow" aria-hidden="true">
+              <span>mo</span><span>tu</span><span>we</span><span>th</span><span>fr</span><span>sa</span><span>su</span>
+            </div>
+            <div class="cal-grid" id="cal-grid" role="grid" aria-label="Days"></div>
+            <p class="cal-hint">dot = model · number = runs · <span class="today-key">ring</span> = today</p>
+          </section>
+
+          <section class="day" aria-label="Day detail" aria-live="polite">
+            <div class="day-head">
+              <h2 id="day-label">—</h2>
+              <p id="day-meta">—</p>
+            </div>
+            <div id="day-list" class="day-list"></div>
+          </section>
+        </div>
+
+        <footer class="foot">
+          <span>agents log via <code>exp/logs/YYYY-MM-DD.json</code> · see <code>exp/AGENTS.md</code></span>
+          <span><a href="./logs/schema.json" target="_blank" rel="noreferrer">schema</a> · <a href="https://github.com/YashasVM" target="_blank" rel="noreferrer">gh</a></span>
+        </footer>
+      </section>
+    </main>
+    <script src="./app.js?v=3"></script>
+    <script>
+      (function () {
+        var btn = document.getElementById("theme-btn");
+        function paint() {
+          var dark = document.documentElement.getAttribute("data-theme") === "dark";
+          btn.textContent = dark ? "light" : "dark";
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute("content", dark ? "#050505" : "#ffffff");
+        }
+        btn.addEventListener("click", function () {
+          var dark = document.documentElement.getAttribute("data-theme") === "dark";
+          if (dark) {
+            document.documentElement.removeAttribute("data-theme");
+            try { localStorage.setItem("agents-theme", "light"); } catch (e) {}
+          } else {
+            document.documentElement.setAttribute("data-theme", "dark");
+            try { localStorage.setItem("agents-theme", "dark"); } catch (e) {}
+          }
+          paint();
+        });
+        paint();
+      })();
+    </script>
+  </body>
+</html>

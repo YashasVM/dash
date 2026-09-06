@@ -1,0 +1,50 @@
+{
+  "date": "2026-08-28",
+  "entries": [
+    {
+      "id": "gh-6d29b92e4d30",
+      "time": "20:54",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): recognize Android release tags — * fix(android): recognize Android release tags",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/6d29b92e4d3023a25943acafdb404fe5ca11abe4"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-18",
+      "time": "23:58",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#18 fix(android): normalize update release version — closed: Superseded by the new long-running `agent-dev` workflow. The validated updater normalization fix has been ported to `agent-dev`; `main` is now user-controlled a",
+      "status": "blocked",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/18"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-17",
+      "time": "18:54",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#17 fix(android): recognize Android release tags — merged: The in-app updater compared GitHub tags directly against `BuildConfig.VERSION_NAME`, but HOLEN publishes Android releases as `android-v5.x.y`; those tags were r",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/17"
+      }
+    }
+  ]
+}
