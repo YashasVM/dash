@@ -1,0 +1,24 @@
+---
+title: Img-gen
+description: Remove image backgrounds locally in your browser.
+---
+
+## What it does
+
+Drop an image into Img-gen and get a transparent PNG back. Inference runs in the browser with WebGPU or a WASM fallback; after the model loads, the image stays local.
+
+**Status:** Active
+
+## Quick start
+
+1. Open the [hosted app](https://img00.pages.dev/) in Chrome or another supported browser.
+2. Drop an image into the app.
+3. Wait for the local model to remove the background.
+4. Export the transparent PNG.
+
+The app requires HTTP or HTTPS; it cannot load its model correctly from a `file://` URL. Chrome and Edge 113+ support WebGPU, while WASM works as a slower fallback.
+
+## Links
+
+- [Website](https://img00.pages.dev/)
+- [GitHub](https://github.com/YashasVM/Img-gen)

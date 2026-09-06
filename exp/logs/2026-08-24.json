@@ -1,0 +1,155 @@
+{
+  "date": "2026-08-24",
+  "entries": [
+    {
+      "id": "gh-1cea22ef4201",
+      "time": "07:09",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "merge: integrate Android hybrid transfers",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/1cea22ef4201385a7d0718b587ff0da185d4ebe0"
+      }
+    },
+    {
+      "id": "gh-1f543a87ba13",
+      "time": "07:09",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "merge: integrate Windows native app",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/1f543a87ba1353ca0338e825bb7af4e0eb093f2e"
+      }
+    },
+    {
+      "id": "gh-54e0fbc0ed60",
+      "time": "07:09",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "merge: integrate UX transfer repairs",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/54e0fbc0ed60238728071fd080896da3335b144f"
+      }
+    },
+    {
+      "id": "gh-c5bce34dd714",
+      "time": "07:09",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "merge: integrate cdx import",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/c5bce34dd714bdecbafa993468446b2ac176b493"
+      }
+    },
+    {
+      "id": "gh-dbf4a3ac5716",
+      "time": "07:08",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "fix: cover Android FILE payload permissions",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/dbf4a3ac57161f2a69238cd530989996329e3eff"
+      }
+    },
+    {
+      "id": "gh-46a38757c237",
+      "time": "06:50",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "docs(windows): record release verification scope",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/46a38757c237e26ff616f58377ba2bc2b9eabb7b"
+      }
+    },
+    {
+      "id": "gh-e9c832688ec1",
+      "time": "06:50",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "docs(windows): document packaged environment overrides",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/e9c832688ec19c9903d1a27ecc4d910aad676dcb"
+      }
+    },
+    {
+      "id": "gh-5664017ec8f0",
+      "time": "06:50",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "docs(windows): clarify nearby and cloud transfer flows",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/5664017ec8f0f8d0a588a8d316dcab1561406bd5"
+      }
+    },
+    {
+      "id": "gh-1f62aefbae33",
+      "time": "06:49",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pushed via gh)",
+      "did": "docs(windows): explain launching the packaged app",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "commit": "https://github.com/YashasVM/cd/commit/1f62aefbae33b71392405140d334572469559830"
+      }
+    },
+    {
+      "id": "gh-pr-cd-2",
+      "time": "06:51",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/cd",
+      "task": "(pull request via gh)",
+      "did": "#2 feat: native Windows CD file transfer app — merged: Native WPF Windows client for CD with Clerk PKCE sign-in, encrypted LocalSend-style nearby transfers, encrypted cloud links, tray residency, and zero-polling id",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/cd",
+        "pr": "https://github.com/YashasVM/cd/pull/2"
+      }
+    }
+  ]
+}

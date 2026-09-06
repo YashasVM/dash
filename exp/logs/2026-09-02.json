@@ -1,0 +1,266 @@
+{
+  "date": "2026-09-02",
+  "entries": [
+    {
+      "id": "2026-09-02-01",
+      "time": "09:05",
+      "model": "claude-opus-4-1",
+      "agent": "opencode",
+      "repo": "YashasVM/HOLEN",
+      "task": "Debug immich health flapping on the status page",
+      "did": "Found the /health timeout was too tight behind dpdns, raised it and added per-service tooltips.",
+      "status": "shipped",
+      "duration_min": 68,
+      "files_touched": [
+        "functions/api/localhost-status.js",
+        "script.js"
+      ],
+      "tags": [
+        "cloudflare",
+        "debug"
+      ],
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "2026-09-02-02",
+      "time": "14:20",
+      "model": "gpt-5-mini",
+      "agent": "codex",
+      "repo": "YashasVM/OpenStream",
+      "task": "Try resumable upload chunking experiment",
+      "did": "Spiked a chunked uploader branch but left it wip — resume token format still undecided.",
+      "status": "wip",
+      "duration_min": 55,
+      "files_touched": [
+        "server/upload.ts"
+      ],
+      "tags": [
+        "experiment"
+      ],
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "2026-09-02-03",
+      "time": "22:10",
+      "model": "claude-sonnet-4-5",
+      "agent": "opencode",
+      "repo": "YashasVM/dash",
+      "task": "Tighten 404 layout to match homepage card",
+      "did": "Reused link-card/error-card styles for the 404 page, verified via static preview.",
+      "status": "shipped",
+      "duration_min": 20,
+      "files_touched": [
+        "404.html",
+        "styles.css"
+      ],
+      "tags": [
+        "css"
+      ],
+      "links": {
+        "repo": "https://github.com/YashasVM/dash"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "gh-1991a55a00df",
+      "time": "23:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record million-token context safety work",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/1991a55a00df614db7ad4ae9883eabfa8a125966"
+      }
+    },
+    {
+      "id": "gh-8a2099502cc5",
+      "time": "23:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Test million-token context aliases",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/8a2099502cc546562afd53f0ba51bac62d8cb52c"
+      }
+    },
+    {
+      "id": "gh-b63e0af274cf",
+      "time": "23:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Recognize million-token context markers",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/b63e0af274cfcae020d053d62a677aefee116bd7"
+      }
+    },
+    {
+      "id": "gh-1ef135b88f88",
+      "time": "22:42",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record large-context admission work",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/1ef135b88f88686d48ed1dd47c551c7ffee87ddf"
+      }
+    },
+    {
+      "id": "gh-2cacbbff1210",
+      "time": "22:42",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Test large explicit context admission",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/2cacbbff1210d2f6a799090ef1f9b9ab5ae98c97"
+      }
+    },
+    {
+      "id": "gh-cf6211f2965d",
+      "time": "22:42",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Account for very large explicit context artifacts",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/cf6211f2965db7db2158b9aec5fe5a85cf2b942e"
+      }
+    },
+    {
+      "id": "gh-479a510ef9e3",
+      "time": "21:42",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record K-suffixed context inference work",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/479a510ef9e3c8196979d91036b32937fc780970"
+      }
+    },
+    {
+      "id": "gh-ce2a86e396ad",
+      "time": "21:42",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Test K-suffixed context inference",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/ce2a86e396ad16a69bc1be6cb6516a36ec8e706a"
+      }
+    },
+    {
+      "id": "gh-801f0612a0b0",
+      "time": "21:41",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Recognize K-suffixed LiteRT context markers",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/801f0612a0b082a94d603b41f11d8cfff99824f6"
+      }
+    },
+    {
+      "id": "gh-d5c5be7585c9",
+      "time": "20:48",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record context-aware history restoration",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/d5c5be7585c96cd1b2a251754ef708b9e966db6e"
+      }
+    },
+    {
+      "id": "gh-481b21055161",
+      "time": "20:48",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Use configured context for history restoration",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/481b21055161d4a3e8e6be6e9a11e2b87c65a34c"
+      }
+    },
+    {
+      "id": "gh-f261854a28a4",
+      "time": "20:47",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Test context-aware history replay budget",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/f261854a28a4e3db351de7d7bf9420443d4c8642"
+      }
+    },
+    {
+      "id": "gh-176aba958b38",
+      "time": "20:47",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Scale restored history to configured context",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/176aba958b38d57ad1a83394a2b3c66da2cca071"
+      }
+    }
+  ]
+}

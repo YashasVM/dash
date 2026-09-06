@@ -1,0 +1,301 @@
+{
+  "date": "2026-09-03",
+  "entries": [
+    {
+      "id": "2026-09-03-01",
+      "time": "10:20",
+      "model": "muse-spark-1.3",
+      "agent": "opencode",
+      "repo": "YashasVM/dash",
+      "task": "Build agents.yash0.in calendar ledger into exp/ without touching the main site or pushing",
+      "did": "Scaffolded exp/ as a zero-dep static Pages site: calendar grid + day ledger, JSON log contract, sample logs, logging script.",
+      "status": "shipped",
+      "duration_min": 30,
+      "files_touched": [
+        "exp/index.html",
+        "exp/styles.css",
+        "exp/app.js",
+        "exp/logs/"
+      ],
+      "tags": [
+        "exp",
+        "agents.yash0.in",
+        "cloudflare"
+      ],
+      "links": {
+        "repo": "https://github.com/YashasVM/dash"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "gh-4f07f10311fb",
+      "time": "05:02",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Bump versionCode to 3 for v0.2.0 release",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/4f07f10311fbe7d69cd103763283b1b614d4b6d7"
+      }
+    },
+    {
+      "id": "gh-c262ee0bf8cb",
+      "time": "04:45",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record validated recommendation safety baseline",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/c262ee0bf8cba4e4819c4487224fa89ae49326fd"
+      }
+    },
+    {
+      "id": "gh-ac5ffe3ccd2c",
+      "time": "04:34",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Merge agent-dev into main — Merge the fully validated Mobie agent maintenance branch after Android CI, emulator integration, and real Qwen LiteRT-LM E2E validation.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/ac5ffe3ccd2c4e84ef3c69e9a122e0d1b404bcb0"
+      }
+    },
+    {
+      "id": "gh-12ff46ad3f3d",
+      "time": "03:45",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record recommendation safety hardening",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/12ff46ad3f3dc4e2dc9511b74a749a6b9a0d45ee"
+      }
+    },
+    {
+      "id": "gh-0e90f99193f6",
+      "time": "03:45",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Test unknown-size recommendation safety",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/0e90f99193f6058ed1cf0375adada9f4d4248f54"
+      }
+    },
+    {
+      "id": "gh-8d6fa913c9ed",
+      "time": "03:45",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Avoid unverifiable automatic model recommendations",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/8d6fa913c9ed83988eaf7532b1d3c22855764fb3"
+      }
+    },
+    {
+      "id": "gh-99a9fa97a8c3",
+      "time": "02:48",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record vision fallback OOM hardening",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/99a9fa97a8c37004cb361416cb6be277f2c8ffd0"
+      }
+    },
+    {
+      "id": "gh-8024e674191b",
+      "time": "02:48",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Avoid fatal-error vision fallback retries",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/8024e674191b15eac631fb97407f878861742fa3"
+      }
+    },
+    {
+      "id": "gh-f27feed831c2",
+      "time": "01:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record native context synchronization work",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/f27feed831c219fb0b8c67a03def0979d8250688"
+      }
+    },
+    {
+      "id": "gh-477e921de97f",
+      "time": "01:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Correct replay eviction regression expectation",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/477e921de97f310892b25e09a38a4d5919a9a067"
+      }
+    },
+    {
+      "id": "gh-314aef89c8ac",
+      "time": "01:44",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Test LiteRT rebuild after replay eviction",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/314aef89c8ac80b37e7e43972c80f98ac825e755"
+      }
+    },
+    {
+      "id": "gh-6ff6a59befa9",
+      "time": "01:43",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Rebuild LiteRT context after history eviction",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/6ff6a59befa914a655514ac7096dab54a4c570d9"
+      }
+    },
+    {
+      "id": "gh-3a55404b72ee",
+      "time": "01:42",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Track native rebuild when replay history trims",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/3a55404b72eedc6b2ce7e06014f7bbc3cadcd7d4"
+      }
+    },
+    {
+      "id": "gh-45a109cb89ac",
+      "time": "00:47",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Record context-bound generation guard",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/45a109cb89acb896ceecf63aa1ec0cbaab85fbd2"
+      }
+    },
+    {
+      "id": "gh-8c926822d584",
+      "time": "00:47",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Test safe generation context budgeting",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/8c926822d5848733895f57006680d72381aab58a"
+      }
+    },
+    {
+      "id": "gh-7d6c371d863b",
+      "time": "00:46",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Apply safe generation context budget",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/7d6c371d863bdc4a143d82ef2b9d36eca0445072"
+      }
+    },
+    {
+      "id": "gh-b33825353766",
+      "time": "00:45",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pushed via gh)",
+      "did": "Guard generation against context overflow",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "commit": "https://github.com/YashasVM/Mobie/commit/b338253537661fc98d5e015caef91ef6efe08028"
+      }
+    },
+    {
+      "id": "gh-pr-Mobie-7",
+      "time": "04:34",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Mobie",
+      "task": "(pull request via gh)",
+      "did": "#7 Merge validated Mobie agent-dev improvements — merged: Merge the long-running `agent-dev` branch into `main` after final verification.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Mobie",
+        "pr": "https://github.com/YashasVM/Mobie/pull/7"
+      }
+    }
+  ]
+}

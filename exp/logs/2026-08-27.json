@@ -1,0 +1,170 @@
+{
+  "date": "2026-08-27",
+  "entries": [
+    {
+      "id": "gh-c059127ef8a4",
+      "time": "21:56",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "docs(android): refresh V5.0.2 release notes — * docs(android): refresh V5.0.2 release notes",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/c059127ef8a43d578996db6affb8a7ea2eae8729"
+      }
+    },
+    {
+      "id": "gh-ead57e799a9c",
+      "time": "17:56",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "ci(android): verify 16 KB native alignment — * test(android): verify 16 KB native alignment",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/ead57e799a9c7420a4988ce2728ab3d57eb3f5cb"
+      }
+    },
+    {
+      "id": "gh-db0b4f7e3c15",
+      "time": "09:57",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): reject unsolicited partial responses — * test(android): reject unsolicited partial responses",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/db0b4f7e3c15c538c1aefbb6a3eeb96aa5eb6bf7"
+      }
+    },
+    {
+      "id": "gh-78c75e426708",
+      "time": "06:55",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): keep direct resume byte encoding stable",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/78c75e426708c35f677700dc6edd01ca900ae1a2"
+      }
+    },
+    {
+      "id": "gh-09bd707c0e5c",
+      "time": "03:55",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): classify direct HTTP failures — * fix(android): classify direct HTTP failures",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/09bd707c0e5c81f00653c5fde10bd931d070dfee"
+      }
+    },
+    {
+      "id": "gh-6592a8b78e88",
+      "time": "00:56",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pushed via gh)",
+      "did": "fix(android): validate direct download resumes — * fix(android): validate direct download resumes",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "commit": "https://github.com/YashasVM/HOLEN/commit/6592a8b78e88844482c018ce020bc82336b4173d"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-16",
+      "time": "18:56",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#16 docs(android): refresh V5.0.2 release notes — merged: Updates the V5.0.2 notes to include the Android resume-integrity, HTTP error handling, partial-response, and 16 KB compatibility work that landed after the orig",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/16"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-15",
+      "time": "11:58",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#15 ci(android): verify 16 KB native alignment — merged: Android ships prebuilt native yt-dlp/FFmpeg/aria2 libraries, but CI did not verify 16 KB page-size compatibility.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/15"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-14",
+      "time": "07:57",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#14 fix(android): reject unsolicited partial responses — merged: Fresh direct downloads could accept an unsolicited HTTP 206 response and save only a byte slice as a complete file.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/14"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-13",
+      "time": "04:58",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#13 fix(android): keep direct resume byte encoding stable — merged: Direct downloads could transparently gzip the first response, then resume with byte ranges against a different encoded representation.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/13"
+      }
+    },
+    {
+      "id": "gh-pr-HOLEN-12",
+      "time": "01:56",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/HOLEN",
+      "task": "(pull request via gh)",
+      "did": "#12 fix(android): classify direct HTTP failures — merged: Direct-file failures now distinguish access errors, removed files, rate limits, and server outages instead of showing the same generic message.",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/HOLEN",
+        "pr": "https://github.com/YashasVM/HOLEN/pull/12"
+      }
+    }
+  ]
+}

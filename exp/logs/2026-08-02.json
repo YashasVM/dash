@@ -1,0 +1,125 @@
+{
+  "date": "2026-08-02",
+  "entries": [
+    {
+      "id": "gh-pr-OpenStream-22",
+      "time": "10:59",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#22 feat(studio): add first-wave React operator console — closed: ## Summary",
+      "status": "blocked",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/22"
+      }
+    },
+    {
+      "id": "gh-pr-OpenStream-21",
+      "time": "10:54",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#21 spike(v4): block transport selection pending native evidence — closed: ## Outcome",
+      "status": "blocked",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/21"
+      }
+    },
+    {
+      "id": "gh-pr-OpenStream-26",
+      "time": "13:03",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#26 feat(android): simplify operator camera surface — closed: ## Summary",
+      "status": "blocked",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/26"
+      }
+    },
+    {
+      "id": "gh-pr-OpenStream-25",
+      "time": "11:32",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#25 spike(v4): evaluate Tauri 2 Studio shell feasibility — closed: ## Summary",
+      "status": "blocked",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/25"
+      }
+    },
+    {
+      "id": "gh-pr-OpenStream-24",
+      "time": "11:32",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#24 spike(v4): add GPU decoder decision probes — closed: ## What changed",
+      "status": "blocked",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/24"
+      }
+    },
+    {
+      "id": "gh-pr-OpenStream-23",
+      "time": "11:06",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#23 feat(studio): add first-wave React operator UI — closed: ## Summary",
+      "status": "blocked",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/23"
+      }
+    },
+    {
+      "id": "gh-pr-OpenStream-20",
+      "time": "10:07",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/OpenStream",
+      "task": "(pull request via gh)",
+      "did": "#20 Record V4 Windows foundation completion — merged: ## Summary",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/OpenStream",
+        "pr": "https://github.com/YashasVM/OpenStream/pull/20"
+      }
+    },
+    {
+      "id": "gh-72ca02f29b3e",
+      "time": "17:30",
+      "model": "github",
+      "agent": "YashasVM",
+      "repo": "YashasVM/Wisper-Low",
+      "task": "(pushed via gh)",
+      "did": "chore: daily contribution 22/35 - 2026-08-02",
+      "status": "shipped",
+      "source": "github",
+      "links": {
+        "repo": "https://github.com/YashasVM/Wisper-Low",
+        "commit": "https://github.com/YashasVM/Wisper-Low/commit/72ca02f29b3e7028045889194f26c43789f741bd"
+      }
+    }
+  ]
+}
