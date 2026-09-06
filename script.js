@@ -1,132 +1,19 @@
-document.documentElement.classList.add("js");
-requestAnimationFrame(() => {
-  document.documentElement.classList.add("is-ready");
-});
-
-const projectLinks = [
-  {
-    name: "openstream",
-    website: "https://openstream.pages.dev",
-    github: "https://github.com/YashasVM/OpenStream",
-  },
-  {
-    name: "holen",
-    website: "https://holen.yvmx.dpdns.org/",
-    github: "https://github.com/YashasVM/HOLEN",
-  },
-  {
-    name: "wisper-low",
-    website: "https://wisperlow.pages.dev/",
-    github: "https://github.com/YashasVM/Wisper-Low",
-  },
-  {
-    name: "cd",
-    website: "https://cd.yvm.workers.dev/",
-    github: "https://github.com/YashasVM/cd",
-  },
-  {
-    name: "yt-cmd",
-    github: "https://github.com/YashasVM/yt-cmd",
-  },
-  {
-    name: "img-gen",
-    website: "https://img00.pages.dev/",
-    github: "https://github.com/YashasVM/Img-gen",
-  },
-  {
-    name: "localhost",
-    website: "https://yvmx.dpdns.org/",
-    status: true,
-  },
-];
-
-const list = document.querySelector("#project-list");
-
-function renderLinks() {
-  list.innerHTML = "";
-
-  projectLinks.forEach((link, index) => {
-    const item = document.createElement("article");
-    item.className = "project-item";
-    item.style.setProperty("--index", index);
-    if (link.status) item.classList.add("local-host");
-
-    const titleLink = document.createElement("a");
-    titleLink.className = "project-link";
-    titleLink.href = link.website ?? link.github;
-    if (!link.status) titleLink.target = "_blank";
-    titleLink.rel = "noreferrer";
-    titleLink.setAttribute(
-      "aria-label",
-      `${link.name} ${link.website ? "website" : "GitHub"}`
-    );
-
-    item.addEventListener("click", (event) => {
-      if (event.target.closest("a, .project-status")) return;
-      if (link.status) return window.location.assign(titleLink.href);
-      window.open(titleLink.href, "_blank", "noopener,noreferrer");
-    });
-
-    const title = document.createElement("span");
-    title.className = "project-title";
-
-    const name = document.createElement("strong");
-    name.textContent = link.name;
-
-    title.append(name);
-    titleLink.append(title);
-
-    const actions = document.createElement("span");
-    actions.className = "project-actions";
-    let status;
-
-    if (link.status) {
-      status = document.createElement("span");
-      status.className = "project-status";
-      status.textContent = "checking";
-      status.setAttribute("aria-live", "polite");
-      status.tabIndex = 0;
-      checkLocalHostStatus(status);
-    }
-
-    [
-      ...(link.status ? [] : [["site", link.website]]),
-      ["gh", link.github],
-    ].forEach(([label, url]) => {
-      if (!url) return;
-
-      const anchor = document.createElement("a");
-      anchor.className = "project-link";
-      anchor.href = url;
-      anchor.target = "_blank";
-      anchor.rel = "noreferrer";
-      anchor.textContent = label;
-      anchor.setAttribute("aria-label", `${link.name} ${label === "gh" ? "GitHub" : "website"}`);
-      actions.append(anchor);
-    });
-
-    item.append(titleLink);
-    item.append(actions);
-    if (status) item.append(status);
-    list.append(item);
-  });
+const work=[['innernote','Grow your audience in your voice, on autopilot.','Jul 2026','https://www.saadb.me/logo-innernote-white.svg','https://www.innernote.space'],['LiveDocs','General data agent.','Sep 2024 – Jan 2026','https://www.saadb.me/logo-livedocs.svg','https://livedocs.com','YC W22'],['Eigen Video','Video engineering suite.','Aug 2026','https://www.saadb.me/logo-eigenvideo-mark.svg','https://eigen.video'],['networkzero','Software and AI for how businesses work.','Apr 2026','https://www.saadb.me/logo-networkzero.svg','https://networkzero.tech'],['Curated People','Human infrastructure for social life.','Nov 2025 – Mar 2026','https://www.saadb.me/logo-curatedpeople.svg','https://curatedpeople.club']];
+const canvas=document.querySelector('.pixel-canvas');
+const context=canvas.getContext('2d');
+let pixelWidth=0,pixelHeight=0,animationFrame=0,lastDraw=0;
+function resizePixels(){pixelWidth=Math.max(1,Math.ceil(innerWidth/3));pixelHeight=Math.max(1,Math.ceil(innerHeight*.47/3));canvas.width=pixelWidth;canvas.height=pixelHeight}
+function hash(x,y){const value=Math.sin(x*127.1+y*311.7)*43758.5453;return value-Math.floor(value)}
+function valueNoise(x,y){const x0=Math.floor(x),y0=Math.floor(y),fx=x-x0,fy=y-y0,sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);const a=hash(x0,y0),b=hash(x0+1,y0),c=hash(x0,y0+1),d=hash(x0+1,y0+1);return a+(b-a)*sx+((c+(d-c)*sx)-(a+(b-a)*sx))*sy}
+function fractalNoise(x,y){return valueNoise(x,y)*.56+valueNoise(x*2.1+9,y*2.1-4)*.28+valueNoise(x*4.4-7,y*4.4+11)*.16}
+const dither=[[0,.5,.125,.625],[.75,.25,.875,.375],[.1875,.6875,.0625,.5625],[.9375,.4375,.8125,.3125]];
+function drawPixels(time){if(time-lastDraw<45){animationFrame=requestAnimationFrame(drawPixels);return}lastDraw=time;const image=context.createImageData(pixelWidth,pixelHeight),data=image.data,t=time*.00024;
+  for(let y=0;y<pixelHeight;y++)for(let x=0;x<pixelWidth;x++){const nx=x/pixelWidth,ny=y/pixelHeight;const warp=fractalNoise(nx*5.5+t*.08,ny*5.5-t*.03);const heat=fractalNoise(nx*22+warp*2.8+t*.12,ny*12-warp*2.1-t*.05)*1.65+fractalNoise(nx*5-t*.05,ny*3+t*.03)*.45-ny*1.2;const amount=Math.max(0,Math.min(1,(heat-.05)/1.72));const scaled=amount*5;const level=Math.min(5,Math.floor(scaled)+(scaled%1>dither[y&3][x&3]?1:0));const palette=[[5,2,2],[16,3,2],[42,3,2],[86,5,2],[157,12,2],[232,42,4]][level];const i=(y*pixelWidth+x)*4;data[i]=palette[0];data[i+1]=palette[1];data[i+2]=palette[2];data[i+3]=255}
+  context.putImageData(image,0,0);animationFrame=requestAnimationFrame(drawPixels)
 }
-
-async function checkLocalHostStatus(status) {
-  try {
-    const response = await fetch("/api/localhost-status", { cache: "no-store" });
-    const result = await response.json();
-    const offline = result.services.filter((service) => !service.live).map((service) => service.name);
-    status.className = `project-status ${offline.length ? "offline" : "online"}`;
-    status.textContent = `${result.online}/${result.total} online`;
-    status.dataset.tooltip = offline.length ? `Offline: ${offline.join(", ")}` : "All services online";
-    status.title = status.dataset.tooltip;
-  } catch {
-    status.className = "project-status offline";
-    status.textContent = "offline";
-    status.dataset.tooltip = "Status check unavailable";
-    status.title = status.dataset.tooltip;
-  }
-}
-
-renderLinks();
+resizePixels();window.addEventListener('resize',resizePixels);animationFrame=requestAnimationFrame(drawPixels);
+const list=document.querySelector('#work-list');
+list.innerHTML=work.map(function(item){const name=item[0],description=item[1],date=item[2],logo=item[3],link=item[4],tag=item[5];return '<a class="work-item" href="'+link+'" target="_blank" rel="noreferrer" aria-label="'+name+'"><span class="work-mark"><img src="'+logo+'" alt="" loading="lazy"></span><span class="work-copy"><h3>'+name+(tag?'<span class="tag">'+tag+'</span>':'')+'</h3><p>'+description+'</p></span><span class="date">'+date+'</span></a>'}).join('');
+document.querySelectorAll('.view-button').forEach(function(button){button.addEventListener('click',function(){document.querySelectorAll('.view-button').forEach(function(item){item.classList.toggle('active',item===button)});list.classList.toggle('compact',button.dataset.view==='compact')})});
+document.querySelector('#view-all').addEventListener('click',function(event){event.currentTarget.textContent=event.currentTarget.textContent==='View all'?'That’s all for now':'View all'});
+document.querySelector('#message-form').addEventListener('submit',function(event){event.preventDefault();const message=document.querySelector('#message').value.trim();if(message)window.location.href='mailto:hello@saadb.me?subject=Hello from your portfolio&body='+encodeURIComponent(message)});
