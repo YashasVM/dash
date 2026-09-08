@@ -1,20 +1,41 @@
 ---
 title: Product docs
-description: Documentation for every YashasVM product.
+description: How my products work, how to use them, and where the code lives.
 ---
 
-Documentation for seven small software products. Each product has its own page so setup notes, limits, and links stay easy to update.
+# hey, welcome
+
+This is the documentation for the small tools and experiments I build. I like making things that do one job properly, stay understandable, and—where it makes sense—keep your data on your own machine.
+
+These docs answer both sides of the question: **how do I use this?** and **how is this actually built?** Every product page includes a normal-person quick start, the tech stack, a rough architecture, developer setup notes, limitations, and direct links to the live app and its GitHub repository.
 
 ## Products
 
-- [OpenStream](./products/openstream) — Android camera to OBS over local Wi-Fi.
-- [HOLEN](./products/holen) — Private downloads on Android or terminal.
-- [Wisper Low](./products/wisper-low) — Local-first Windows dictation.
-- [cd](./products/cd) — Direct browser-to-browser file sharing.
-- [yt-cmd](./products/yt-cmd) — Interactive YouTube downloads in your terminal.
-- [Img-gen](./products/img-gen) — Local browser background remover.
-- [localhost](./products/localhost) — Public status page for local services.
+| Product | What it is | Status |
+| --- | --- | --- |
+| [OpenStream](./products/openstream) | Android phone camera to OBS over local Wi-Fi | Beta |
+| [HOLEN](./products/holen) | Private downloads on Android, web, or terminal | Active |
+| [Wisper Low](./products/wisper-low) | Local-first speech-to-text for the desktop | Prototype |
+| [cd](./products/cd) | Direct browser-to-browser file sharing | Active |
+| [yt-cmd](./products/yt-cmd) | Friendly interactive `yt-dlp` terminal wrapper | Active |
+| [Img-gen](./products/img-gen) | Browser-based local image background removal | Active |
+| [localhost](./products/localhost) | A status page for services running at home | Live |
 
-## Source of truth
+## How to read these docs
 
-These pages are short operational guides. Release-specific behavior belongs in each product's GitHub repository.
+If you just want to use something, start with **Quick start** and stop there. If you are curious about the implementation, **How it works** and **Tech stack** are the useful sections. If something breaks, jump straight to **Troubleshooting** before opening an issue.
+
+The GitHub repository is still the final source of truth for release assets, exact dependency versions, and changes that have landed since these pages were written. I have linked the relevant repository, releases, issues, and important subdirectories on each page so you do not have to hunt for them.
+
+## The common ideas behind the projects
+
+- **Local first:** camera streams, dictation, background removal, and downloads are designed to run on your device or your own network.
+- **Small surfaces:** most of these products are thin layers over good existing tools such as OBS, WebRTC, ONNX Runtime Web, Whisper, `yt-dlp`, and FFmpeg.
+- **Useful fallbacks:** when hardware acceleration, discovery, or a preferred runtime is unavailable, the apps try to provide a slower or more manual path.
+- **Honest status:** these are personal products and some are still rough. The docs call out known limits instead of pretending everything is production-perfect.
+
+## Links
+
+- [All repositories on GitHub](https://github.com/YashasVM?tab=repositories)
+- [Source for this documentation site](https://github.com/YashasVM/dash)
+- [Open a documentation issue](https://github.com/YashasVM/dash/issues)

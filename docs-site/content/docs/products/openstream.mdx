@@ -3,23 +3,100 @@ title: OpenStream
 description: Turn an Android phone into a wireless camera source for OBS Studio.
 ---
 
-## What it does
+## What it is
 
-OpenStream sends an Android phone camera into OBS Studio over local Wi-Fi. It uses SRT transport, hardware encoding, audio, discovery, and camera slots for multi-camera setups.
+OpenStream turns an Android phone into a camera and microphone source inside OBS Studio. The phone does the capture and hardware encoding, sends the media over your local Wi-Fi network, and a native OBS plugin receives it on the Windows PC.
 
-**Status:** Beta
+This is useful for a second camera, a desk cam, a phone-on-a-tripod shot, or a multi-camera stream without running a cable across the room. There is no cloud relay in the normal setup: the phone and the OBS machine talk directly on the LAN.
+
+**Current status:** Beta. The supported V1.0.1 path is the Android app plus the Windows OBS plugin over local Wi-Fi. USB transport is not part of this release.
 
 ## Quick start
 
-1. Install the Android APK from [GitHub Releases](https://github.com/YashasVM/OpenStream/releases).
-2. Install the Windows OBS plugin on the PC running OBS.
-3. Put the phone and OBS PC on the same LAN.
-4. Add an `OpenStream V8` source in OBS.
-5. Open the Android app and pair it with an available camera slot.
+1. Install the [Android APK](https://github.com/YashasVM/OpenStream/releases) and the Windows `openstream-obs-plugin-installer-windows-x64.exe`, then restart OBS.
+2. Put the phone and PC on the same normal Wi-Fi network. 5 GHz or Wi-Fi 6 is recommended.
+3. In OBS, choose **Sources → + → OpenStream V8** and name the camera slot.
+4. Open the Android app, allow camera/microphone access, and tap the slot it discovers.
+5. Open **Docks → OpenStream Camera Control** in OBS for lens, zoom, torch, labels, and reconnect controls.
 
-Use a 5 GHz or Wi-Fi 6 network for lower latency. Guest Wi-Fi, VPNs, and client isolation can block discovery.
+If discovery cannot find the PC, use manual connection and enter the PC address shown by the plugin. Guest Wi-Fi, VPNs, and router client isolation commonly block discovery.
+
+## What you can do with it
+
+- Stream 1080p30, with a 720p30 fallback profile.
+- Switch between front, rear, ultrawide, and telephoto lenses when available.
+- Use pinch-to-zoom, torch control, and a black screen streaming overlay.
+- Run multiple phones by creating one stable camera slot per angle.
+- Flash the slot name on the phone so physical cameras are easy to identify.
+- Recover from short Wi-Fi drops using the plugin's reconnect hold.
+
+## How it works
+
+```text
+Android Camera2 → MediaCodec AVC/H.264 + AAC → MPEG-TS → libsrt/SRT over Wi-Fi
+                                                          ↓
+Windows OBS ← native source plugin ← FFmpeg SRT receive/decode
+```
+
+Discovery uses UDP `51515`; media uses SRT `9000`; remote camera controls use HTTP `9001`. These ports are intended for the local network, not the public internet.
+
+## Tech stack
+
+| Part | Technology | Job |
+| --- | --- | --- |
+| Android app | Kotlin/Android, Camera2 | Capture, preview, camera selection |
+| Encoding | MediaCodec | Hardware AVC/H.264 video and AAC audio |
+| Transport | MPEG-TS, libsrt, SRT | Low-latency delivery over Wi-Fi |
+| OBS integration | Native OBS source/plugin | Makes each phone a normal OBS source |
+| Receive/decode | OBS bundled FFmpeg SRT support | Converts the stream back to frames/audio |
+| Pairing | LAN UDP + phone HTTP server | Discovery and remote controls |
+| Distribution | GitHub Releases + Cloudflare Pages | Downloads and website |
+
+## Defaults and tuning
+
+| Setting | Default | Notes |
+| --- | --- | --- |
+| Resolution | 1920×1080 | Full HD target |
+| Frame rate | 30 fps | Keeps heat and backlog reasonable |
+| Video codec | AVC/H.264 | Hardware surface encoder |
+| Bitrate | 12 Mbps | Try 8–12 Mbps before changing anything else |
+| SRT latency | 120 ms | 80–200 ms is a useful range |
+
+If the phone runs hot or the feed stutters, use 720p30 and lower the bitrate. Stable Wi-Fi matters more than chasing a tiny latency number.
+
+## Compatibility and limits
+
+- Android 10+ with Camera2 and hardware MediaCodec support is expected.
+- The OBS host is currently Windows x64 with OBS Studio 32.2.1 and bundled FFmpeg SRT support.
+- Devices must see each other on the same LAN/subnet.
+- Camera behavior differs between manufacturers and lenses.
+- USB transport and USB camera sources are not supported in V1.0.1.
+
+## Troubleshooting
+
+**No slot appears:** check subnet, VPN, Windows Firewall, guest-network isolation, and the plugin restart. Use manual IP entry as a fallback.
+
+**Slot appears but no video:** confirm the source is enabled, the media port is open, and try 720p30. Restarting OBS after installing the plugin is important.
+
+**Delayed or glitchy feed:** use 5 GHz/Wi-Fi 6, move closer to the access point, lower bitrate, and increase SRT latency slightly.
+
+**Phone is hot:** use the black screen mode, 720p30, a lower bitrate, and keep the phone ventilated. Camera capture plus encoding is real work for a phone.
+
+## Build from source
+
+The repo has separate Android and OBS plugin projects. On Windows, build the Android debug APK with:
+
+```powershell
+cd android
+./gradlew.bat :app:assembleDebug
+```
+
+The APK is in `android/app/build/outputs/apk/debug/app-debug.apk`. Build the plugin with `./build_plugin.bat`; set `OPENSTREAM_SKIP_INSTALL=1` to package without installing. Release signing variables and the SRT smoke test are documented in the repo.
 
 ## Links
 
 - [Website](https://openstream.pages.dev)
-- [GitHub](https://github.com/YashasVM/OpenStream)
+- [GitHub repository](https://github.com/YashasVM/OpenStream)
+- [Latest releases](https://github.com/YashasVM/OpenStream/releases)
+- [Issues](https://github.com/YashasVM/OpenStream/issues)
+- [Screenshot setup guide](https://github.com/YashasVM/OpenStream/blob/main/docs/set-up.md)
