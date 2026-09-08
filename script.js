@@ -4,8 +4,8 @@ const context=canvas.getContext('2d',{alpha:false});
 let pixelWidth=0,pixelHeight=0,animationTimer=0,lastDraw=0,resizeTimer=0;
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const smallScreen=window.matchMedia('(max-width: 600px)');
-function resizePixels(){const scale=smallScreen.matches?3:5;pixelWidth=Math.max(1,Math.ceil(innerWidth/scale));pixelHeight=Math.max(1,Math.ceil(innerHeight*.47/scale));canvas.width=pixelWidth;canvas.height=pixelHeight}
-function hash(x,y){let value=(x*374761393+y*668265263)|0;value=(value^(value>>>13))*1274126177;value^=value>>>16;return (value>>>0)/4294967296}
+function resizePixels(){const scale=3;pixelWidth=Math.max(1,Math.ceil(innerWidth/scale));pixelHeight=Math.max(1,Math.ceil(innerHeight*.47/scale));canvas.width=pixelWidth;canvas.height=pixelHeight}
+function hash(x,y){const value=Math.sin(x*127.1+y*311.7)*43758.5453;return value-Math.floor(value)}
 function valueNoise(x,y){const x0=Math.floor(x),y0=Math.floor(y),fx=x-x0,fy=y-y0,sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);const a=hash(x0,y0),b=hash(x0+1,y0),c=hash(x0,y0+1),d=hash(x0+1,y0+1);return a+(b-a)*sx+((c+(d-c)*sx)-(a+(b-a)*sx))*sy}
 function fractalNoise(x,y){return valueNoise(x,y)*.56+valueNoise(x*2.1+9,y*2.1-4)*.28+valueNoise(x*4.4-7,y*4.4+11)*.16}
 const dither=[[0,.5,.125,.625],[.75,.25,.875,.375],[.1875,.6875,.0625,.5625],[.9375,.4375,.8125,.3125]];
