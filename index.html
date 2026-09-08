@@ -4,20 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0d0503" />
-    <meta name="description" content="YashasVM — independent builder making small, useful software." />
+    <meta name="description" content="yashas — self-hosting nerd, open-source builder, and professional software annoyance remover." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="yashas | builder" />
+    <meta property="og:description" content="Self-hosting nerd, open-source builder, and professional software annoyance remover." />
+    <meta property="og:url" content="https://yashasvm.pages.dev/" />
+    <meta property="og:image" content="https://yashasvm.pages.dev/preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="yashas | builder" />
+    <meta name="twitter:description" content="Self-hosting nerd, open-source builder, and professional software annoyance remover." />
+    <meta name="twitter:image" content="https://yashasvm.pages.dev/preview.png" />
     <title>yashas | builder</title>
-    <link rel="stylesheet" href="./styles.css?v=3" />
+    <link rel="icon" href="./favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css?v=4" />
   </head>
   <body>
     <div class="pixel-field" aria-hidden="true"><canvas class="pixel-canvas"></canvas></div>
     <main class="site-wrap">
       <section class="intro" id="about">
         <div class="name-line"><h1>yashas</h1><span>/ya·shas/</span></div>
-        <div class="role">independent builder</div>
+        <div class="role">self-hosting nerd</div>
         <div class="bio">
-          <p>I build small, useful software and learn by taking ideas all the way from rough prototype to something people can use.</p>
-          <p class="dim">My projects sit around local-first tools, media, automation, and simple ways to move things between people and devices.</p>
-          <p class="dim">Open to interesting problems, thoughtful feedback, and useful collaborations.</p>
+          <p>Hey! I'm yashas. I self-host things, poke at software, and build the version I wish existed.</p>
+          <p class="dim">A lot of it is open-source software for the tiny annoyances that keep showing up: moving files, grabbing media, turning phones into cameras, and dictating without shipping my words somewhere.</p>
+          <p class="dim">Most projects start with “surely this can be simpler” and end up running on a tiny server.</p>
         </div>
         <nav class="social-links" aria-label="Social links">
           <a href="https://x.com/vortxfusion" aria-label="X" target="_blank" rel="noreferrer">
@@ -35,9 +47,9 @@
         </nav>
       </section>
       <section class="work" id="work">
-        <div class="section-head"><h2>Work</h2><div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view">▤</button></div></div>
+        <div class="section-head"><h2>Stuff I built</h2><div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view">▤</button></div></div>
         <div class="work-list" id="work-list"></div>
-        <a class="view-all" href="./docs/">Read the docs</a>
+        <a class="view-all" href="./docs/">Peek at the docs</a>
       </section>
     </main>
     <script src="./script.js"></script>

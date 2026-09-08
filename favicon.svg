@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="yashas favicon">
-  <rect width="64" height="64" rx="8" fill="#050505"/>
-  <rect x="3" y="3" width="58" height="58" rx="5" fill="none" stroke="#20242b" stroke-width="2"/>
-  <text x="32" y="32" fill="#fafafa" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="38" text-anchor="middle" dominant-baseline="middle">y.</text>
+  <rect width="64" height="64" rx="10" fill="#0d0503"/>
+  <path d="M8 52h48M12 45h4M23 38h4M34 48h4M47 32h4M52 19h4" stroke="#6b2f1c" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="51" cy="17" r="5" fill="#e58a57" opacity=".9"/>
+  <text x="32" y="35" fill="#e4d4b6" font-family="Georgia, serif" font-size="34" text-anchor="middle" dominant-baseline="middle">y.</text>
 </svg>
