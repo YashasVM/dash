@@ -1,33 +1,102 @@
 ---
 title: HOLEN
-description: Private, on-device downloads on Android or in your terminal.
+description: Private, on-device downloads on Android, web, or in your terminal.
 ---
 
-## What it does
+## What it is
 
-HOLEN lets you share or paste a link, choose a format, and save the download locally. It has an Android app and an interactive terminal flow powered by `yt-dlp`.
+HOLEN is my private downloader in three shapes: a native Android app, a small hosted website, and an interactive terminal command. Paste a supported link, choose the format and quality, and save the result locally.
 
-**Status:** Active
+There is no account, analytics dashboard, or mysterious hosted storage in the Android and terminal flows. The download is performed on your device. The hosted website is convenient, but it runs on an old laptop, so do not expect the fastest speeds.
 
-## Quick start
+## Pick your version
 
-### Android
+| Version | Best for | Start here |
+| --- | --- | --- |
+| Android | Sharing a link from your phone | [Universal APK](https://github.com/YashasVM/HOLEN/releases) |
+| Terminal | Repeatable, keyboard-first downloads | `npx holen-dl` |
+| Website | Trying it without installing anything | [holen.yvmx.dpdns.org](https://holen.yvmx.dpdns.org/) |
 
-Download the [ARM64 APK](https://github.com/YashasVM/HOLEN/releases) and follow the [Android setup guide](https://github.com/YashasVM/HOLEN/tree/main/prod/android).
+## Android quick start
 
-### Terminal
+1. Download the latest APK from [GitHub Releases](https://github.com/YashasVM/HOLEN/releases).
+2. Install it on Android. If Android asks, allow installation from the browser or file manager you used.
+3. Share a link to HOLEN or paste it into the app.
+4. Select video or audio, then choose a format and quality.
+5. Pick the destination folder and wait for the download to finish.
+
+The Android app is deliberately simple: it is a local downloader, not a media library or a sync service.
+
+## Terminal quick start
+
+You need an interactive terminal and Node.js/npm:
 
 ```bash
 npx holen-dl
 ```
 
-Choose quality, resolution, MP4/MKV, or MP3 from the interactive prompt.
+Aliases are also available:
 
-## Privacy
+```bash
+npx yvm-yt
+npx yt-cmd
+```
 
-Downloads stay on your device. HOLEN does not bypass DRM, accounts, age gates, access controls, or source-platform terms.
+Paste the URL into the prompt, choose video or audio, select a quality preset or custom resolution, and let the tool handle the output. Video prefers MP4 and can fall back to MKV; audio is MP3. Files are saved to `~/Downloads`.
+
+The CLI checks for `yt-dlp` and `ffmpeg`. If they are missing, it can help install or download what is needed.
+
+## How it works
+
+```text
+link → HOLEN UI → yt-dlp selects and downloads streams → FFmpeg merges/converts → local file
+```
+
+The Android and website layers are interfaces around the same basic idea. `yt-dlp` understands the source site and available formats; FFmpeg handles merging separate video/audio streams and conversions.
+
+## Tech stack
+
+| Part | Technology | Job |
+| --- | --- | --- |
+| Android app | Kotlin / native Android | Share target, picker, and local file saving |
+| Web frontend | React | Link input, format picker, and download UI |
+| API | FastAPI | Download orchestration for the hosted/web deployment |
+| Downloader | yt-dlp | Extracts formats and downloads supported sources |
+| Media processing | FFmpeg | Muxing and format conversion |
+| Packaging | Docker | Repeatable backend deployment |
+| Terminal client | Node.js/npm | Interactive CLI distributed through npm |
+
+## Privacy and legal limits
+
+Downloads stay on your device in the local flows. HOLEN does not bypass DRM, logins, age gates, private content, access controls, or platform restrictions. Only download content you are allowed to download and follow the source platform's terms.
+
+The hosted website is a different trust boundary from the Android and terminal clients. Do not use it for sensitive URLs or private material; run the local version if that matters.
+
+## Troubleshooting
+
+**The CLI says `ffmpeg` is missing:** install FFmpeg with your operating system package manager, then run the command again. Some downloads need it even when the source itself is available.
+
+**The Android APK will not install:** download it again from Releases, check that Android allows the installer you are using, and remove an older broken build if necessary.
+
+**A source link fails:** sites change often. Try updating the app/CLI, verify that the URL is public, and check the upstream `yt-dlp` support before opening an issue.
+
+**The hosted download is slow:** that deployment is intentionally small and runs from an old laptop. The terminal or Android local flow will normally be faster because it writes directly to your device.
+
+## Develop
+
+Clone the repo and follow its environment file and component-specific instructions:
+
+```bash
+git clone https://github.com/YashasVM/HOLEN.git
+cd HOLEN
+```
+
+The repository is split into `frontend`, `backend`, Android production files, and deployment helpers. It includes `.env.example`, Docker configuration, tests, and contribution/security docs. Do not commit local environment values or release signing material.
 
 ## Links
 
 - [Website](https://holen.yvmx.dpdns.org/)
-- [GitHub](https://github.com/YashasVM/HOLEN)
+- [HOLEN GitHub repository](https://github.com/YashasVM/HOLEN)
+- [HOLEN Releases](https://github.com/YashasVM/HOLEN/releases)
+- [Android source](https://github.com/YashasVM/HOLEN/tree/main/prod/android)
+- [Terminal client repo](https://github.com/YashasVM/yt-cmd)

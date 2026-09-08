@@ -3,22 +3,70 @@ title: cd
 description: A clearer, faster browser-to-browser file handoff app.
 ---
 
-## What it does
+## What it is
 
-`cd` transfers files directly between browsers over WebRTC data channels. The sender creates a friendly receive code or QR link, and the receiver joins with that code.
+`cd` is for sending a file to another person without uploading it to a file-hosting service first. The sender opens the app, chooses files, and shares a short receive code or QR link. The receiver joins from a browser and accepts the transfer.
 
-**Status:** Active
+The actual file contents move directly between the two browsers through a WebRTC data channel. The hosted service is used to load the app and help the peers find each other; it is not intended to store the transferred files.
 
 ## Quick start
 
-1. Open the [website](https://cd.yvm.workers.dev/).
+1. Open the [cd website](https://cd.yvm.workers.dev/).
 2. Choose one or more files.
-3. Share the receive code or QR link.
-4. Keep both browser tabs open until the transfer finishes.
+3. Copy the receive code or show the QR code to the other person.
+4. Keep both tabs open and visible until the transfer completes.
+5. The receiver saves the file when the browser offers it.
 
-The hosted app does not intentionally store transferred file contents. The connection uses PeerJS for signaling and WebRTC for the file channel.
+For a reliable handoff, keep both devices awake, use a stable network, and do not close or refresh either tab during the transfer.
+
+## What happens under the hood
+
+```text
+sender browser ── WebRTC data channel ── receiver browser
+       \              /
+        signaling / session setup
+             hosted Worker
+```
+
+The signaling step exchanges the information needed to establish the peer connection. Once connected, file data uses the browser's WebRTC data channel. This means large transfers are usually limited by the slower device, browser memory, network path, and WebRTC behavior rather than a server-side file quota.
+
+## Tech stack
+
+| Part | Technology | Job |
+| --- | --- | --- |
+| Frontend | Browser JavaScript/HTML/CSS | File picker, code/QR UI, transfer progress |
+| Peer connection | WebRTC data channels | Direct browser-to-browser file transfer |
+| Signaling | Worker-hosted signaling service | Helps peers negotiate a connection |
+| Deployment | Cloudflare Workers | Hosts the app and signaling endpoint |
+| Repository language | Go plus web assets | Current repo implementation and tooling |
+
+## Privacy and limits
+
+The app does not intentionally persist the file contents on the hosted service. It is still a browser application: the two people involved can see and save the files, and the network/browser environment can affect the connection. This is not an encrypted archive or an access-control system for highly sensitive material.
+
+Both browsers must stay connected. Some restrictive corporate networks, VPNs, or browser policies can interfere with WebRTC. Very large files can also run into memory or browser download limitations.
+
+## Troubleshooting
+
+**The code does not connect:** refresh both sides and create a new transfer. Disable a VPN temporarily and try a normal network. Corporate or guest networks may restrict peer connections.
+
+**The QR code is not working:** copy the text code manually. The receiver can open the website on any modern browser and enter the code.
+
+**The transfer stops halfway:** prevent sleep, keep both tabs open, and retry with a stable connection. For very large files, split the archive or use a local network transfer tool.
+
+**The receiver cannot save:** check browser download permissions and available disk space.
+
+## Self-hosting and development
+
+```bash
+git clone https://github.com/YashasVM/cd.git
+cd cd
+```
+
+The repository README and deployment configuration are the source of truth for the current Worker commands and environment values. Inspect the signaling path before deploying a public instance, and never put secrets in browser-delivered code.
 
 ## Links
 
 - [Website](https://cd.yvm.workers.dev/)
-- [GitHub](https://github.com/YashasVM/cd)
+- [GitHub repository](https://github.com/YashasVM/cd)
+- [Issues](https://github.com/YashasVM/cd/issues)
