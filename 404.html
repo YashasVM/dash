@@ -2,26 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0d0503" />
+    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/instrument.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/styles.css?v=5" />
     <title>404 — yashas</title>
-    <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
-    <main class="page-shell">
-      <section class="link-card error-card" aria-labelledby="error-title">
-        <header class="profile">
-          <div>
-            <h1 id="error-title">404.</h1>
-            <p>this page wandered off</p>
-          </div>
-        </header>
-
-        <footer class="footer-links">
-          <a href="/" aria-label="Back to yashas home">back home</a>
-        </footer>
+  <body class="error-page">
+    <div class="pixel-field" aria-hidden="true"><canvas class="pixel-canvas"></canvas></div>
+    <main class="site-wrap error-wrap">
+      <a class="error-brand" href="/" aria-label="Back to yashas home">yashas <span>/ home</span></a>
+      <section class="error-intro" aria-labelledby="error-title">
+        <div class="error-code">404 <span>lost packet</span></div>
+        <h1 id="error-title">This page wandered off.</h1>
+        <p>Nothing is running here. Keep the little server alive while you find your way back.</p>
       </section>
+      <section class="runner-panel" aria-labelledby="runner-title">
+        <div class="runner-head">
+          <div><span class="eyebrow">tiny home-lab distraction</span><h2 id="runner-title">Run the local dinosaur</h2></div>
+          <div class="runner-score" aria-live="polite"><span>score</span><strong id="score">00000</strong></div>
+        </div>
+        <div class="runner-stage" id="runner-stage" tabindex="0" role="application" aria-label="Dinosaur runner game. Press Space or the up arrow to jump.">
+          <canvas id="runner" width="544" height="176"></canvas>
+          <div class="runner-message" id="runner-message"><strong>space / tap to start</strong><span>jump the bugs. keep the server up.</span></div>
+        </div>
+        <div class="runner-footer"><span><kbd>space</kbd> jump · air jump</span><span><kbd>r</kbd> restart</span><button id="sound-toggle" type="button" aria-pressed="true">sound on</button><button id="restart" type="button">restart run ↗</button></div>
+      </section>
+      <a class="back-home" href="/">← back to everything that does exist</a>
     </main>
+    <script src="/404.js?v=2"></script>
   </body>
 </html>
