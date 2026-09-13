@@ -34,6 +34,12 @@ function clickCounts(){try{return JSON.parse(localStorage.getItem('yashas-clicks
 function recordClick(id){try{const counts=clickCounts();counts[id]=(counts[id]||0)+1;localStorage.setItem('yashas-clicks',JSON.stringify(counts))}catch(_){}}
 function visibleWork(){const counts=clickCounts();let items=work.filter(function(item){return state.filter==='All'||item.status===state.filter});if(state.sort==='popular'){items=items.slice().sort(function(a,b){return(counts[b.id]||0)-(counts[a.id]||0)})}return items}
 function statusDotClass(status){if(status==='Active'||status==='Live')return 'dot-on';if(status==='Beta')return 'dot-beta';return 'dot-off'}
+function updateCounts(){
+  const counts={All:work.length};
+  work.forEach(function(item){counts[item.status]=(counts[item.status]||0)+1});
+  document.querySelectorAll('[data-count]').forEach(function(el){el.textContent=counts[el.dataset.count]||0});
+}
+updateCounts();
 function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function renderWork(){
   if(!list)return;
@@ -41,16 +47,17 @@ function renderWork(){
   state.kbIndex=-1;
   if(!items.length){list.innerHTML='<p class="work-empty">Nothing with that status yet. Try another filter.</p>';return}
   list.innerHTML=items.map(function(item,index){
-    const sourceLink=item.source&&item.source!==item.live?' <a class="row-link" href="'+item.source+'" target="_blank" rel="noreferrer" data-stop>source</a>':'';
+    const sourceLink=item.source&&item.source!==item.live?' <a class="row-link" href="'+item.source+'" target="_blank" rel="noreferrer" data-stop>source ↗</a>':'';
     const stars=item.repo?' <span class="stars" data-stars="'+item.repo+'" hidden></span>':'';
-    return '<div class="work-item" data-id="'+item.id+'" data-index="'+index+'">'
+    return '<div class="work-item" data-id="'+item.id+'" data-index="'+index+'" style="animation-delay:'+Math.min(index*35,245)+'ms">'
       +'<a class="work-mark work-main" href="'+item.live+'" target="_blank" rel="noreferrer" aria-label="'+escapeHtml(item.name)+' — open live site" tabindex="-1"><img src="'+item.logo+'" alt="" width="48" height="48" loading="'+(index<2?'eager':'lazy')+'" decoding="async"></a>'
       +'<span class="work-copy"><h3><a class="work-main" href="'+item.live+'" target="_blank" rel="noreferrer" data-id="'+item.id+'">'+escapeHtml(item.name)+'</a>'+stars+'</h3><p>'+escapeHtml(item.description)+'</p>'
-      +'<span class="row-links"><a class="row-link" href="'+item.docs+'" data-stop>docs</a>'+sourceLink+'</span></span>'
+      +'<span class="row-links"><a class="row-link" href="'+item.docs+'" data-stop>docs →</a>'+sourceLink+'</span></span>'
       +'<span class="date"><span class="status-dot '+statusDotClass(item.status)+'" data-dot="'+item.id+'" title="'+item.status+'"></span>'+item.status+'</span>'
       +'<button class="expand-button" type="button" aria-expanded="false" aria-label="Expand description for '+escapeHtml(item.name)+'" data-expand>▸</button>'
       +'</div>'
   }).join('');
+  list.classList.remove('enter');void list.offsetWidth;list.classList.add('enter');
   hydrateStars();
 }
 if(list){
@@ -69,7 +76,7 @@ document.querySelectorAll('[data-filter]').forEach(function(button){button.addEv
 const sortButton=document.querySelector('#sort-button');
 if(sortButton){sortButton.addEventListener('click',function(){
   state.sort=state.sort==='curated'?'popular':'curated';
-  sortButton.textContent=state.sort==='curated'?'Sort: curated':'Sort: popular';
+  sortButton.textContent=state.sort==='curated'?'sort: curated':'sort: popular';
   sortButton.title=state.sort==='curated'?'Show curated order':'Popular ranks by your visits on this device';
   renderWork();
 })}
@@ -106,9 +113,9 @@ if(writingList){
     .then(function(data){
       const posts=data&&Array.isArray(data.posts)?data.posts.slice(0,3):[];
       if(!posts.length){writingList.innerHTML='<p class="work-empty">The first post is still compiling. Product docs are the best window in for now.</p>';return}
-      writingList.innerHTML=posts.map(function(post){
+      writingList.innerHTML=posts.map(function(post,index){
         const date=post.published_at?new Date(post.published_at).toLocaleDateString('en-IN',{month:'short',year:'numeric'}):'';
-        return '<a class="writing-item" href="./blog/#'+encodeURIComponent(post.slug)+'"><span class="work-copy"><h3>'+escapeHtml(post.title)+'</h3><p>'+escapeHtml(post.excerpt||'')+'</p></span><span class="date">'+escapeHtml(date)+'</span></a>'
+        return '<a class="writing-item" href="./blog/#'+encodeURIComponent(post.slug)+'"><span class="writing-index">'+String(index+1).padStart(2,'0')+'</span><span class="work-copy"><h3>'+escapeHtml(post.title)+'</h3><p>'+escapeHtml(post.excerpt||'')+'</p></span><span class="date">'+escapeHtml(date)+'</span></a>'
       }).join('');
     })
     .catch(function(){writingList.innerHTML='<p class="work-empty">Writing lives on the <a class="row-link" href="./blog/">blog</a> — it did not load inline just now.</p>'});
@@ -117,23 +124,33 @@ const palette=document.querySelector('#palette');
 const paletteInput=document.querySelector('#palette-input');
 const paletteList=document.querySelector('#palette-list');
 function paletteEntries(){
-  const entries=work.map(function(item){return{label:item.name,hint:'open live site',href:item.live,external:true}});
-  work.forEach(function(item){entries.push({label:item.name+' docs',hint:'read the docs',href:item.docs,external:false})});
-  entries.push({label:'Now — what I’m doing',hint:'page',href:'./now.html',external:false});
-  entries.push({label:'Uses — the home setup',hint:'page',href:'./uses.html',external:false});
-  entries.push({label:'Writing',hint:'page',href:'./blog/',external:false});
-  entries.push({label:'Docs',hint:'page',href:'./docs/',external:false});
+  const entries=work.map(function(item){return{group:'Projects',label:item.name,hint:'open live site ↗',href:item.live,external:true}});
+  work.forEach(function(item){entries.push({group:'Docs',label:item.name+' docs',hint:'read the docs',href:item.docs,external:false})});
+  entries.push({group:'Pages',label:'Now — what I’m doing',hint:'page',href:'./now.html',external:false});
+  entries.push({group:'Pages',label:'Uses — the home setup',hint:'page',href:'./uses.html',external:false});
+  entries.push({group:'Pages',label:'Writing',hint:'page',href:'./blog/',external:false});
+  entries.push({group:'Docs',label:'All docs',hint:'page',href:'./docs/',external:false});
   return entries;
 }
 let paletteIndex=0;
 function renderPalette(query){
-  if(!paletteList)return;
+  if(!paletteList)return[];
   const q=query.trim().toLowerCase();
   const matches=paletteEntries().filter(function(entry){return !q||entry.label.toLowerCase().includes(q)});
   paletteIndex=0;
-  paletteList.innerHTML=matches.length?matches.map(function(entry,index){
-    return '<a class="palette-item'+(index===0?' selected':'')+'" href="'+entry.href+'"'+(entry.external?' target="_blank" rel="noreferrer"':'')+'><span>'+escapeHtml(entry.label)+'</span><span class="palette-hint">'+escapeHtml(entry.hint)+'</span></a>'
-  }).join(''):'<p class="work-empty">No match. Try a project name or “docs”.</p>';
+  if(!matches.length){paletteList.innerHTML='<p class="work-empty">No match. Try a project name or “docs”.</p>';return matches}
+  let html='',lastGroup='',selected=0;
+  matches.forEach(function(entry,i){
+    if(entry.group!==lastGroup){lastGroup=entry.group;html+='<p class="palette-group">'+escapeHtml(entry.group)+'</p>'}
+    html+='<a class="palette-item'+(i===0?' selected':'')+'" href="'+entry.href+'"'+(entry.external?' target="_blank" rel="noreferrer"':'')+' data-pi="'+i+'"><span>'+escapeHtml(entry.label)+'</span><span class="palette-hint">'+escapeHtml(entry.hint)+'</span></a>'
+  });
+  paletteList.innerHTML=html;
+  paletteList.querySelectorAll('.palette-item').forEach(function(item){
+    item.addEventListener('mousemove',function(){
+      paletteIndex=Number(item.dataset.pi);
+      paletteList.querySelectorAll('.palette-item').forEach(function(other){other.classList.toggle('selected',other===item)});
+    });
+  });
   return matches;
 }
 let paletteMatches=[];
