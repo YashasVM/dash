@@ -1,0 +1,99 @@
+---
+title: cdx CLI
+description: Send a file from a terminal or agent to a browser with one private link.
+---
+
+## What it is
+
+`cdx` is the terminal side of [cd](./cd). It sends one file through CD's encrypted live relay and prints a single private share link. The receiver opens that link in a browser, approves the transfer, and the CLI exits once the browser verifies every byte.
+
+The binary is named `cdx` because `cd` is already the shell's change-directory command.
+
+## Quick start
+
+Install with Go:
+
+```bash
+go install github.com/YashasVM/cd/cmd/cdx@latest
+```
+
+Or install the latest checksum-verified release on Linux or macOS:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/YashasVM/cd/master/scripts/install.sh | sh
+```
+
+Send one regular file:
+
+```bash
+cdx send ./app.apk
+```
+
+Standard output contains only the private share URL:
+
+```text
+https://cd.yash0.in/s/3JgrxJIKt2cqd2V0aTDQyQ#v1.<private-key>
+```
+
+Send that complete URL to the receiver and keep `cdx` running while they accept and download the file. Progress goes to standard error. Exit status `0` means the receiver verified the complete byte count.
+
+## Rules for v1
+
+- One regular file per invocation. Zip a folder first to share it.
+- Flags may come before or after the file path: `cdx send --json ./file.zip` works too.
+- Use `--json` when a tool needs structured output. It emits one object with the schema `version`, `url`, `filename`, and numeric `size` instead of the bare URL.
+- Unicode filenames are preserved; the receiver sees the exact safe basename.
+- Files over 256 MB need a desktop browser receiver with file-system access.
+
+## Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| `0` | The receiver verified every byte. |
+| `1` | The transfer failed (missing file, relay refused, receiver left, counts mismatched). |
+| `2` | The command was used incorrectly (no file, two files, unknown flag). |
+
+Missing files, directories, and non-regular files fail with exit `1` and print no invitation URL. Usage mistakes fail with exit `2` and print usage to stderr.
+
+## Environment overrides
+
+Two variables point the CLI at a different relay, and they must describe the same origin:
+
+| Variable | Default | Rule |
+| --- | --- | --- |
+| `CD_RELAY_URL` | `wss://cd.yash0.in/ws/v1` | Path must be `/ws/v1`. Plain `ws` is only allowed for loopback development. |
+| `CD_PUBLIC_URL` | `https://cd.yash0.in` | Must be the bare site origin, no path. Plain `http` is only allowed for loopback. |
+
+For local development against a local Worker:
+
+```bash
+CD_RELAY_URL=ws://127.0.0.1:8787/ws/v1 \
+CD_PUBLIC_URL=http://127.0.0.1:8787 \
+./bin/cdx send ./README.md
+```
+
+## Privacy and limits
+
+The URL fragment holds the encryption key. Browsers never send fragments to the server, so the relay only sees ciphertext. A receiver must also prove knowledge of a token derived from that key before joining. Treat the full URL as a temporary secret and let it expire after use.
+
+There is no resume in v1. A disconnected transfer fails clearly; restart it with a fresh `cdx send` and a new link. See the [agent transfer protocol](./cd-protocol) for the exact wire behavior, timeouts, and trust boundaries.
+
+## Troubleshooting
+
+**The command prints usage and exits 2:** check you passed exactly one file, e.g. `cdx send ./notes.txt`. Run `cdx send --help` for the accepted form.
+
+**`open "...": no such file or directory`:** the path is wrong or the shell quoted it badly. Quote paths with spaces: `cdx send "./my photo.zip"`.
+
+**`"..." is a folder: zip it first`:** `cdx` sends one regular file only. Archive the folder, then send the `.zip`.
+
+**`connect to CD relay timed out`:** check the network, then retry. A fresh invocation mints a fresh link.
+
+**The receiver never connects:** links expire (receiver wait is 15 minutes, rooms live at most 2 hours). The sender must stay online the whole time — closing the terminal ends the transfer.
+
+## Links
+
+- [cd overview](./cd)
+- [Agent transfer protocol](./cd-protocol)
+- [cd website](https://cd.yash0.in/)
+- [GitHub repository](https://github.com/YashasVM/cd)
+- [Issues](https://github.com/YashasVM/cd/issues)

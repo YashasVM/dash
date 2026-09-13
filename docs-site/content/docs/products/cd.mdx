@@ -65,6 +65,10 @@ cd cd
 
 The repository README and deployment configuration are the source of truth for the current Worker commands and environment values. Inspect the signaling path before deploying a public instance, and never put secrets in browser-delivered code.
 
+## Agent and terminal sending
+
+Terminals and agents use the [`cdx` CLI](./cd-cli) instead of the browser picker: `cdx send ./file.zip` prints one private link, and the transfer runs over the [agent transfer protocol](./cd-protocol) with end-to-end encryption and receiver-verified completion.
+
 ## Links
 
 - [Website](https://cd.yash0.in/)
