@@ -29,7 +29,7 @@
     <div class="pixel-field" aria-hidden="true"><canvas class="pixel-canvas"></canvas></div>
     <main class="site-wrap">
       <section class="intro" id="about">
-        <div class="name-line"><h1>yashas</h1><span>/ya·shas/</span></div>
+        <div class="name-line"><h1 id="my-name" title="five clicks. you know you want to.">yashas</h1><button class="say-it" id="say-it" type="button" title="hear it" aria-label="Hear how to say yashas">/ya·shas/</button></div>
         <div class="role">self-hosting nerd</div>
         <div class="bio">
           <p>Hey! I'm yashas. I self-host things, poke at software, and build the version I wish existed.</p>
@@ -60,7 +60,7 @@
         <div class="filter-row" role="group" aria-label="Filter by status"><button class="chip active" data-filter="All" aria-pressed="true">all <span class="chip-count" data-count="All"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Active" aria-pressed="false">active <span class="chip-count" data-count="Active"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Live" aria-pressed="false">live <span class="chip-count" data-count="Live"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Beta" aria-pressed="false">beta <span class="chip-count" data-count="Beta"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Prototype" aria-pressed="false">prototype <span class="chip-count" data-count="Prototype"></span></button><button class="chip chip-sort" id="sort-button" type="button" title="Popular ranks by your visits on this device">sort: curated</button><span class="status-stamp" id="status-stamp" hidden></span></div>
         <div class="dev-quote" id="dev-quote" hidden aria-live="polite"></div>
         <div class="work-list" id="work-list"></div>
-        <a class="view-all" href="./docs/">Peek at the docs</a>
+        <a class="view-all" id="docs-fallback" href="./docs/">Peek at the docs →</a>
       </section>
       <section class="work writing" id="writing" aria-labelledby="writing-title">
         <div class="section-head"><h2 id="writing-title">Writing</h2><a class="row-link" href="./blog/">all posts →</a></div>
@@ -71,6 +71,7 @@
       <nav aria-label="Site pages"><a href="./now.html">now</a><a href="./uses.html">uses</a><a href="./docs/">docs</a><a href="./blog/">blog</a><button class="foot-button" id="copy-link" type="button">copy link</button></nav>
       <span class="test-badge" title="Experimental features live here. The main site is untouched.">test build</span>
     </footer>
+    <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
     <div class="palette" id="palette" hidden role="dialog" aria-modal="true" aria-label="Search">
       <div class="palette-box"><input id="palette-input" type="text" placeholder="Search projects, docs, pages…" aria-label="Search projects, docs, pages" autocomplete="off" /><div id="palette-list" role="listbox" aria-label="Results"></div><p class="palette-foot"><kbd>↑↓</kbd> move · <kbd>↵</kbd> open · <kbd>esc</kbd> close</p></div>
     </div>

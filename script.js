@@ -17,17 +17,35 @@ function hash(x,y){const value=Math.sin(x*127.1+y*311.7)*43758.5453;return value
 function valueNoise(x,y){const x0=Math.floor(x),y0=Math.floor(y),fx=x-x0,fy=y-y0,sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);const a=hash(x0,y0),b=hash(x0+1,y0),c=hash(x0,y0+1),d=hash(x0+1,y0+1);return a+(b-a)*sx+((c+(d-c)*sx)-(a+(b-a)*sx))*sy}
 function fractalNoise(x,y){return valueNoise(x,y)*.56+valueNoise(x*2.1+9,y*2.1-4)*.28+valueNoise(x*4.4-7,y*4.4+11)*.16}
 const dither=[[0,.5,.125,.625],[.75,.25,.875,.375],[.1875,.6875,.0625,.5625],[.9375,.4375,.8125,.3125]];
-function drawPixels(time){if(!canvas||!context)return;if(reduceMotion&&lastDraw){return}if(!reduceMotion&&time-lastDraw<45){return}lastDraw=time;const image=context.createImageData(pixelWidth,pixelHeight),data=image.data,t=reduceMotion?0:time*.0018;
-  for(let y=0;y<pixelHeight;y++)for(let x=0;x<pixelWidth;x++){const nx=x/pixelWidth,ny=y/pixelHeight;const warp=fractalNoise(nx*5.5+t*.08,ny*5.5-t*.03);const heat=fractalNoise(nx*22+warp*2.8+t*.12,ny*12-warp*2.1-t*.05)*1.65+fractalNoise(nx*5-t*.05,ny*3+t*.03)*.45-ny*1.2;const amount=Math.max(0,Math.min(1,(heat-.05)/1.72));const scaled=amount*5;const level=Math.min(5,Math.floor(scaled)+(scaled%1>dither[y&3][x&3]?1:0));const palette=[[5,2,2],[16,3,2],[42,3,2],[86,5,2],[157,12,2],[232,42,4]][level];const i=(y*pixelWidth+x)*4;data[i]=palette[0];data[i+1]=palette[1];data[i+2]=palette[2];data[i+3]=255}
+const ember=[[5,2,2],[16,3,2],[42,3,2],[86,5,2],[157,12,2],[232,42,4]];
+const neon=[[24,4,46],[96,8,140],[200,40,170],[40,220,200],[140,255,130],[255,240,130]];
+let overdriveUntil=0,overdriveCooldownUntil=0;
+function drawPixels(time){if(!canvas||!context)return;if(reduceMotion&&lastDraw){return}if(!reduceMotion&&time-lastDraw<45){return}lastDraw=time;const overdrive=performance.now()<overdriveUntil;const image=context.createImageData(pixelWidth,pixelHeight),data=image.data,t=reduceMotion?0:time*.0018;
+  for(let y=0;y<pixelHeight;y++)for(let x=0;x<pixelWidth;x++){const nx=x/pixelWidth,ny=y/pixelHeight;const warp=fractalNoise(nx*5.5+t*.08,ny*5.5-t*.03);const heat=fractalNoise(nx*22+warp*2.8+t*.12,ny*12-warp*2.1-t*.05)*1.65+fractalNoise(nx*5-t*.05,ny*3+t*.03)*.45-ny*1.2;const amount=Math.max(0,Math.min(1,(heat-.05)/1.72));const scaled=amount*5;const level=Math.min(5,Math.floor(scaled)+(scaled%1>dither[y&3][x&3]?1:0));const palette=(overdrive?neon:ember)[level];const i=(y*pixelWidth+x)*4;data[i]=palette[0];data[i+1]=palette[1];data[i+2]=palette[2];data[i+3]=255}
   context.putImageData(image,0,0)
 }
 function syncPixelMotion(){if(!canvas)return;if(reduceMotion||!smallScreen.matches){if(animationTimer){window.clearInterval(animationTimer);animationTimer=0}return}if(!animationTimer){animationTimer=window.setInterval(function(){drawPixels(performance.now())},50)}}
 resizePixels();window.addEventListener('resize',function(){resizePixels();window.clearTimeout(resizeTimer);resizeTimer=window.setTimeout(function(){lastDraw=0;drawPixels(performance.now())},100);syncPixelMotion()},{passive:true});if(smallScreen.addEventListener){smallScreen.addEventListener('change',function(){resizePixels();lastDraw=0;drawPixels(performance.now());syncPixelMotion()})}window.setTimeout(function(){drawPixels(performance.now())},0);syncPixelMotion();
-const devQuotes=['It works on my machine. Ship the machine.','A good commit message is a tiny time machine.','There is no bug too small to become a personality trait.','The best debugging tool is a snack and a fresh pair of eyes.','Keep it simple enough that future-you can fix it at 2 a.m.'];
+const devQuotes=['It works on my machine. Ship the machine.','A good commit message is a tiny time machine.','There is no bug too small to become a personality trait.','The best debugging tool is a snack and a fresh pair of eyes.','Keep it simple enough that future-you can fix it at 2 a.m.','Uptime is a love language.','It compiled. Nobody knows why. Nobody touches it.','The homelab hums. All is well.','Docs are just a README with commitment.','Ship it at 2 a.m. What could possibly go wrong.','My code reviews itself. Poorly.','There are only 10 kinds of people: those who get binary and those who do not.'];
+let toastTimer=0;
+function toast(html,ms){const box=document.querySelector('#toast');if(!box)return;box.innerHTML=html;box.hidden=false;window.clearTimeout(toastTimer);toastTimer=window.setTimeout(function(){box.hidden=true},ms||4200)}
+function showQuote(text){if(!devQuote)return;devQuote.innerHTML=text;devQuote.hidden=false;if(eventButton)eventButton.setAttribute('aria-expanded','true')}
+function engageOverdrive(reason){
+  const now=performance.now();
+  if(now<overdriveCooldownUntil){toast('overdrive is cooling down. even pixels need rest.');return}
+  overdriveUntil=now+15000;overdriveCooldownUntil=now+45000;
+  lastDraw=0;drawPixels(now);
+  const pulse=window.setInterval(function(){if(performance.now()>overdriveUntil){window.clearInterval(pulse);lastDraw=0;drawPixels(performance.now());return}lastDraw=0;drawPixels(performance.now())},80);
+  showQuote('“OVERDRIVE ENGAGED — the homelab approves.”');
+  toast(reason||'overdrive engaged for 15 seconds. try not to stare directly at it.');
+}
 const eventButton=document.querySelector('.event-button');
 const devQuote=document.querySelector('#dev-quote');
-let lastDevQuoteIndex=-1;
-if(eventButton&&devQuote){eventButton.addEventListener('click',function(){let quoteIndex=Math.floor(Math.random()*devQuotes.length);while(devQuotes.length>1&&quoteIndex===lastDevQuoteIndex){quoteIndex=Math.floor(Math.random()*devQuotes.length)}lastDevQuoteIndex=quoteIndex;devQuote.textContent='“'+devQuotes[quoteIndex]+'”';devQuote.hidden=false;eventButton.setAttribute('aria-expanded','true')})}
+let lastDevQuoteIndex=-1,zapCount=0;
+if(eventButton&&devQuote){eventButton.addEventListener('click',function(){
+  zapCount++;
+  if(zapCount%7===0){engageOverdrive('seven zaps. you found the overdrive button. 15 seconds of glory.');return}
+  let quoteIndex=Math.floor(Math.random()*devQuotes.length);while(devQuotes.length>1&&quoteIndex===lastDevQuoteIndex){quoteIndex=Math.floor(Math.random()*devQuotes.length)}lastDevQuoteIndex=quoteIndex;devQuote.textContent='“'+devQuotes[quoteIndex]+'”';devQuote.hidden=false;eventButton.setAttribute('aria-expanded','true')})}
 const list=document.querySelector('#work-list');
 const state={filter:'All',sort:'curated',kbIndex:-1};
 function clickCounts(){try{return JSON.parse(localStorage.getItem('yashas-clicks')||'{}')}catch(_){return{}}}
@@ -56,8 +74,9 @@ function renderWork(){
       +'<span class="date"><span class="status-dot '+statusDotClass(item.status)+'" data-dot="'+item.id+'" title="'+item.status+'"></span>'+item.status+'</span>'
       +'<button class="expand-button" type="button" aria-expanded="false" aria-label="Expand description for '+escapeHtml(item.name)+'" data-expand>▸</button>'
       +'</div>'
-  }).join('');
+  }).join('')+(state.filter==='All'?'<a class="work-item docs-row" href="./docs/" aria-label="Browse all docs"><span class="work-mark docs-mark" aria-hidden="true">→</span><span class="work-copy"><h3>Browse all docs</h3><p>One honest page per project. No marketing fog.</p></span><span class="date">7 pages</span></a>':'');
   list.classList.remove('enter');void list.offsetWidth;list.classList.add('enter');
+  const fallback=document.querySelector('#docs-fallback');if(fallback)fallback.hidden=true;
   hydrateStars();
 }
 if(list){
@@ -132,17 +151,30 @@ function paletteEntries(){
   entries.push({group:'Docs',label:'All docs',hint:'page',href:'./docs/',external:false});
   return entries;
 }
+function jokeEntries(query){
+  const jokes=[
+    {group:'???',label:'sudo make me a sandwich',hint:'easter egg',toastMessage:'ok. one sandwich, extra uptime. the dino eats first.'},
+    {group:'???',label:'hire yashas',hint:'excellent choice',href:'https://www.linkedin.com/in/yashasvm/',external:true},
+    {group:'???',label:'touch grass',hint:'easter egg',toastMessage:'achievement unlocked: considered going outside. the server will keep your seat warm.'},
+    {group:'???',label:'overdrive',hint:'easter egg',toastMessage:'',overdrive:true}
+  ];
+  const q=query.trim().toLowerCase();
+  if(!q)return[];
+  return jokes.filter(function(joke){return joke.label.toLowerCase().includes(q)});
+}
 let paletteIndex=0;
 function renderPalette(query){
   if(!paletteList)return[];
   const q=query.trim().toLowerCase();
-  const matches=paletteEntries().filter(function(entry){return !q||entry.label.toLowerCase().includes(q)});
+  const matches=paletteEntries().filter(function(entry){return !q||entry.label.toLowerCase().includes(q)}).concat(jokeEntries(query));
   paletteIndex=0;
   if(!matches.length){paletteList.innerHTML='<p class="work-empty">No match. Try a project name or “docs”.</p>';return matches}
   let html='',lastGroup='',selected=0;
   matches.forEach(function(entry,i){
     if(entry.group!==lastGroup){lastGroup=entry.group;html+='<p class="palette-group">'+escapeHtml(entry.group)+'</p>'}
-    html+='<a class="palette-item'+(i===0?' selected':'')+'" href="'+entry.href+'"'+(entry.external?' target="_blank" rel="noreferrer"':'')+' data-pi="'+i+'"><span>'+escapeHtml(entry.label)+'</span><span class="palette-hint">'+escapeHtml(entry.hint)+'</span></a>'
+    const href=entry.href||'#';
+    const extra=entry.toastMessage?' data-toast="'+escapeHtml(entry.toastMessage)+'"':(entry.overdrive?' data-overdrive="1"':'');
+    html+='<a class="palette-item'+(i===0?' selected':'')+'" href="'+href+'"'+(entry.external?' target="_blank" rel="noreferrer"':'')+extra+' data-pi="'+i+'"><span>'+escapeHtml(entry.label)+'</span><span class="palette-hint">'+escapeHtml(entry.hint)+'</span></a>'
   });
   paletteList.innerHTML=html;
   paletteList.querySelectorAll('.palette-item').forEach(function(item){
@@ -158,7 +190,13 @@ function openPalette(){if(!palette)return;palette.hidden=false;paletteMatches=re
 function closePalette(){if(!palette)return;palette.hidden=true;document.body.classList.remove('palette-open')}
 const paletteButton=document.querySelector('#palette-button');
 if(paletteButton){paletteButton.addEventListener('click',openPalette)}
-if(palette){palette.addEventListener('click',function(event){if(event.target===palette)closePalette()})}
+if(palette){palette.addEventListener('click',function(event){
+  if(event.target===palette){closePalette();return}
+  const item=event.target.closest?event.target.closest('.palette-item'):null;
+  if(!item)return;
+  if(item.hasAttribute('data-toast')){event.preventDefault();closePalette();toast(item.getAttribute('data-toast'));return}
+  if(item.hasAttribute('data-overdrive')){event.preventDefault();closePalette();engageOverdrive();return}
+})}
 if(paletteInput){
   paletteInput.addEventListener('input',function(){paletteMatches=renderPalette(paletteInput.value)});
   paletteInput.addEventListener('keydown',function(event){
@@ -193,6 +231,40 @@ document.addEventListener('keydown',function(event){
   else if(event.key==='k'){event.preventDefault();focusRow(state.kbIndex-1)}
   else if(event.key==='Enter'&&state.kbIndex>=0){const rows=kbRows();const link=rows[state.kbIndex]?rows[state.kbIndex].querySelector('a.work-main'):null;if(link)link.click()}
   else if((event.key==='e'||event.key==='E')&&state.kbIndex>=0){const rows=kbRows();const button=rows[state.kbIndex]?rows[state.kbIndex].querySelector('[data-expand]'):null;if(button)button.click()}
+});
+const konami=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiAt=0,typedBuffer='',typedTimer=0;
+document.addEventListener('keydown',function(event){
+  const inField=event.target&&(event.target.tagName==='INPUT'||event.target.tagName==='TEXTAREA');
+  if(inField)return;
+  const key=event.key.length===1?event.key.toLowerCase():event.key;
+  if(key===konami[konamiAt]){konamiAt++;if(konamiAt===konami.length){konamiAt=0;engageOverdrive('konami accepted. you are one of us now. 15 seconds of overdrive.')}}else{konamiAt=key===konami[0]?1:0}
+  if(key.length===1&&key>='a'&&key<='z'){
+    typedBuffer=(typedBuffer+key).slice(-8);
+    window.clearTimeout(typedTimer);typedTimer=window.setTimeout(function(){typedBuffer=''},1500);
+    if(typedBuffer.endsWith('dino')){typedBuffer='';toast('the dino lives at <a class="row-link" href="./404.html">/404.html</a> — go break something on purpose.')}
+    else if(typedBuffer.endsWith('sudo')){typedBuffer='';toast('permission denied: niceness required.')}
+    else if(typedBuffer.endsWith('hello')){typedBuffer='';toast('hello! the server noticed you. it tells everyone.')}
+  }
+});
+let nameClicks=0,nameTimer=0;
+const myName=document.querySelector('#my-name');
+if(myName){myName.addEventListener('click',function(){
+  nameClicks++;window.clearTimeout(nameTimer);nameTimer=window.setTimeout(function(){nameClicks=0},3000);
+  if(nameClicks===5){nameClicks=0;showQuote('“That’s me. Five clicks. The dino respects persistence.”');toast('achievement unlocked: poked the developer.')}
+})}
+const sayIt=document.querySelector('#say-it');
+if(sayIt){sayIt.addEventListener('click',function(){
+  try{
+    if(!('speechSynthesis' in window))throw new Error('no voice');
+    window.speechSynthesis.cancel();
+    const line=new SpeechSynthesisUtterance('yashas');line.rate=.95;window.speechSynthesis.speak(line);
+    toast('nailed it. first try, probably.');
+  }catch(_){toast('my voice module is on strike. it’s pronounced “ya-shas”.')}
+})}
+const originalTitle=document.title;
+document.addEventListener('visibilitychange',function(){
+  document.title=document.hidden?'come back — the pixels get lonely':originalTitle;
 });
 const copyButton=document.querySelector('#copy-link');
 if(copyButton){copyButton.addEventListener('click',function(){
