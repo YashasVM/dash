@@ -55,20 +55,22 @@
           </a>
         </nav>
       </section>
-      <section class="work" id="work">
+      <section class="work reveal" id="work">
         <div class="section-head"><h2>Stuff I built <button class="cmdk" id="palette-button" type="button" aria-label="Search everything (Ctrl or Cmd K)" title="Search everything (Ctrl/Cmd K)">⌘K</button></h2><div class="view-toggle"><button class="view-button event-button" type="button" aria-expanded="false" aria-controls="dev-quote" aria-label="Show a developer quote" title="Show a developer quote">⚡</button><div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view">▤</button></div></div></div>
-        <div class="filter-row" role="group" aria-label="Filter by status"><button class="chip active" data-filter="All" aria-pressed="true">all <span class="chip-count" data-count="All"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Active" aria-pressed="false">active <span class="chip-count" data-count="Active"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Live" aria-pressed="false">live <span class="chip-count" data-count="Live"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Beta" aria-pressed="false">beta <span class="chip-count" data-count="Beta"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Prototype" aria-pressed="false">prototype <span class="chip-count" data-count="Prototype"></span></button><button class="chip chip-sort" id="sort-button" type="button" title="Popular ranks by your visits on this device">sort: curated</button><span class="status-stamp" id="status-stamp" hidden></span></div>
+        <div class="filter-row" role="group" aria-label="Filter by status"><button class="chip active" data-filter="All" aria-pressed="true">all <span class="chip-count" data-count="All"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Active" aria-pressed="false">active <span class="chip-count" data-count="Active"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Live" aria-pressed="false">live <span class="chip-count" data-count="Live"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Beta" aria-pressed="false">beta <span class="chip-count" data-count="Beta"></span></button><span class="chip-sep" aria-hidden="true">·</span><button class="chip" data-filter="Prototype" aria-pressed="false">prototype <span class="chip-count" data-count="Prototype"></span></button><button class="chip chip-sort" id="sort-button" type="button" title="Popular ranks by your visits on this device">sort: curated</button><button class="status-stamp" id="status-stamp" type="button" hidden title="re-check live status"></button></div>
         <div class="dev-quote" id="dev-quote" hidden aria-live="polite"></div>
         <div class="work-list" id="work-list"></div>
         <a class="view-all" id="docs-fallback" href="./docs/">Peek at the docs →</a>
       </section>
-      <section class="work writing" id="writing" aria-labelledby="writing-title">
+      <div class="ticker reveal" aria-hidden="true"><span class="ticker-track" id="ticker-track"></span></div>
+      <section class="work writing reveal" id="writing" aria-labelledby="writing-title">
         <div class="section-head"><h2 id="writing-title">Writing</h2><a class="row-link" href="./blog/">all posts →</a></div>
         <div class="work-list" id="writing-list"><p class="work-empty">Loading posts…</p></div>
       </section>
     </main>
-    <footer class="site-foot">
+    <footer class="site-foot reveal">
       <nav aria-label="Site pages"><a href="./now.html">now</a><a href="./uses.html">uses</a><a href="./docs/">docs</a><a href="./blog/">blog</a><button class="foot-button" id="copy-link" type="button">copy link</button></nav>
+      <span class="ach" id="ach" title="easter eggs found — go on, hunt">★ <span id="ach-count">0</span>/7</span>
       <span class="test-badge" title="Experimental features live here. The main site is untouched.">test build</span>
     </footer>
     <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>

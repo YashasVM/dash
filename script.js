@@ -44,7 +44,7 @@ const devQuote=document.querySelector('#dev-quote');
 let lastDevQuoteIndex=-1,zapCount=0;
 if(eventButton&&devQuote){eventButton.addEventListener('click',function(){
   zapCount++;
-  if(zapCount%7===0){engageOverdrive('seven zaps. you found the overdrive button. 15 seconds of glory.');return}
+  if(zapCount%7===0){engageOverdrive('seven zaps. you found the overdrive button. 15 seconds of glory.'+star('zap'));return}
   let quoteIndex=Math.floor(Math.random()*devQuotes.length);while(devQuotes.length>1&&quoteIndex===lastDevQuoteIndex){quoteIndex=Math.floor(Math.random()*devQuotes.length)}lastDevQuoteIndex=quoteIndex;devQuote.textContent='“'+devQuotes[quoteIndex]+'”';devQuote.hidden=false;eventButton.setAttribute('aria-expanded','true')})}
 const list=document.querySelector('#work-list');
 const state={filter:'All',sort:'curated',kbIndex:-1};
@@ -52,12 +52,31 @@ function clickCounts(){try{return JSON.parse(localStorage.getItem('yashas-clicks
 function recordClick(id){try{const counts=clickCounts();counts[id]=(counts[id]||0)+1;localStorage.setItem('yashas-clicks',JSON.stringify(counts))}catch(_){}}
 function visibleWork(){const counts=clickCounts();let items=work.filter(function(item){return state.filter==='All'||item.status===state.filter});if(state.sort==='popular'){items=items.slice().sort(function(a,b){return(counts[b.id]||0)-(counts[a.id]||0)})}return items}
 function statusDotClass(status){if(status==='Active'||status==='Live')return 'dot-on';if(status==='Beta')return 'dot-beta';return 'dot-off'}
+if(document.documentElement&&document.documentElement.classList){document.documentElement.classList.add('js')}
+function countUp(el,to){
+  if(reduceMotion||!window.requestAnimationFrame){el.textContent=to;return}
+  const start=performance.now(),dur=700;
+  function frame(now){const p=Math.min(1,(now-start)/dur),e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e);if(p<1)window.requestAnimationFrame(frame)}
+  window.requestAnimationFrame(frame);
+}
 function updateCounts(){
   const counts={All:work.length};
   work.forEach(function(item){counts[item.status]=(counts[item.status]||0)+1});
-  document.querySelectorAll('[data-count]').forEach(function(el){el.textContent=counts[el.dataset.count]||0});
+  document.querySelectorAll('[data-count]').forEach(function(el){countUp(el,counts[el.dataset.count]||0)});
 }
 updateCounts();
+const ACH_TOTAL=7;
+function achList(){try{const list=JSON.parse(localStorage.getItem('yashas-ach')||'[]');return Array.isArray(list)?list:[]}catch(_){return[]}}
+function paintAch(){const el=document.querySelector('#ach-count');if(el)el.textContent=achList().length;const box=document.querySelector('#ach');if(box)box.classList.toggle('maxed',achList().length>=ACH_TOTAL)}
+function achieve(id){
+  const list=achList(),isNew=list.indexOf(id)===-1;
+  if(isNew){list.push(id);try{localStorage.setItem('yashas-ach',JSON.stringify(list))}catch(_){}}
+  paintAch();
+  if(isNew&&list.length>=ACH_TOTAL){window.setTimeout(function(){toast('★ '+ACH_TOTAL+'/'+ACH_TOTAL+' — all secrets found. certified chaos gremlin.')},4600)}
+  return list.length;
+}
+function star(id){return ' ★ '+achieve(id)+'/'+ACH_TOTAL}
+paintAch();
 function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function renderWork(){
   if(!list)return;
@@ -109,22 +128,40 @@ function hydrateStars(){
       .catch(function(){el.remove()});
   });
 }
-fetch('./api/site-status',{headers:{'Accept':'application/json'}})
-  .then(function(response){if(!response.ok)throw new Error('status unavailable');return response.json()})
-  .then(function(data){
-    const sites=data&&Array.isArray(data.sites)?data.sites:[];
-    const checked=data&&data.checkedAt?new Date(data.checkedAt):null;
-    const stamp=document.querySelector('#status-stamp');
-    if(stamp&&checked&&!isNaN(checked)){stamp.textContent='Checked '+checked.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});stamp.hidden=false}
-    sites.forEach(function(site){
-      document.querySelectorAll('[data-dot="'+site.id+'"]').forEach(function(dot){
-        dot.classList.remove('dot-on','dot-beta','dot-off');
-        dot.classList.add(site.live?'dot-live':'dot-down');
-        dot.title=site.live?'Live right now':'Unreachable on last check';
+function nameOf(id){const found=work.filter(function(item){return item.id===id})[0];return found?found.name:id}
+function paintTicker(sites){
+  const track=document.querySelector('#ticker-track');if(!track)return;
+  const half=sites.map(function(site){return '<span class="tick"><span class="status-dot '+site.cls+'"></span>'+escapeHtml(site.name)+' '+escapeHtml(site.label)+'</span>'}).join('<span class="tick-sep">·</span>');
+  track.innerHTML=half+'<span class="tick-sep">·</span>'+half+'<span class="tick-sep">·</span>';
+}
+function paintTickerFallback(){
+  paintTicker(work.map(function(item){return{name:item.name,cls:statusDotClass(item.status),label:item.status.toLowerCase()}}));
+}
+function refreshStatus(manual){
+  const stamp=document.querySelector('#status-stamp');
+  if(manual&&stamp){stamp.textContent='checking…'}
+  return fetch('./api/site-status',{headers:{'Accept':'application/json'}})
+    .then(function(response){if(!response.ok)throw new Error('status unavailable');return response.json()})
+    .then(function(data){
+      const sites=data&&Array.isArray(data.sites)?data.sites:[];
+      const checked=data&&data.checkedAt?new Date(data.checkedAt):null;
+      if(stamp&&checked&&!isNaN(checked)){stamp.textContent='checked '+checked.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' — re-check?';stamp.hidden=false}
+      sites.forEach(function(site){
+        document.querySelectorAll('[data-dot="'+site.id+'"]').forEach(function(dot){
+          dot.classList.remove('dot-on','dot-beta','dot-off');
+          dot.classList.add(site.live?'dot-live':'dot-down');
+          dot.title=site.live?'Live right now':'Unreachable on last check';
+        });
       });
-    });
-  })
-  .catch(function(){});
+      paintTicker(sites.map(function(site){return{name:nameOf(site.id),cls:site.live?'dot-live':'dot-down',label:site.live?'live':'down'}}));
+      if(manual){const live=sites.filter(function(site){return site.live}).length;toast('fresh check: '+live+'/'+sites.length+' live. the homelab stirs.')}
+    })
+    .catch(function(){paintTickerFallback()});
+}
+refreshStatus(false);
+paintTickerFallback();
+const stampBtn=document.querySelector('#status-stamp');
+if(stampBtn){stampBtn.addEventListener('click',function(){refreshStatus(true)})}
 const writingList=document.querySelector('#writing-list');
 if(writingList){
   fetch('https://api.yash0.in/posts',{headers:{'Accept':'application/json'}})
@@ -153,7 +190,7 @@ function paletteEntries(){
 }
 function jokeEntries(query){
   const jokes=[
-    {group:'???',label:'sudo make me a sandwich',hint:'easter egg',toastMessage:'ok. one sandwich, extra uptime. the dino eats first.'},
+    {group:'???',label:'sudo make me a sandwich',hint:'easter egg',toastMessage:'ok. one sandwich, extra uptime. the dino eats first.',ach:'sudo'},
     {group:'???',label:'hire yashas',hint:'excellent choice',href:'https://www.linkedin.com/in/yashasvm/',external:true},
     {group:'???',label:'touch grass',hint:'easter egg',toastMessage:'achievement unlocked: considered going outside. the server will keep your seat warm.'},
     {group:'???',label:'overdrive',hint:'easter egg',toastMessage:'',overdrive:true}
@@ -173,7 +210,7 @@ function renderPalette(query){
   matches.forEach(function(entry,i){
     if(entry.group!==lastGroup){lastGroup=entry.group;html+='<p class="palette-group">'+escapeHtml(entry.group)+'</p>'}
     const href=entry.href||'#';
-    const extra=entry.toastMessage?' data-toast="'+escapeHtml(entry.toastMessage)+'"':(entry.overdrive?' data-overdrive="1"':'');
+    const extra=entry.toastMessage?' data-toast="'+escapeHtml(entry.toastMessage)+'"'+(entry.ach?' data-ach="'+entry.ach+'"':''):(entry.overdrive?' data-overdrive="1"':'');
     html+='<a class="palette-item'+(i===0?' selected':'')+'" href="'+href+'"'+(entry.external?' target="_blank" rel="noreferrer"':'')+extra+' data-pi="'+i+'"><span>'+escapeHtml(entry.label)+'</span><span class="palette-hint">'+escapeHtml(entry.hint)+'</span></a>'
   });
   paletteList.innerHTML=html;
@@ -194,7 +231,7 @@ if(palette){palette.addEventListener('click',function(event){
   if(event.target===palette){closePalette();return}
   const item=event.target.closest?event.target.closest('.palette-item'):null;
   if(!item)return;
-  if(item.hasAttribute('data-toast')){event.preventDefault();closePalette();toast(item.getAttribute('data-toast'));return}
+  if(item.hasAttribute('data-toast')){event.preventDefault();closePalette();const extra=item.hasAttribute('data-ach')?star(item.getAttribute('data-ach')):'';toast(item.getAttribute('data-toast')+extra);return}
   if(item.hasAttribute('data-overdrive')){event.preventDefault();closePalette();engageOverdrive();return}
 })}
 if(paletteInput){
@@ -231,6 +268,7 @@ document.addEventListener('keydown',function(event){
   else if(event.key==='k'){event.preventDefault();focusRow(state.kbIndex-1)}
   else if(event.key==='Enter'&&state.kbIndex>=0){const rows=kbRows();const link=rows[state.kbIndex]?rows[state.kbIndex].querySelector('a.work-main'):null;if(link)link.click()}
   else if((event.key==='e'||event.key==='E')&&state.kbIndex>=0){const rows=kbRows();const button=rows[state.kbIndex]?rows[state.kbIndex].querySelector('[data-expand]'):null;if(button)button.click()}
+  else if(event.key==='.'){let qi=Math.floor(Math.random()*devQuotes.length);while(devQuotes.length>1&&qi===lastDevQuoteIndex){qi=Math.floor(Math.random()*devQuotes.length)}lastDevQuoteIndex=qi;showQuote('“'+devQuotes[qi]+'”')}
 });
 const konami=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 let konamiAt=0,typedBuffer='',typedTimer=0;
@@ -238,20 +276,21 @@ document.addEventListener('keydown',function(event){
   const inField=event.target&&(event.target.tagName==='INPUT'||event.target.tagName==='TEXTAREA');
   if(inField)return;
   const key=event.key.length===1?event.key.toLowerCase():event.key;
-  if(key===konami[konamiAt]){konamiAt++;if(konamiAt===konami.length){konamiAt=0;engageOverdrive('konami accepted. you are one of us now. 15 seconds of overdrive.')}}else{konamiAt=key===konami[0]?1:0}
+  if(key===konami[konamiAt]){konamiAt++;if(konamiAt===konami.length){konamiAt=0;engageOverdrive('konami accepted. you are one of us now. 15 seconds of overdrive.'+star('konami'))}}else{konamiAt=key===konami[0]?1:0}
   if(key.length===1&&key>='a'&&key<='z'){
     typedBuffer=(typedBuffer+key).slice(-8);
     window.clearTimeout(typedTimer);typedTimer=window.setTimeout(function(){typedBuffer=''},1500);
-    if(typedBuffer.endsWith('dino')){typedBuffer='';toast('the dino lives at <a class="row-link" href="./404.html">/404.html</a> — go break something on purpose.')}
-    else if(typedBuffer.endsWith('sudo')){typedBuffer='';toast('permission denied: niceness required.')}
-    else if(typedBuffer.endsWith('hello')){typedBuffer='';toast('hello! the server noticed you. it tells everyone.')}
+    if(typedBuffer.endsWith('dino')){typedBuffer='';toast('the dino lives at <a class="row-link" href="./404.html">/404.html</a> — go break something on purpose.'+star('dino'))}
+    else if(typedBuffer.endsWith('sudo')){typedBuffer='';toast('permission denied: niceness required.'+star('sudo'))}
+    else if(typedBuffer.endsWith('party')){typedBuffer='';engageOverdrive('you said party. the pixels heard you.')}
+    else if(typedBuffer.endsWith('hello')){typedBuffer='';toast('hello! the server noticed you. it tells everyone.'+star('hello'))}
   }
 });
 let nameClicks=0,nameTimer=0;
 const myName=document.querySelector('#my-name');
 if(myName){myName.addEventListener('click',function(){
   nameClicks++;window.clearTimeout(nameTimer);nameTimer=window.setTimeout(function(){nameClicks=0},3000);
-  if(nameClicks===5){nameClicks=0;showQuote('“That’s me. Five clicks. The dino respects persistence.”');toast('achievement unlocked: poked the developer.')}
+  if(nameClicks===5){nameClicks=0;showQuote('“That’s me. Five clicks. The dino respects persistence.”');toast('poked the developer.'+star('name'))}
 })}
 const sayIt=document.querySelector('#say-it');
 if(sayIt){sayIt.addEventListener('click',function(){
@@ -259,13 +298,19 @@ if(sayIt){sayIt.addEventListener('click',function(){
     if(!('speechSynthesis' in window))throw new Error('no voice');
     window.speechSynthesis.cancel();
     const line=new SpeechSynthesisUtterance('yashas');line.rate=.95;window.speechSynthesis.speak(line);
-    toast('nailed it. first try, probably.');
+    toast('nailed it. first try, probably.'+star('voice'));
   }catch(_){toast('my voice module is on strike. it’s pronounced “ya-shas”.')}
 })}
 const originalTitle=document.title;
 document.addEventListener('visibilitychange',function(){
   document.title=document.hidden?'come back — the pixels get lonely':originalTitle;
 });
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('in');io.unobserve(entry.target)}})},{threshold:.1,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+}
+const achBox=document.querySelector('#ach');
+if(achBox){achBox.addEventListener('click',function(){toast('main site untouched. this is where the chaos lives. ★ '+achList().length+'/'+ACH_TOTAL)})}
 const copyButton=document.querySelector('#copy-link');
 if(copyButton){copyButton.addEventListener('click',function(){
   const url='https://test.yash0.in/';
