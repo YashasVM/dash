@@ -21,30 +21,71 @@ const ember=[[5,2,2],[16,3,2],[42,3,2],[86,5,2],[157,12,2],[232,42,4]];
 const neon=[[24,4,46],[96,8,140],[200,40,170],[40,220,200],[140,255,130],[255,240,130]];
 let overdriveUntil=0,overdriveCooldownUntil=0;
 function drawPixels(time){if(!canvas||!context)return;if(reduceMotion&&lastDraw){return}if(!reduceMotion&&time-lastDraw<45){return}lastDraw=time;const overdrive=performance.now()<overdriveUntil;const image=context.createImageData(pixelWidth,pixelHeight),data=image.data,t=reduceMotion?0:time*.0018;
-  for(let y=0;y<pixelHeight;y++)for(let x=0;x<pixelWidth;x++){const nx=x/pixelWidth,ny=y/pixelHeight;const warp=fractalNoise(nx*5.5+t*.08,ny*5.5-t*.03);const heat=fractalNoise(nx*22+warp*2.8+t*.12,ny*12-warp*2.1-t*.05)*1.65+fractalNoise(nx*5-t*.05,ny*3+t*.03)*.45-ny*1.2;const amount=Math.max(0,Math.min(1,(heat-.05)/1.72));const scaled=amount*5;const level=Math.min(5,Math.floor(scaled)+(scaled%1>dither[y&3][x&3]?1:0));const palette=(overdrive?neon:ember)[level];const i=(y*pixelWidth+x)*4;data[i]=palette[0];data[i+1]=palette[1];data[i+2]=palette[2];data[i+3]=255}
-  context.putImageData(image,0,0)
+  for(let y=0;y<pixelHeight;y++)for(let x=0;x<pixelWidth;x++){const nx=x/pixelWidth,ny=y/pixelHeight;const warp=fractalNoise(nx*5.5+t*.08,ny*5.5-t*.03);const heat=fractalNoise(nx*22+warp*2.8+t*.12,ny*12-warp*2.1-t*.05)*1.65+fractalNoise(nx*5-t*.05,ny*3+t*.03)*.45-ny*1.2+stokeHeat(x,y,time);const amount=Math.max(0,Math.min(1,(heat-.05)/1.72));const scaled=amount*5;const level=Math.min(5,Math.floor(scaled)+(scaled%1>dither[y&3][x&3]?1:0));const palette=(overdrive?neon:ember)[level];const i=(y*pixelWidth+x)*4;data[i]=palette[0];data[i+1]=palette[1];data[i+2]=palette[2];data[i+3]=255}
+  context.putImageData(image,0,0);
+  drawSparks();
 }
 function syncPixelMotion(){if(!canvas)return;if(reduceMotion||!smallScreen.matches){if(animationTimer){window.clearInterval(animationTimer);animationTimer=0}return}if(!animationTimer){animationTimer=window.setInterval(function(){drawPixels(performance.now())},50)}}
 resizePixels();window.addEventListener('resize',function(){resizePixels();window.clearTimeout(resizeTimer);resizeTimer=window.setTimeout(function(){lastDraw=0;drawPixels(performance.now())},100);syncPixelMotion()},{passive:true});if(smallScreen.addEventListener){smallScreen.addEventListener('change',function(){resizePixels();lastDraw=0;drawPixels(performance.now());syncPixelMotion()})}window.setTimeout(function(){drawPixels(performance.now())},0);syncPixelMotion();
 const devQuotes=['It works on my machine. Ship the machine.','A good commit message is a tiny time machine.','There is no bug too small to become a personality trait.','The best debugging tool is a snack and a fresh pair of eyes.','Keep it simple enough that future-you can fix it at 2 a.m.','Uptime is a love language.','It compiled. Nobody knows why. Nobody touches it.','The homelab hums. All is well.','Docs are just a README with commitment.','Ship it at 2 a.m. What could possibly go wrong.','My code reviews itself. Poorly.','There are only 10 kinds of people: those who get binary and those who do not.'];
+let stokeX=0,stokeY=0,stokeUntil=0,fireLoop=0;
+const sparks=[];
+const SPARK_EMBER=['#ffd9a0','#ff9a3c','#ff5d2a'];
+const SPARK_NEON=['#ff4fd8','#28e6c8','#b6ff5e','#ffe14d'];
+function stokeHeat(x,y,now){
+  if(now>=stokeUntil||!pixelWidth)return 0;
+  const sx=(x-stokeX)/pixelWidth,sy=(y-stokeY)/pixelHeight,d=sx*sx+sy*sy;
+  return Math.max(0,.85-d*20)*1.35;
+}
+function burst(n,neonBurst){
+  const w=pixelWidth||160,h=pixelHeight||80;
+  for(let i=0;i<n&&sparks.length<400;i++){sparks.push({x:neonBurst?Math.random()*w:stokeX+(Math.random()-.5)*10,y:neonBurst?Math.random()*h*.75:h*.3+Math.random()*h*.6,vx:(Math.random()-.5)*1.7,vy:-(.5+Math.random()*1.9),life:1,decay:.008+Math.random()*.022,s:Math.random()<.25?2:1,neon:!!neonBurst})}
+}
+function stepSparks(){for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.vy-=.02;s.vx*=.985;s.life-=s.decay;if(s.life<=0||s.y<-6)sparks.splice(i,1)}}
+function drawSparks(){
+  if(!sparks.length||!context)return;
+  for(let i=0;i<sparks.length;i++){const s=sparks[i];const pal=s.neon?SPARK_NEON:SPARK_EMBER;context.globalAlpha=Math.max(0,Math.min(1,s.life));context.fillStyle=pal[Math.abs(Math.floor(s.x*7+s.y*13))%pal.length];context.fillRect(s.x|0,s.y|0,s.s,s.s)}
+  context.globalAlpha=1;
+}
+function fireTick(now){
+  fireLoop=0;
+  stepSparks();
+  lastDraw=0;drawPixels(now);
+  const active=now<overdriveUntil||now<stokeUntil+1800||sparks.length>0;
+  if(active&&!reduceMotion){fireLoop=window.requestAnimationFrame(fireTick)}
+}
+function kickFire(){if(reduceMotion||!canvas||fireLoop)return;fireLoop=window.requestAnimationFrame(fireTick)}
+const finePointer=window.matchMedia?window.matchMedia('(pointer:fine)').matches:false;
+if(finePointer&&!reduceMotion){document.addEventListener('pointermove',function(e){
+  if(e.clientY>innerHeight*.55)return;
+  stokeX=e.clientX/3;stokeY=e.clientY/3;stokeUntil=performance.now()+600;
+  if(Math.random()<.6)burst(1,false);
+  kickFire();
+},{passive:true})}
+function waveName(){if(!myName)return;myName.classList.remove('wave');void myName.offsetWidth;myName.classList.add('wave')}
+function denyShake(){if(!document.body||!document.body.classList)return;document.body.classList.remove('deny');void document.body.offsetWidth;document.body.classList.add('deny')}
+function dinoScurry(){
+  if(!document.body||!document.body.appendChild||document.querySelector('.dino-run'))return;
+  const d=document.createElement('div');d.className='dino-run';d.setAttribute('aria-hidden','true');
+  d.addEventListener('animationend',function(e){if(e.animationName==='scurry')d.remove()});
+  document.body.appendChild(d);
+}
 let toastTimer=0;
 function toast(html,ms){const box=document.querySelector('#toast');if(!box)return;box.innerHTML=html;box.hidden=false;window.clearTimeout(toastTimer);toastTimer=window.setTimeout(function(){box.hidden=true},ms||4200)}
 function showQuote(text){if(!devQuote)return;devQuote.innerHTML=text;devQuote.hidden=false;if(eventButton)eventButton.setAttribute('aria-expanded','true')}
-function engageOverdrive(reason){
+function engageOverdrive(){
   const now=performance.now();
-  if(now<overdriveCooldownUntil){toast('overdrive is cooling down. even pixels need rest.');return}
+  if(now<overdriveCooldownUntil||!canvas)return;
   overdriveUntil=now+15000;overdriveCooldownUntil=now+45000;
-  lastDraw=0;drawPixels(now);
-  const pulse=window.setInterval(function(){if(performance.now()>overdriveUntil){window.clearInterval(pulse);lastDraw=0;drawPixels(performance.now());return}lastDraw=0;drawPixels(performance.now())},80);
-  showQuote('“OVERDRIVE ENGAGED — the homelab approves.”');
-  toast(reason||'overdrive engaged for 15 seconds. try not to stare directly at it.');
+  burst(90,true);
+  kickFire();
 }
 const eventButton=document.querySelector('.event-button');
 const devQuote=document.querySelector('#dev-quote');
 let lastDevQuoteIndex=-1,zapCount=0;
 if(eventButton&&devQuote){eventButton.addEventListener('click',function(){
   zapCount++;
-  if(zapCount%7===0){engageOverdrive('seven zaps. you found the overdrive button. 15 seconds of glory.'+star('zap'));return}
+  if(zapCount%7===0){engageOverdrive();return}
   let quoteIndex=Math.floor(Math.random()*devQuotes.length);while(devQuotes.length>1&&quoteIndex===lastDevQuoteIndex){quoteIndex=Math.floor(Math.random()*devQuotes.length)}lastDevQuoteIndex=quoteIndex;devQuote.textContent='“'+devQuotes[quoteIndex]+'”';devQuote.hidden=false;eventButton.setAttribute('aria-expanded','true')})}
 const list=document.querySelector('#work-list');
 const state={filter:'All',sort:'curated',kbIndex:-1};
@@ -65,18 +106,6 @@ function updateCounts(){
   document.querySelectorAll('[data-count]').forEach(function(el){countUp(el,counts[el.dataset.count]||0)});
 }
 updateCounts();
-const ACH_TOTAL=7;
-function achList(){try{const list=JSON.parse(localStorage.getItem('yashas-ach')||'[]');return Array.isArray(list)?list:[]}catch(_){return[]}}
-function paintAch(){const el=document.querySelector('#ach-count');if(el)el.textContent=achList().length;const box=document.querySelector('#ach');if(box)box.classList.toggle('maxed',achList().length>=ACH_TOTAL)}
-function achieve(id){
-  const list=achList(),isNew=list.indexOf(id)===-1;
-  if(isNew){list.push(id);try{localStorage.setItem('yashas-ach',JSON.stringify(list))}catch(_){}}
-  paintAch();
-  if(isNew&&list.length>=ACH_TOTAL){window.setTimeout(function(){toast('★ '+ACH_TOTAL+'/'+ACH_TOTAL+' — all secrets found. certified chaos gremlin.')},4600)}
-  return list.length;
-}
-function star(id){return ' ★ '+achieve(id)+'/'+ACH_TOTAL}
-paintAch();
 function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function renderWork(){
   if(!list)return;
@@ -188,30 +217,17 @@ function paletteEntries(){
   entries.push({group:'Docs',label:'All docs',hint:'page',href:'./docs/',external:false});
   return entries;
 }
-function jokeEntries(query){
-  const jokes=[
-    {group:'???',label:'sudo make me a sandwich',hint:'easter egg',toastMessage:'ok. one sandwich, extra uptime. the dino eats first.',ach:'sudo'},
-    {group:'???',label:'hire yashas',hint:'excellent choice',href:'https://www.linkedin.com/in/yashasvm/',external:true},
-    {group:'???',label:'touch grass',hint:'easter egg',toastMessage:'achievement unlocked: considered going outside. the server will keep your seat warm.'},
-    {group:'???',label:'overdrive',hint:'easter egg',toastMessage:'',overdrive:true}
-  ];
-  const q=query.trim().toLowerCase();
-  if(!q)return[];
-  return jokes.filter(function(joke){return joke.label.toLowerCase().includes(q)});
-}
 let paletteIndex=0;
 function renderPalette(query){
   if(!paletteList)return[];
   const q=query.trim().toLowerCase();
-  const matches=paletteEntries().filter(function(entry){return !q||entry.label.toLowerCase().includes(q)}).concat(jokeEntries(query));
+  const matches=paletteEntries().filter(function(entry){return !q||entry.label.toLowerCase().includes(q)});
   paletteIndex=0;
   if(!matches.length){paletteList.innerHTML='<p class="work-empty">No match. Try a project name or “docs”.</p>';return matches}
-  let html='',lastGroup='',selected=0;
+  let html='',lastGroup='';
   matches.forEach(function(entry,i){
     if(entry.group!==lastGroup){lastGroup=entry.group;html+='<p class="palette-group">'+escapeHtml(entry.group)+'</p>'}
-    const href=entry.href||'#';
-    const extra=entry.toastMessage?' data-toast="'+escapeHtml(entry.toastMessage)+'"'+(entry.ach?' data-ach="'+entry.ach+'"':''):(entry.overdrive?' data-overdrive="1"':'');
-    html+='<a class="palette-item'+(i===0?' selected':'')+'" href="'+href+'"'+(entry.external?' target="_blank" rel="noreferrer"':'')+extra+' data-pi="'+i+'"><span>'+escapeHtml(entry.label)+'</span><span class="palette-hint">'+escapeHtml(entry.hint)+'</span></a>'
+    html+='<a class="palette-item'+(i===0?' selected':'')+'" href="'+entry.href+'"'+(entry.external?' target="_blank" rel="noreferrer"':'')+' data-pi="'+i+'"><span>'+escapeHtml(entry.label)+'</span><span class="palette-hint">'+escapeHtml(entry.hint)+'</span></a>'
   });
   paletteList.innerHTML=html;
   paletteList.querySelectorAll('.palette-item').forEach(function(item){
@@ -227,13 +243,7 @@ function openPalette(){if(!palette)return;palette.hidden=false;paletteMatches=re
 function closePalette(){if(!palette)return;palette.hidden=true;document.body.classList.remove('palette-open')}
 const paletteButton=document.querySelector('#palette-button');
 if(paletteButton){paletteButton.addEventListener('click',openPalette)}
-if(palette){palette.addEventListener('click',function(event){
-  if(event.target===palette){closePalette();return}
-  const item=event.target.closest?event.target.closest('.palette-item'):null;
-  if(!item)return;
-  if(item.hasAttribute('data-toast')){event.preventDefault();closePalette();const extra=item.hasAttribute('data-ach')?star(item.getAttribute('data-ach')):'';toast(item.getAttribute('data-toast')+extra);return}
-  if(item.hasAttribute('data-overdrive')){event.preventDefault();closePalette();engageOverdrive();return}
-})}
+if(palette){palette.addEventListener('click',function(event){if(event.target===palette)closePalette()})}
 if(paletteInput){
   paletteInput.addEventListener('input',function(){paletteMatches=renderPalette(paletteInput.value)});
   paletteInput.addEventListener('keydown',function(event){
@@ -276,29 +286,33 @@ document.addEventListener('keydown',function(event){
   const inField=event.target&&(event.target.tagName==='INPUT'||event.target.tagName==='TEXTAREA');
   if(inField)return;
   const key=event.key.length===1?event.key.toLowerCase():event.key;
-  if(key===konami[konamiAt]){konamiAt++;if(konamiAt===konami.length){konamiAt=0;engageOverdrive('konami accepted. you are one of us now. 15 seconds of overdrive.'+star('konami'))}}else{konamiAt=key===konami[0]?1:0}
+  if(key===konami[konamiAt]){konamiAt++;if(konamiAt===konami.length){konamiAt=0;engageOverdrive()}}else{konamiAt=key===konami[0]?1:0}
   if(key.length===1&&key>='a'&&key<='z'){
     typedBuffer=(typedBuffer+key).slice(-8);
     window.clearTimeout(typedTimer);typedTimer=window.setTimeout(function(){typedBuffer=''},1500);
-    if(typedBuffer.endsWith('dino')){typedBuffer='';toast('the dino lives at <a class="row-link" href="./404.html">/404.html</a> — go break something on purpose.'+star('dino'))}
-    else if(typedBuffer.endsWith('sudo')){typedBuffer='';toast('permission denied: niceness required.'+star('sudo'))}
-    else if(typedBuffer.endsWith('party')){typedBuffer='';engageOverdrive('you said party. the pixels heard you.')}
-    else if(typedBuffer.endsWith('hello')){typedBuffer='';toast('hello! the server noticed you. it tells everyone.'+star('hello'))}
+    if(typedBuffer.endsWith('dino')){typedBuffer='';dinoScurry()}
+    else if(typedBuffer.endsWith('sudo')){typedBuffer='';denyShake()}
+    else if(typedBuffer.endsWith('party')){typedBuffer='';engageOverdrive()}
+    else if(typedBuffer.endsWith('hello')){typedBuffer='';waveName();burst(24,false);kickFire()}
   }
 });
 let nameClicks=0,nameTimer=0;
 const myName=document.querySelector('#my-name');
-if(myName){myName.addEventListener('click',function(){
-  nameClicks++;window.clearTimeout(nameTimer);nameTimer=window.setTimeout(function(){nameClicks=0},3000);
-  if(nameClicks===5){nameClicks=0;showQuote('“That’s me. Five clicks. The dino respects persistence.”');toast('poked the developer.'+star('name'))}
-})}
+if(myName){
+  myName.innerHTML='yashas'.split('').map(function(c){return '<span class="nl" aria-hidden="true">'+c+'</span>'}).join('');
+  myName.setAttribute('aria-label','yashas');
+  myName.addEventListener('click',function(){
+    nameClicks++;window.clearTimeout(nameTimer);nameTimer=window.setTimeout(function(){nameClicks=0},3000);
+    if(nameClicks===5){nameClicks=0;waveName();burst(50,false);kickFire()}
+  });
+}
 const sayIt=document.querySelector('#say-it');
 if(sayIt){sayIt.addEventListener('click',function(){
   try{
     if(!('speechSynthesis' in window))throw new Error('no voice');
     window.speechSynthesis.cancel();
     const line=new SpeechSynthesisUtterance('yashas');line.rate=.95;window.speechSynthesis.speak(line);
-    toast('nailed it. first try, probably.'+star('voice'));
+    toast('nailed it. first try, probably.');
   }catch(_){toast('my voice module is on strike. it’s pronounced “ya-shas”.')}
 })}
 const originalTitle=document.title;
@@ -309,8 +323,6 @@ if('IntersectionObserver' in window){
   const io=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('in');io.unobserve(entry.target)}})},{threshold:.1,rootMargin:'0px 0px -6% 0px'});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
 }
-const achBox=document.querySelector('#ach');
-if(achBox){achBox.addEventListener('click',function(){toast('main site untouched. this is where the chaos lives. ★ '+achList().length+'/'+ACH_TOTAL)})}
 const copyButton=document.querySelector('#copy-link');
 if(copyButton){copyButton.addEventListener('click',function(){
   const url='https://test.yash0.in/';
