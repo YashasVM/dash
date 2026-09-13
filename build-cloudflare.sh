@@ -6,13 +6,13 @@ npm --prefix docs-site run build
 
 rm -rf .pages-dist
 mkdir -p .pages-dist
-cp index.html styles.css script.js 404.js favicon.svg 404.html linkedin-preview.png preview.png .pages-dist/
+cp index.html now.html uses.html robots.txt sitemap.xml styles.css script.js analytics.js 404.js favicon.svg 404.html linkedin-preview.png preview.png .pages-dist/
 cp -R fonts .pages-dist/fonts
 cp -R logos .pages-dist/logos
 cp -R assets .pages-dist/assets
 cp -R functions .pages-dist/functions
 
-for path in _next api docs llms.mdx og; do
+for path in _next api blog docs llms.mdx og; do
   cp -R "docs-site/out/$path" ".pages-dist/$path"
 done
 

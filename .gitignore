@@ -1,1 +1,5 @@
 .pages-dist/
+publisher/.dev.vars
+publisher/.wrangler/
+publisher/dist/
+publisher/node_modules/

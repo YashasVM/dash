@@ -1,0 +1,4 @@
+# Test build for test.yash0.in — kept out of search results on purpose.
+# Production (main site) uses: User-agent: * / Allow: /
+User-agent: *
+Disallow: /

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0d0503" />
+    <meta name="description" content="The home setup behind yashas — server, deploy pipeline, and this site." />
+    <link rel="canonical" href="https://test.yash0.in/uses.html" />
+    <title>uses — yashas</title>
+    <link rel="icon" href="./favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="preload" href="./fonts/instrument.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=11" />
+  </head>
+  <body>
+    <div class="pixel-field" aria-hidden="true"></div>
+    <main class="site-wrap sub-page">
+      <a class="error-brand" href="./" aria-label="Back to yashas home">yashas <span>/ home</span></a>
+      <span class="sub-eyebrow">uses</span>
+      <h1>The home setup.</h1>
+      <p class="sub-updated">Updated September 2026 · test build</p>
+      <div class="sub-block">
+        <h2>Home server</h2>
+        <ul>
+          <li><strong>Immich, Beszel, HOLEN</strong> — running at home, with a <a class="row-link" href="https://yvmx.dpdns.org/">tiny public status window</a>.</li>
+          <li><strong>Phones as cameras</strong> — dogfooded daily through <a class="row-link" href="./docs/products/openstream/">OpenStream</a> into OBS.</li>
+        </ul>
+      </div>
+      <div class="sub-block">
+        <h2>Deploy pipeline</h2>
+        <ul>
+          <li><strong>Cloudflare Pages</strong> — this static site, built by <span class="row-link">build-cloudflare.sh</span>.</li>
+          <li><strong>Workers + R2</strong> — the <a class="row-link" href="./docs/products/cd/">cd</a> and <a class="row-link" href="./docs/products/holen/">HOLEN</a> backends, plus one-command previews via the publisher CLI.</li>
+          <li><strong>D1 + Worker API</strong> — privacy-respecting analytics and blog posts, no third-party trackers.</li>
+        </ul>
+      </div>
+      <div class="sub-block">
+        <h2>This site</h2>
+        <p>Hand-written HTML, one CSS file, one JS file. Docs are Fumadocs MDX, one page per product. If something here can be simpler, it eventually will be.</p>
+      </div>
+      <a class="back-link" href="./">← back home</a>
+    </main>
+    <script src="./analytics.js?v=1"></script>
+  </body>
+</html>

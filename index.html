@@ -8,19 +8,22 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="yashas | builder" />
     <meta property="og:description" content="Self-hosting nerd, open-source builder, and professional software annoyance remover." />
-    <meta property="og:url" content="https://yashasvm.pages.dev/" />
-    <meta property="og:image" content="https://yashasvm.pages.dev/preview.png" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://test.yash0.in/" />
+    <meta property="og:url" content="https://test.yash0.in/" />
+    <meta property="og:image" content="https://test.yash0.in/preview.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="yashas | builder" />
     <meta name="twitter:description" content="Self-hosting nerd, open-source builder, and professional software annoyance remover." />
-    <meta name="twitter:image" content="https://yashasvm.pages.dev/preview.png" />
+    <meta name="twitter:image" content="https://test.yash0.in/preview.png" />
     <title>yashas | builder</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"yashas","url":"https://test.yash0.in/","description":"Self-hosting nerd, open-source builder, and professional software annoyance remover.","sameAs":["https://x.com/vortxfusion","https://github.com/YashasVM","https://instagram.com/yashas.vm","https://www.linkedin.com/in/yashasvm/"]}</script>
     <link rel="icon" href="./favicon.svg?v=2" type="image/svg+xml" />
     <link rel="preload" href="./fonts/instrument.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=5" />
+    <link rel="stylesheet" href="./styles.css?v=11" />
   </head>
   <body>
     <div class="pixel-field" aria-hidden="true"><canvas class="pixel-canvas"></canvas></div>
@@ -53,11 +56,25 @@
         </nav>
       </section>
       <section class="work" id="work">
-        <div class="section-head"><h2>Stuff I built</h2><div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view">▤</button></div></div>
+        <div class="section-head"><h2>Stuff I built</h2><div class="view-toggle"><button class="view-button" id="palette-button" type="button" aria-label="Search everything (Ctrl or Cmd K)" title="Search everything (Ctrl/Cmd K)">⌘K</button><button class="view-button event-button" type="button" aria-expanded="false" aria-controls="dev-quote" aria-label="Show a developer quote" title="Show a developer quote">⚡</button><div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view">▤</button></div></div></div>
+        <div class="filter-row" role="group" aria-label="Filter by status"><button class="chip active" data-filter="All" aria-pressed="true">All</button><button class="chip" data-filter="Active" aria-pressed="false">Active</button><button class="chip" data-filter="Live" aria-pressed="false">Live</button><button class="chip" data-filter="Beta" aria-pressed="false">Beta</button><button class="chip" data-filter="Prototype" aria-pressed="false">Prototype</button><button class="chip chip-sort" id="sort-button" type="button" title="Popular ranks by your visits on this device">Sort: curated</button><span class="status-stamp" id="status-stamp" hidden></span></div>
+        <div class="dev-quote" id="dev-quote" hidden aria-live="polite"></div>
         <div class="work-list" id="work-list"></div>
         <a class="view-all" href="./docs/">Peek at the docs</a>
       </section>
+      <section class="work writing" id="writing" aria-labelledby="writing-title">
+        <div class="section-head"><h2 id="writing-title">Writing</h2><a class="row-link" href="./blog/">all posts →</a></div>
+        <div class="work-list" id="writing-list"><p class="work-empty">Loading posts…</p></div>
+      </section>
     </main>
-    <script src="./script.js?v=6"></script>
+    <footer class="site-foot">
+      <nav aria-label="Site pages"><a href="./now.html">now</a><a href="./uses.html">uses</a><a href="./docs/">docs</a><a href="./blog/">blog</a><button class="foot-button" id="copy-link" type="button">copy link</button></nav>
+      <span class="test-badge" title="Experimental features live here. The main site is untouched.">test build</span>
+    </footer>
+    <div class="palette" id="palette" hidden role="dialog" aria-modal="true" aria-label="Search">
+      <div class="palette-box"><input id="palette-input" type="text" placeholder="Search projects, docs, pages…" aria-label="Search projects, docs, pages" autocomplete="off" /><div id="palette-list" role="listbox" aria-label="Results"></div><p class="palette-foot"><kbd>↑↓</kbd> move · <kbd>↵</kbd> open · <kbd>esc</kbd> close</p></div>
+    </div>
+    <script src="./analytics.js?v=1"></script>
+    <script src="./script.js?v=10"></script>
   </body>
 </html>
