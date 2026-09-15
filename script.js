@@ -1,6 +1,7 @@
 const work=[['OpenStream','Your phone is already a camera. OpenStream gets OBS to admit it.','Beta','./logos/openstream-v2.png','https://openstream.yash0.in'],['HOLEN','Downloads for Android, web, or terminal people who hate upload queues.','Active','./logos/holen-v2.png','https://holen.yash0.in'],['Wisper Low','Offline dictation with a tiny Windows overlay and no cloud detour.','Prototype','./logos/wisper-low-v2.png','https://wisper-low.yash0.in'],['cd','Send a file straight from your browser to someone else’s.','Active','./logos/cd-v2.png','https://cd.yash0.in'],['yt-cmd','A friendlier way to survive the yt-dlp flag maze.','Active','./logos/yt-cmd-v2.png','https://github.com/YashasVM/yt-cmd'],['Img-gen','Drop an image in, get the background out — in your browser.','Active','./logos/img-gen-v2.png','https://img-gen.yash0.in'],['localhost','A tiny public window into what’s running at home.','Live','./logos/localhost-v2.png','https://yvmx.dpdns.org/']];
 // Keep the file-transfer app prominent while preserving the existing project data below.
 work.unshift(work.splice(3,1)[0]);
+work.splice(3,0,work.splice(1,1)[0]);
 const canvas=document.querySelector('.pixel-canvas');
 const context=canvas.getContext('2d',{alpha:false});
 let pixelWidth=0,pixelHeight=0,animationTimer=0,lastDraw=0,resizeTimer=0;
