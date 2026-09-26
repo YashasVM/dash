@@ -13,7 +13,7 @@
     <link rel="icon" href="../logos/cd.svg" type="image/svg+xml" />
     <link rel="preload" href="../fonts/instrument.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="../fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=5" />
+    <link rel="stylesheet" href="./styles.css?v=6" />
   </head>
   <body>
     <canvas id="ambient-dots" class="ambient-dots" aria-hidden="true"></canvas>
@@ -36,23 +36,34 @@
 
         <div class="install" id="install">
           <div class="install-head">
-            <span class="eyebrow">install cdx — linux &amp; macos</span>
-            <span class="plats"><i>linux</i><i>macOS</i><i>amd64</i><i>arm64</i></span>
+            <span class="eyebrow">install cdx — linux, macos &amp; windows</span>
+            <span class="plats"><i>linux</i><i>macOS</i><i>windows</i><i>amd64</i><i>arm64</i></span>
+          </div>
+          <div class="os-tabs" role="tablist" aria-label="Choose your OS">
+            <button class="os-tab active" data-os="unix" role="tab" aria-selected="true" type="button">Linux &amp; macOS</button>
+            <button class="os-tab" data-os="win" role="tab" aria-selected="false" type="button">Windows</button>
           </div>
           <div class="term" role="region" aria-label="Install command">
-            <div class="term-bar"><span></span><span></span><span></span><em>terminal</em></div>
-            <div class="term-body">
+            <div class="term-bar"><span></span><span></span><span></span><em id="term-label">terminal</em></div>
+            <div class="term-body" data-pane="unix">
               <span class="prompt">$</span>
               <code id="install-cmd">curl -fsSL https://cdx.yash0.in/install.sh | sh</code>
-              <button class="copy" id="copy-btn" type="button">copy</button>
+              <button class="copy" data-copy="install-cmd" type="button">copy</button>
+            </div>
+            <div class="term-body hidden" data-pane="win">
+              <span class="prompt">PS&gt;</span>
+              <code id="install-ps">irm https://yash0.in/cd/install.ps1 | iex</code>
+              <button class="copy" data-copy="install-ps" type="button">copy</button>
             </div>
           </div>
-          <p class="install-note">Checksum-verified release from GitHub. Installs to <code>~/.local/bin/cdx</code>. Then run <code>cdx send &lt;file&gt;</code>. <a href="https://github.com/YashasVM/cd/releases" target="_blank" rel="noreferrer">Releases →</a></p>
+          <p class="install-note">Checksum-verified release from GitHub. Linux/macOS land in <code>~/.local/bin/cdx</code>; Windows lands in <code>%USERPROFILE%\.local\bin\cdx.exe</code> and is added to your user PATH automatically. Then run <code>cdx send &lt;file&gt;</code>. <a href="https://github.com/YashasVM/cd/releases" target="_blank" rel="noreferrer">Releases →</a></p>
           <details class="alt">
             <summary>alternatives &amp; options</summary>
             <div class="alt-grid">
               <div><span>Go users</span><code>go install github.com/YashasVM/cd/cmd/cdx@latest</code></div>
-              <div><span>Pin a version</span><code>CDX_VERSION=v1.0.0 curl -fsSL https://cdx.yash0.in/install.sh | sh</code></div>
+              <div><span>Pin a version (sh)</span><code>CDX_VERSION=v0.1.0 curl -fsSL https://cdx.yash0.in/install.sh | sh</code></div>
+              <div><span>Pin a version (PowerShell)</span><code>$env:CDX_VERSION='v0.1.0'; irm https://yash0.in/cd/install.ps1 | iex</code></div>
+              <div><span>Locked-down PowerShell</span><code>powershell -ExecutionPolicy Bypass -c "irm https://yash0.in/cd/install.ps1 | iex"</code></div>
               <div><span>Custom bindir</span><code>CDX_INSTALL_DIR=~/.bin curl -fsSL https://cdx.yash0.in/install.sh | sh</code></div>
               <div><span>Raw GitHub mirror</span><code>curl -fsSL https://raw.githubusercontent.com/YashasVM/cd/main/scripts/install.sh | sh</code></div>
             </div>
@@ -162,6 +173,6 @@ cdx sender ── encrypted WebSocket ── relay ── browser receiver
         <span class="foot-links"><a href="https://cd.yash0.in/">app</a> · <a href="https://github.com/YashasVM/cd">github</a> · <a href="https://yash0.in">home</a></span>
       </footer>
     </main>
-    <script src="./script.js?v=4"></script>
+    <script src="./script.js?v=5"></script>
   </body>
 </html>

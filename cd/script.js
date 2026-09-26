@@ -70,6 +70,6 @@ if(canvas&&ctx){
   });
   layout();
 }
-const copyBtn=document.getElementById('copy-btn');
-if(copyBtn){copyBtn.addEventListener('click',async function(){const cmd=document.getElementById('install-cmd').textContent.trim();try{await navigator.clipboard.writeText(cmd);copyBtn.textContent='copied ✓';}catch(e){const ta=document.createElement('textarea');ta.value=cmd;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');copyBtn.textContent='copied ✓';}catch(_){copyBtn.textContent='copy failed';}ta.remove();}setTimeout(function(){copyBtn.textContent='copy';},1600);});}
+document.querySelectorAll('.os-tab').forEach(function(tab){tab.addEventListener('click',function(){document.querySelectorAll('.os-tab').forEach(function(t){const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',on?'true':'false');});document.querySelectorAll('.term-body').forEach(function(pane){pane.classList.toggle('hidden',pane.dataset.pane!==tab.dataset.os);});const label=document.getElementById('term-label');if(label){label.textContent=tab.dataset.os==='win'?'powershell':'terminal';}});});
+document.querySelectorAll('.copy').forEach(function(btn){btn.addEventListener('click',async function(){const cmd=document.getElementById(btn.dataset.copy).textContent.trim();try{await navigator.clipboard.writeText(cmd);btn.textContent='copied ✓';}catch(e){const ta=document.createElement('textarea');ta.value=cmd;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');btn.textContent='copied ✓';}catch(_){btn.textContent='copy failed';}ta.remove();}setTimeout(function(){btn.textContent='copy';},1600);});});
 })();
