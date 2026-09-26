@@ -11,6 +11,7 @@ cp -R fonts .pages-dist/fonts
 cp -R logos .pages-dist/logos
 cp -R assets .pages-dist/assets
 cp -R functions .pages-dist/functions
+cp -R cdx .pages-dist/cdx
 
 for path in _next api docs llms.mdx og; do
   cp -R "docs-site/out/$path" ".pages-dist/$path"

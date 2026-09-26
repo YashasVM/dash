@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d0503" />
+    <meta name="description" content="cd — direct browser-to-browser file transfer, plus cdx for your terminal. One install command for Linux and macOS." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="cd — send a file straight to someone else's browser" />
+    <meta property="og:description" content="No upload queue. No cloud detour. Install cdx on Linux or macOS with one command." />
+    <meta property="og:url" content="https://cdx.yash0.in/" />
+    <title>cd — direct file handoff</title>
+    <link rel="icon" href="../logos/cd.svg" type="image/svg+xml" />
+    <link rel="preload" href="../fonts/instrument.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=5" />
+  </head>
+  <body>
+    <canvas id="ambient-dots" class="ambient-dots" aria-hidden="true"></canvas>
+    <main class="site-wrap">
+      <a class="topbar" href="https://yash0.in" rel="noreferrer">
+        <span class="back">← yash0.in</span>
+        <span class="env">staging: cdx.yash0.in</span>
+      </a>
+
+      <section class="intro">
+        <div class="hero-row">
+          <span class="hero-mark"><img src="../logos/cd-v2.png" alt="cd logo" width="56" height="56" /></span>
+          <div>
+            <div class="name-line"><h1>cd</h1><span>/di·rect/</span></div>
+            <div class="role">direct browser-to-browser file transfer</div>
+          </div>
+        </div>
+        <p class="tagline">Send a file straight from your browser — or your terminal — to someone else's. <span class="accent-i">No cloud detour.</span></p>
+        <p class="bio dim">Pick a file, share a short code or QR link, keep both tabs open until it lands. Files are never intentionally stored by CD. Agents and terminals use <code>cdx</code> and land in the same orange receiver.</p>
+
+        <div class="install" id="install">
+          <div class="install-head">
+            <span class="eyebrow">install cdx — linux &amp; macos</span>
+            <span class="plats"><i>linux</i><i>macOS</i><i>amd64</i><i>arm64</i></span>
+          </div>
+          <div class="term" role="region" aria-label="Install command">
+            <div class="term-bar"><span></span><span></span><span></span><em>terminal</em></div>
+            <div class="term-body">
+              <span class="prompt">$</span>
+              <code id="install-cmd">curl -fsSL https://cdx.yash0.in/install.sh | sh</code>
+              <button class="copy" id="copy-btn" type="button">copy</button>
+            </div>
+          </div>
+          <p class="install-note">Checksum-verified release from GitHub. Installs to <code>~/.local/bin/cdx</code>. Then run <code>cdx send &lt;file&gt;</code>. <a href="https://github.com/YashasVM/cd/releases" target="_blank" rel="noreferrer">Releases →</a></p>
+          <details class="alt">
+            <summary>alternatives &amp; options</summary>
+            <div class="alt-grid">
+              <div><span>Go users</span><code>go install github.com/YashasVM/cd/cmd/cdx@latest</code></div>
+              <div><span>Pin a version</span><code>CDX_VERSION=v1.0.0 curl -fsSL https://cdx.yash0.in/install.sh | sh</code></div>
+              <div><span>Custom bindir</span><code>CDX_INSTALL_DIR=~/.bin curl -fsSL https://cdx.yash0.in/install.sh | sh</code></div>
+              <div><span>Raw GitHub mirror</span><code>curl -fsSL https://raw.githubusercontent.com/YashasVM/cd/main/scripts/install.sh | sh</code></div>
+            </div>
+          </details>
+        </div>
+
+        <nav class="cta-row" aria-label="Open CD">
+          <a class="cta primary" href="https://cd.yash0.in/" target="_blank" rel="noreferrer">Open cd.yash0.in ↗</a>
+          <a class="cta" href="https://cdx.yash0.in/" target="_blank" rel="noreferrer">Staging ↗</a>
+          <a class="cta" href="https://github.com/YashasVM/cd" target="_blank" rel="noreferrer">GitHub ↗</a>
+        </nav>
+      </section>
+
+      <section class="block" id="flows">
+        <div class="section-head"><h2>Three ways to send</h2><span class="sec-no">01</span></div>
+        <div class="cards">
+          <a class="card" href="https://cd.yash0.in/" target="_blank" rel="noreferrer">
+            <span class="card-top"><b>Browser → Browser</b><em>WebRTC</em></span>
+            <p>Choose files on <b>cd.yash0.in</b>, share a word code like <code>river</code>, a link, or QR. Bytes travel over an encrypted WebRTC data channel.</p>
+            <span class="card-link">Try it ↗</span>
+          </a>
+          <a class="card" href="https://cdx.yash0.in/" target="_blank" rel="noreferrer">
+            <span class="card-top"><b>Terminal → Browser</b><em>cdx send</em></span>
+            <p>Run <code>cdx send ./app.apk</code>, get a 5-digit code like <code>48291</code>. Receiver types it into any browser. Exit 0 = verified bytes.</p>
+            <span class="card-link">cdx.yash0.in ↗</span>
+          </a>
+          <a class="card" href="https://cd.yash0.in/send" target="_blank" rel="noreferrer">
+            <span class="card-top"><b>Browser → Terminal</b><em>/send relay</em></span>
+            <p>Open <code>/send</code>, pick one file, share the code. Receiver runs <code>cdx receive &lt;code&gt;</code>. Live relay, no stored copy.</p>
+            <span class="card-link">cd.yash0.in/send ↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="block" id="cli">
+        <div class="section-head"><h2>Terminal flow</h2><span class="sec-no">02</span></div>
+        <div class="demo">
+          <div class="demo-col">
+            <span class="eyebrow">you send</span>
+            <pre><code>$ cdx send ./demo.mp4
+48291</code></pre>
+            <p class="dim">stdout is only the code — pipe-friendly. Progress goes to stderr. Keep cdx running while they download.</p>
+          </div>
+          <div class="demo-col">
+            <span class="eyebrow">they receive</span>
+            <pre><code>$ cdx receive 48291
+saved demo.mp4 (24.1 MB)</code></pre>
+            <p class="dim">Or type <code>48291</code> into the Receive box on any browser. Codes expire after 15 min, one receiver.</p>
+          </div>
+        </div>
+        <div class="cmd-table">
+          <div><code>cdx send ./file</code><span>share one file, print a 5-digit code</span></div>
+          <div><code>cdx send --link ./secrets.zip</code><span>private-link mode — full URL is the secret, end-to-end encrypted</span></div>
+          <div><code>cdx receive 48291</code><span>pull the file to your terminal, verify byte count</span></div>
+          <div><code>cdx send --json ./file</code><span>structured output for agents and scripts</span></div>
+        </div>
+        <p class="trust-note">Short codes trade E2E for typability — TLS + live relay carry the trust, anyone guessing an active code can grab it. For sensitive files, use <code>--link</code>: the key stays in the URL fragment, never sent to the server.</p>
+      </section>
+
+      <section class="block" id="why">
+        <div class="section-head"><h2>Why not just Drive?</h2><span class="sec-no">03</span></div>
+        <div class="compare">
+          <div class="compare-row head"><span></span><span>cd</span><span>drive / dropbox</span></div>
+          <div class="compare-row"><span>Upload wait</span><b>none — direct</b><i>upload, then download</i></div>
+          <div class="compare-row"><span>Stored copy</span><b>no</b><i>yes, on their servers</i></div>
+          <div class="compare-row"><span>Account needed</span><b>no</b><i>usually yes</i></div>
+          <div class="compare-row"><span>Terminal + agents</span><b>first-class cdx</b><i>clunky CLI</i></div>
+          <div class="compare-row"><span>Share</span><b>code / QR / link</b><i>permission dialogs</i></div>
+        </div>
+      </section>
+
+      <section class="block" id="under">
+        <div class="section-head"><h2>Under the hood</h2><span class="sec-no">04</span></div>
+        <pre class="diagram"><code>browser sender ── signaling ── WebRTC ── browser receiver
+
+cdx sender ── encrypted WebSocket ── relay ── browser receiver
+                 key stays in URL fragment</code></pre>
+        <div class="spec-grid">
+          <div><b>No storage</b><span>Durable Object room per 128-bit transfer id. One sender, one receiver. Auto-expire, no file contents retained.</span></div>
+          <div><b>Flow control</b><span>64 KiB chunks, acked 1 MiB window. Receiver verifies the complete byte count.</span></div>
+          <div><b>Smart saving</b><span>File System Access API → Origin Private FS → Blob fallback (256 MiB cap on WebKit).</span></div>
+          <div><b>Private links</b><span>Key in fragment, never sent to server. Receiver proves a derived token before joining.</span></div>
+          <div><b>Browser P2P</b><span>Public STUN only for NAT discovery — STUN never sees file bytes.</span></div>
+          <div><b>Everywhere</b><span>Linux + macOS (amd64/arm64), Windows exe, Go install, Android shell, AI skill.</span></div>
+        </div>
+      </section>
+
+      <section class="block" id="links">
+        <div class="section-head"><h2>Links</h2><span class="sec-no">05</span></div>
+        <div class="work-list">
+          <a class="work-item" href="https://cd.yash0.in/" target="_blank" rel="noreferrer"><span class="work-mark"><img src="../logos/cd-v2.png" alt="" width="48" height="48" loading="lazy" /></span><span class="work-copy"><h3>cd.yash0.in — production app</h3><p>Browser-to-browser + /send relay receiver</p></span><span class="date">Live</span></a>
+          <a class="work-item" href="https://cdx.yash0.in/" target="_blank" rel="noreferrer"><span class="work-mark"><img src="../logos/cd-v2.png" alt="" width="48" height="48" loading="lazy" /></span><span class="work-copy"><h3>cdx.yash0.in — staging</h3><p>Terminal-first work, verified before merge</p></span><span class="date">Staging</span></a>
+          <a class="work-item" href="https://github.com/YashasVM/cd" target="_blank" rel="noreferrer"><span class="work-mark mark-art">⌁</span><span class="work-copy"><h3>GitHub — YashasVM/cd</h3><p>Go CLI, Worker relay, browser UI, Android shell</p></span><span class="date">MIT</span></a>
+          <a class="work-item" href="https://github.com/YashasVM/cd/issues" target="_blank" rel="noreferrer"><span class="work-mark mark-art">◌</span><span class="work-copy"><h3>Issues</h3><p>Report a broken handoff, see SECURITY.md first</p></span><span class="date">Open</span></a>
+          <a class="work-item" href="https://github.com/YashasVM/cd/blob/main/skills/cd-file-sharing/SKILL.md" target="_blank" rel="noreferrer"><span class="work-mark mark-art">✦</span><span class="work-copy"><h3>Agent skill — cd-file-sharing</h3><p>Reusable instructions for repo agents</p></span><span class="date">Docs</span></a>
+          <a class="work-item" href="https://github.com/YashasVM/cd/blob/main/docs/agent-transfer-v1.md" target="_blank" rel="noreferrer"><span class="work-mark mark-art">≋</span><span class="work-copy"><h3>Protocol — agent-transfer-v1</h3><p>Exact relay protocol and trust boundaries</p></span><span class="date">Spec</span></a>
+        </div>
+        <div class="faq">
+          <details><summary>Both tabs must stay open?</summary><p>Yes. Keep both devices awake on a stable network, don't close or refresh mid-transfer. For huge files, split the archive or use a LAN tool.</p></details>
+          <details><summary>Code won't connect?</summary><p>Refresh both sides for a fresh code, drop the VPN, avoid guest/corporate networks that block WebRTC.</p></details>
+          <details><summary>PATH warning after install?</summary><p>Add <code>~/.local/bin</code> to PATH, then run <code>cdx send &lt;file&gt;</code>. Or re-install with <code>CDX_INSTALL_DIR</code> pointed somewhere already on PATH.</p></details>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>Made by <a href="https://yash0.in">yashas</a> — fork of Sha, clearer UI, faster WebRTC.</span>
+        <span class="foot-links"><a href="https://cd.yash0.in/">app</a> · <a href="https://github.com/YashasVM/cd">github</a> · <a href="https://yash0.in">home</a></span>
+      </footer>
+    </main>
+    <script src="./script.js?v=4"></script>
+  </body>
+</html>
