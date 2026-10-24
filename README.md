@@ -1,8 +1,9 @@
 # dash
 
-Static source for [yashasvm.pages.dev](https://yashasvm.pages.dev/).
+Static source for [yash0.in](https://yash0.in/) (also served at [yashasvm.pages.dev](https://yashasvm.pages.dev/)).
 
 inspired by t3.gg
+
 ## Files
 
 - `index.html` - Page shell and metadata.
