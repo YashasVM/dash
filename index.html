@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0d0503" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0b0b0c" />
     <meta name="description" content="yashas — self-hosting nerd, open-source builder, and professional software annoyance remover." />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="yashas | builder" />
@@ -18,50 +19,87 @@
     <meta name="twitter:image" content="https://yashasvm.pages.dev/preview.png" />
     <title>yashas | builder</title>
     <link rel="icon" href="./favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="preload" href="./fonts/instrument.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="./fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=10" />
+    <link rel="preload" href="./fonts/geist-pixel.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://github-contributions-api.jogruber.de" crossorigin />
+    <link rel="preconnect" href="https://api.github.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="./home.css?v=7" />
   </head>
   <body>
-    <div class="pixel-field" aria-hidden="true"><canvas class="pixel-canvas"></canvas></div>
+    <div class="glass" aria-hidden="true"><div class="glass-glow"></div><div class="glass-ribs"></div><div class="glass-fade"></div></div>
+
     <main class="site-wrap">
       <section class="intro" id="about">
         <div class="name-line"><h1>yashas</h1><span>/ya·shas/</span></div>
-        <div class="role">self-hosting nerd</div>
+        <div class="role"><i class="dot"></i>self-hosting nerd</div>
         <div class="bio">
           <p>Hey! I'm yashas. I self-host things, poke at software, and build the version I wish existed.</p>
           <p class="dim">A lot of it is open-source software for the tiny annoyances that keep showing up: moving files, grabbing media, turning phones into cameras, and dictating without shipping my words somewhere.</p>
-          <p class="dim">Most projects start with “surely this can be simpler” and end up running on a tiny server.</p>
+          <p class="dim">Most projects start with <code>surely this can be simpler</code> and end up running on a tiny server.</p>
         </div>
         <nav class="social-links" aria-label="Social links">
-          <a href="https://x.com/vortxfusion" aria-label="X" target="_blank" rel="noreferrer">
+          <a href="https://x.com/vortxfusion" target="_blank" rel="noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2.5h3.68l-8.04 9.2L24 21.5h-7.4l-5.8-7.58-6.62 7.58H.5l7.97-9.12L.1 2.5h7.59l5.24 6.93L18.9 2.5Zm-1.3 17.1h2.04L6.6 4.3H4.4L17.6 19.6Z"/></svg>
             <span>X</span>
           </a>
-          <a href="https://github.com/YashasVM" aria-label="GitHub" target="_blank" rel="noreferrer">
+          <a href="https://github.com/YashasVM" target="_blank" rel="noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .7a11.3 11.3 0 0 0-3.57 22.02c.57.1.78-.25.78-.55v-2.1c-3.17.69-3.84-1.34-3.84-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.72-1.54-2.53-.29-5.2-1.27-5.2-5.65 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .96-.31 3.12 1.17a10.8 10.8 0 0 1 5.68 0c2.16-1.48 3.12-1.17 3.12-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.39-2.68 5.35-5.22 5.63.41.35.77 1.04.77 2.1v3.13c0 .3.21.66.79.55A11.3 11.3 0 0 0 12 .7Z"/></svg>
             <span>GitHub</span>
           </a>
-          <a href="https://instagram.com/yashas.vm" aria-label="Instagram" target="_blank" rel="noreferrer">
+          <a href="https://instagram.com/yashas.vm" target="_blank" rel="noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle class="social-dot" cx="17.4" cy="6.7" r="1"/></svg>
             <span>Instagram</span>
           </a>
-          <a href="https://www.linkedin.com/in/yashasvm/" aria-label="LinkedIn" target="_blank" rel="noreferrer">
+          <a href="https://www.linkedin.com/in/yashasvm/" target="_blank" rel="noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 8.1H1.7V22h3.5V8.1ZM3.45 2A2.05 2.05 0 1 0 3.45 6.1 2.05 2.05 0 0 0 3.45 2ZM8.2 8.1h3.35V10h.05c.47-.9 1.61-2.2 3.72-2.2 3.98 0 4.72 2.62 4.72 6.02V22h-3.49v-7.27c0-1.73-.03-3.96-2.41-3.96-2.41 0-2.78 1.88-2.78 3.83V22H8.2V8.1Z"/></svg>
             <span>LinkedIn</span>
           </a>
-          <a href="mailto:admin5@duck.com" aria-label="Email">
+          <a href="mailto:admin5@duck.com">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>
             <span>admin5@duck.com</span>
           </a>
         </nav>
       </section>
-      <section class="work" id="work">
-        <div class="section-head"><h2>Stuff I built</h2><div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view">▤</button></div></div>
-        <div class="work-list" id="work-list"></div>
-        <a class="view-all" href="./docs/">Peek at the docs</a>
+
+      <section class="panel" id="work">
+        <div class="section-head">
+          <div class="tabs" role="tablist" aria-label="Sections">
+            <button class="tab" role="tab" id="tab-work" aria-controls="pane-work" aria-selected="true" data-tab="work">Stuff I built</button>
+            <button class="tab" role="tab" id="tab-github" aria-controls="pane-github" aria-selected="false" tabindex="-1" data-tab="github">GitHub</button>
+            <span class="tab-ink" aria-hidden="true"></span>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Work view"><button class="view-button" data-view="compact" aria-label="Compact view" aria-pressed="false">☷</button><button class="view-button active" data-view="rows" aria-label="Rows view" aria-pressed="true">▤</button></div>
+        </div>
+
+        <div class="pane" id="pane-work" role="tabpanel" aria-labelledby="tab-work">
+          <div class="work-list" id="work-list"></div>
+          <a class="view-all" href="./docs/">Peek at the docs <span aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="pane" id="pane-github" role="tabpanel" aria-labelledby="tab-github" hidden>
+          <div class="gh-stats" id="gh-stats">
+            <div class="stat"><span class="stat-k">Last year</span><span class="stat-v" data-stat="total">—</span></div>
+            <div class="stat"><span class="stat-k">Streak</span><span class="stat-v" data-stat="streak">—</span></div>
+            <div class="stat"><span class="stat-k">Best day</span><span class="stat-v" data-stat="best">—</span></div>
+          </div>
+          <div class="graph-card">
+            <div class="graph-scroll" id="graph-scroll">
+              <div class="graph-months" id="graph-months"></div>
+              <div class="graph" id="graph" aria-label="GitHub contributions over the last year" role="img"></div>
+            </div>
+            <div class="graph-foot">
+              <a href="https://github.com/YashasVM" target="_blank" rel="noreferrer">@YashasVM ↗</a>
+              <span class="legend" aria-hidden="true">less<i data-l="0"></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i>more</span>
+            </div>
+          </div>
+          <h2 class="sub-head">Recent activity</h2>
+          <ol class="feed" id="feed"><li class="feed-empty">Loading activity…</li></ol>
+        </div>
       </section>
     </main>
-    <script src="./script.js?v=17"></script>
+    <div class="tip" id="tip" role="tooltip"></div>
+    <script src="./script.js?v=29"></script>
   </body>
 </html>

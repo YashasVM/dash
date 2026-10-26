@@ -6,8 +6,9 @@ inspired by t3.gg
 ## Files
 
 - `index.html` - Page shell and metadata.
-- `styles.css` - Layout, typography, and visual styling.
-- `script.js` - Project link data and rendering.
+- `home.css` - Homepage styling (dark, also.codes fonts and palette: Geist, Geist Mono, Geist Pixel).
+- `script.js` - Project list, tabs, and the GitHub tab (contribution graph + recent public activity, fetched client-side).
+- `styles.css` - Shared base and 404 page styling.
 
 ## Product docs
 
