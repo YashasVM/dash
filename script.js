@@ -53,11 +53,55 @@ function renderGraph(data){
   graph.setAttribute('aria-label',(total||0)+' GitHub contributions in the last year');
 
   const tip=document.querySelector('#tip');
-  const show=function(cell){if(!cell||!cell.dataset.d){tip.classList.remove('on');return}const c=+cell.dataset.c;tip.innerHTML='<b>'+(c===0?'No':c)+' contribution'+(c===1?'':'s')+'</b> '+fmtDate(cell.dataset.d);const r=cell.getBoundingClientRect();tip.classList.add('on');const w=tip.offsetWidth;tip.style.transform='translate('+Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+'px,'+(r.top-tip.offsetHeight-8)+'px)'};
-  graph.addEventListener('pointerover',function(e){show(e.target.closest('i'))});
+  const dayCells=Array.from(graph.querySelectorAll('i:not(.pad)'));
+  let sel=-1,dragged=false;
+  const show=function(cell){if(!cell||!cell.dataset.d){tip.classList.remove('on');return}const c=+cell.dataset.c;tip.innerHTML='<b>'+(c===0?'No':c)+' contribution'+(c===1?'':'s')+'</b> '+fmtDate(cell.dataset.d);const r=cell.getBoundingClientRect();tip.classList.add('on');const w=tip.offsetWidth;tip.style.transform='translate('+Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+'px,'+(r.top-tip.offsetHeight-10)+'px)'};
+  const select=function(i,open){if(i<0||i>=dayCells.length)return;if(sel>=0)dayCells[sel].classList.remove('sel');sel=i;const cell=dayCells[i];cell.classList.add('sel');const cr=cell.getBoundingClientRect(),sr=scroller.getBoundingClientRect();if(cr.left<sr.left+24)scroller.scrollLeft-=sr.left+24-cr.left;else if(cr.right>sr.right-8)scroller.scrollLeft+=cr.right-sr.right+8;touched=true;if(open)openDay(cell);else show(cell)};
+  graph.addEventListener('pointerover',function(e){if(!dragged)show(e.target.closest('i'))});
   graph.addEventListener('pointerleave',function(){tip.classList.remove('on')});
-  scroller.addEventListener('scroll',function(){tip.classList.remove('on')},{passive:true});
+  graph.addEventListener('click',function(e){if(dragged)return;const cell=e.target.closest('i');if(!cell||!cell.dataset.d)return;select(dayCells.indexOf(cell),true)});
+  graph.addEventListener('keydown',function(e){const step={ArrowUp:-1,ArrowDown:1,ArrowLeft:-7,ArrowRight:7}[e.key];if(step){e.preventDefault();select(sel<0?dayCells.length-1:Math.max(0,Math.min(dayCells.length-1,sel+step)),false)}else if((e.key==='Enter'||e.key===' ')&&sel>=0){e.preventDefault();openDay(dayCells[sel])}else if(e.key==='Escape'){tip.classList.remove('on')}});
+  graph.addEventListener('focus',function(){if(sel<0)select(dayCells.length-1,false)});
+  graph.addEventListener('blur',function(){tip.classList.remove('on')});
+  /* drag to scroll through the year with a mouse */
+  let startX=0,startLeft=0,down=false;
+  scroller.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button!==0)return;down=true;dragged=false;startX=e.clientX;startLeft=scroller.scrollLeft});
+  addEventListener('pointermove',function(e){if(!down)return;const dx=e.clientX-startX;if(!dragged&&Math.abs(dx)>4){dragged=true;scroller.classList.add('dragging');tip.classList.remove('on')}if(dragged)scroller.scrollLeft=startLeft-dx});
+  addEventListener('pointerup',function(){if(!down)return;down=false;scroller.classList.remove('dragging');setTimeout(function(){dragged=false},0)});
+  scroller.addEventListener('scroll',function(){if(!graph.matches(':focus'))tip.classList.remove('on')},{passive:true});
 }
+
+/* clicking a day: look up public commits and PRs/issues for that date */
+const dayPanel=document.querySelector('#day');
+const ghSearch=function(kind,q){const key='gh-day-'+kind+'-'+q;const hit=sessionStorage.getItem(key);if(hit){try{const v=JSON.parse(hit);if(Date.now()-v.t<36e5)return Promise.resolve(v.d)}catch(e){}}return fetch('https://api.github.com/search/'+kind+'?per_page=100&q='+encodeURIComponent(q),{headers:{Accept:'application/vnd.github+json'}}).then(function(r){if(r.status===403||r.status===429)throw new Error('rate');if(!r.ok)throw new Error(r.status);return r.json()}).then(function(d){try{sessionStorage.setItem(key,JSON.stringify({t:Date.now(),d:d}))}catch(e){}return d})};
+let dayToken=0;
+function openDay(cell){
+  const date=cell.dataset.d,count=+cell.dataset.c,token=++dayToken;
+  const ghDay='https://github.com/'+GH_USER+'?tab=overview&from='+date+'&to='+date;
+  const head='<div class="day-head"><div><span class="day-date">'+fmtDate(date,{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'</span><span class="day-count"><i data-l="'+cell.dataset.l+'"></i>'+(count===0?'No':count)+' contribution'+(count===1?'':'s')+'</span></div><button class="day-close" type="button" aria-label="Close day details">×</button></div>';
+  dayPanel.hidden=false;dayPanel.classList.remove('enter');void dayPanel.offsetWidth;dayPanel.classList.add('enter');
+  if(count===0){dayPanel.innerHTML=head+'<p class="day-note">Nothing on this day. Even builders take days off.</p>';return}
+  dayPanel.innerHTML=head+'<div class="day-loading"><span></span><span></span><span></span></div>';
+  if(dayPanel.getBoundingClientRect().bottom>innerHeight)dayPanel.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'nearest'});
+  Promise.all([ghSearch('commits','author:'+GH_USER+' author-date:'+date),ghSearch('issues','author:'+GH_USER+' created:'+date)]).then(function(res){
+    if(token!==dayToken)return;
+    const commits=res[0].items||[],issues=res[1].items||[];
+    const byRepo={};commits.forEach(function(c){const repo=c.repository.full_name;(byRepo[repo]=byRepo[repo]||[]).push(c)});
+    const repoName=function(full){return full.split('/')[0]===GH_USER?full.split('/')[1]:full};
+    let html='';
+    const repos=Object.keys(byRepo).sort(function(x,y){return byRepo[y].length-byRepo[x].length});
+    if(repos.length){html+='<h3 class="day-sub">Commits <span>'+res[0].total_count+'</span></h3>'+repos.map(function(repo){const list=byRepo[repo];return '<div class="day-repo"><a class="day-repo-name" href="https://github.com/'+esc(repo)+'" target="_blank" rel="noreferrer">'+esc(repoName(repo))+' <span>'+list.length+' commit'+(list.length===1?'':'s')+'</span></a><ul>'+list.slice(0,6).map(function(c){return '<li><a href="'+esc(c.html_url)+'" target="_blank" rel="noreferrer"><code>'+c.sha.slice(0,7)+'</code>'+esc(c.commit.message.split('\n')[0])+'</a></li>'}).join('')+(list.length>6?'<li class="day-more"><a href="https://github.com/'+esc(repo)+'/commits?author='+GH_USER+'&since='+date+'T00:00:00Z&until='+date+'T23:59:59Z" target="_blank" rel="noreferrer">+ '+(list.length-6)+' more</a></li>':'')+'</ul></div>'}).join('')}
+    if(issues.length){html+='<h3 class="day-sub">Pull requests &amp; issues <span>'+issues.length+'</span></h3><ul class="day-issues">'+issues.map(function(it){const isPr=!!it.pull_request;const merged=isPr&&it.pull_request.merged_at;const state=merged?'merged':it.state;const repo=it.repository_url.split('/repos/')[1];return '<li><a href="'+esc(it.html_url)+'" target="_blank" rel="noreferrer"><span class="pill pill-'+state+'">'+(isPr?'PR':'Issue')+' · '+state+'</span><span class="day-issue-title">'+esc(it.title)+'</span><span class="day-issue-repo">'+esc(repoName(repo))+' #'+it.number+'</span></a></li>'}).join('')+'</ul>'}
+    const found=(res[0].total_count||0)+issues.length;
+    if(!html)html='<p class="day-note">None of these are public, so they were probably in private repos or reviews and comments. <a href="'+ghDay+'" target="_blank" rel="noreferrer">Open on GitHub ↗</a></p>';
+    else if(found<count)html+='<p class="day-note">+ '+(count-found)+' more from reviews, comments or private repos. <a href="'+ghDay+'" target="_blank" rel="noreferrer">Full day on GitHub ↗</a></p>';
+    dayPanel.innerHTML=head+'<div class="day-body">'+html+'</div>';
+  }).catch(function(err){
+    if(token!==dayToken)return;
+    dayPanel.innerHTML=head+'<p class="day-note">'+(err.message==='rate'?'GitHub’s search limit kicked in. Give it a minute, or':'Couldn’t reach GitHub right now.')+' <a href="'+ghDay+'" target="_blank" rel="noreferrer">See this day on GitHub ↗</a></p>';
+  });
+}
+dayPanel.addEventListener('click',function(e){if(e.target.closest('.day-close')){dayPanel.hidden=true;dayToken++;const s=document.querySelector('.graph i.sel');if(s)s.classList.remove('sel')}});
 
 function countUp(n){const el='<span class="count" data-n="'+n+'">'+(reduceMotion?n.toLocaleString():'0')+'</span>';if(!reduceMotion)requestAnimationFrame(function(){const node=document.querySelector('.count[data-n="'+n+'"]');if(!node)return;const t0=performance.now();const step=function(t){const p=Math.min(1,(t-t0)/900),e=1-Math.pow(1-p,3);node.textContent=Math.round(n*e).toLocaleString();if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)});return el}
 
