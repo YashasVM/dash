@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://github-contributions-api.jogruber.de" crossorigin />
     <link rel="preconnect" href="https://api.github.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" />
-    <link rel="stylesheet" href="./home.css?v=9" />
+    <link rel="stylesheet" href="./home-also-v2.css?v=5" />
   </head>
   <body>
     <div class="glass" aria-hidden="true"><div class="glass-glow"></div><div class="glass-ribs"></div><div class="glass-fade"></div></div>
@@ -79,6 +79,22 @@
         </div>
 
         <div class="pane" id="pane-github" role="tabpanel" aria-labelledby="tab-github" hidden>
+          <div class="gh-heading">
+            <div><h2>Life in commits.</h2><p>A year of building, one day at a time.</p></div>
+            <a class="gh-profile" id="gh-profile" href="https://github.com/YashasVM" target="_blank" rel="noreferrer"><img id="gh-avatar" src="https://github.com/YashasVM.png?size=80" width="36" height="36" alt=""><span id="gh-handle">@YashasVM</span><span aria-hidden="true">↗</span></a>
+          </div>
+          <aside class="design-review" id="design-review" hidden aria-label="Search design options">
+            <div class="design-review-heading"><strong>Choose a search style</strong><span>Same profile, five treatments</span></div>
+            <div class="design-options" role="group" aria-label="Designs">
+              <button type="button" data-design="1">01 Underline</button><button type="button" data-design="2">02 Toolbar</button><button type="button" data-design="3">03 Editorial</button><button type="button" data-design="4">04 Terminal</button><button type="button" data-design="5">05 Split</button>
+            </div>
+          </aside>
+          <form class="gh-explore" method="get" action="#github">
+            <label for="github-user">Try another profile</label>
+            <div class="gh-search-row"><div class="gh-input"><span aria-hidden="true">@</span><input id="github-user" name="user" placeholder="GitHub username" maxlength="39" pattern="[A-Za-z0-9]+(-[A-Za-z0-9]+)*" required autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="gh-search-hint"></div><button type="submit">Explore <span aria-hidden="true">→</span></button></div>
+            <div class="gh-search-foot"><span id="gh-search-hint">Public contributions &amp; recent activity</span><a id="gh-reset" href="?#github">Back to my profile</a></div>
+          </form>
+          <p class="gh-load-status" id="gh-load-status" role="status"></p>
           <div class="gh-stats" id="gh-stats">
             <div class="stat"><span class="stat-k">Last year</span><span class="stat-v" data-stat="total">—</span></div>
             <div class="stat"><span class="stat-k">Streak</span><span class="stat-v" data-stat="streak">—</span></div>
@@ -90,7 +106,7 @@
               <div class="graph" id="graph" aria-label="GitHub contributions over the last year. Use arrow keys to move between days and Enter to open one." role="group" tabindex="0"></div>
             </div>
             <div class="graph-foot">
-              <span class="graph-hint">Click or tap a day to see what I did</span>
+              <span class="graph-hint">Click or tap a day to see the activity</span>
               <span class="legend" aria-hidden="true">less<i data-l="0"></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i>more</span>
             </div>
           </div>
@@ -101,6 +117,6 @@
       </section>
     </main>
     <div class="tip" id="tip" role="tooltip"></div>
-    <script src="./script.js?v=30"></script>
+    <script src="./projects-also-v2.js?v=2"></script>
   </body>
 </html>

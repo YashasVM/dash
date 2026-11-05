@@ -1,0 +1,116 @@
+[
+  {
+    "path": "/home/yvm/code/dash/img/icons/cd.webp",
+    "dimensions": "256x256",
+    "bytes": 2010,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/mobie.webp",
+    "dimensions": "256x256",
+    "bytes": 3412,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/wisperlow.webp",
+    "dimensions": "256x256",
+    "bytes": 3524,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/openstream.webp",
+    "dimensions": "256x256",
+    "bytes": 1902,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/dns.webp",
+    "dimensions": "256x256",
+    "bytes": 2496,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/holen.webp",
+    "dimensions": "256x256",
+    "bytes": 1854,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/yt-cmd.webp",
+    "dimensions": "256x256",
+    "bytes": 3222,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/img-gen.webp",
+    "dimensions": "256x256",
+    "bytes": 3148,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/icons/localhost.webp",
+    "dimensions": "256x256",
+    "bytes": 3298,
+    "quality": 86
+  },
+  {
+    "path": "/home/yvm/code/dash/img/hero.webp",
+    "dimensions": "1600x1000",
+    "bytes": 44490,
+    "quality": 82
+  },
+  {
+    "path": "/home/yvm/code/dash/img/hero@1x.webp",
+    "dimensions": "800x500",
+    "bytes": 16924,
+    "quality": 80
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-cd.webp",
+    "dimensions": "1600x1000",
+    "bytes": 22326,
+    "quality": 82
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-cd@1x.webp",
+    "dimensions": "800x500",
+    "bytes": 8920,
+    "quality": 80
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-mobie.webp",
+    "dimensions": "1600x1000",
+    "bytes": 37168,
+    "quality": 82
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-mobie@1x.webp",
+    "dimensions": "800x500",
+    "bytes": 14892,
+    "quality": 80
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-wisperlow.webp",
+    "dimensions": "1600x1000",
+    "bytes": 32944,
+    "quality": 82
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-wisperlow@1x.webp",
+    "dimensions": "800x500",
+    "bytes": 14164,
+    "quality": 80
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-openstream.webp",
+    "dimensions": "1600x1000",
+    "bytes": 18720,
+    "quality": 82
+  },
+  {
+    "path": "/home/yvm/code/dash/img/cover-openstream@1x.webp",
+    "dimensions": "800x500",
+    "bytes": 7750,
+    "quality": 80
+  }
+]

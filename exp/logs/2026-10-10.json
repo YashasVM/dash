@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-10",
+  "entries": [
+    {
+      "id": "2026-10-10-01",
+      "time": "12:29",
+      "model": "claude-haiku-5-5",
+      "agent": "claude-code",
+      "repo": "YashasVM/dash",
+      "task": "Update the project lists. use github and the subdomains used and get me the latest list and reorder the projects according to proplaatyr and impressions. host it on test.yash0.in",
+      "did": "Pulled the GitHub repo list and probed yash0.in subdomains; used Cloudflare zone request counts over 28 days as impressions and GitHub stars as popularity (the term 'proplaatyr' was interpreted as popularity). Added dns, The Night Shift and Mobie cards plus logos, reordered the work list in script.js, ran build-cloudflare.sh and deployed .pages-dist to the yashasvm-test Pages project, which serves test.yash0.in. Changes are not committed.",
+      "status": "wip",
+      "files_touched": [
+        "script.js",
+        "logos/dns.svg",
+        "logos/jev.svg",
+        "logos/mobie.svg"
+      ],
+      "tags": [
+        "pages",
+        "ordering",
+        "deploy"
+      ],
+      "links": {
+        "repo": "https://github.com/YashasVM/dash"
+      }
+    },
+    {
+      "id": "2026-10-10-02",
+      "time": "12:29",
+      "model": "claude-haiku-5-5",
+      "agent": "claude-code",
+      "repo": "YashasVM/dash",
+      "task": "remove The Night Shift and move Mobie up in the list, then have gpt 6 luna create the logs",
+      "did": "Removed The Night Shift from the work list in script.js and deleted logos/jev.svg, moved Mobie to position 2 (after cd), and delegated the log writing to GPT-6-Luna (codex provider).",
+      "status": "wip",
+      "files_touched": [
+        "script.js",
+        "logos/jev.svg"
+      ],
+      "tags": [
+        "pages",
+        "ordering"
+      ]
+    }
+  ]
+}
