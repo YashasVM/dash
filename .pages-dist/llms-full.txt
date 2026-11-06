@@ -1,0 +1,615 @@
+# The toolbox (/docs)
+
+
+
+# The toolbox [#the-toolbox]
+
+These are the notes for the small tools I build when software starts getting on my nerves. Useful, understandable things that do one job properly and keep your data close when they can.
+
+Every page covers the useful bits: &#x2A;*how do I use this?**, &#x2A;*what is it doing?**, and &#x2A;*how do I run my own copy?** Expect quick starts, architecture notes, rough edges, and links to the code.
+
+## The toolbox [#the-toolbox-1]
+
+| Product                             | What it is                                     | Status    |
+| ----------------------------------- | ---------------------------------------------- | --------- |
+| [cd](./products/cd)                 | Send files browser-to-browser                  | Active    |
+| [HOLEN](./products/holen)           | Download things without handing them a profile | Active    |
+| [Wisper Low](./products/wisper-low) | Dictation that keeps its ears on your machine  | Prototype |
+| [OpenStream](./products/openstream) | Make your phone an OBS camera over Wi-Fi       | Beta      |
+| [yt-cmd](./products/yt-cmd)         | A nicer front-end for the `yt-dlp` flag maze   | Active    |
+| [Img-gen](./products/img-gen)       | Remove backgrounds without uploading the image | Active    |
+| [localhost](./products/localhost)   | A tiny window into what is running at home     | Live      |
+
+## How to use these docs [#how-to-use-these-docs]
+
+If you just want to use something, start with **Quick start** and stop there. If you are curious about the implementation, **How it works** and **Tech stack** are the useful sections. If something breaks, jump straight to **Troubleshooting** before opening an issue.
+
+The GitHub repository is still the final source of truth for release assets, exact dependency versions, and changes that have landed since these pages were written. I have linked the relevant repository, releases, issues, and important subdirectories on each page so you do not have to hunt for them.
+
+## The common ideas behind the projects [#the-common-ideas-behind-the-projects]
+
+* **Local first:** camera streams, dictation, background removal, and downloads are designed to run on your device or your own network.
+* **Small surfaces:** most of these products are thin layers over good existing tools such as OBS, WebRTC, ONNX Runtime Web, Whisper, `yt-dlp`, and FFmpeg.
+* **Useful fallbacks:** when hardware acceleration, discovery, or a preferred runtime is unavailable, the apps try to provide a slower or more manual path.
+* **Honest status:** these are personal products and some are still rough. The docs call out known limits instead of pretending everything is production-perfect.
+
+## Links [#links]
+
+* [All repositories on GitHub](https://github.com/YashasVM?tab=repositories)
+* [Source for this documentation site](https://github.com/YashasVM/dash)
+* [Open a documentation issue](https://github.com/YashasVM/dash/issues)
+
+
+# cd (/docs/products/cd)
+
+
+
+## What it is [#what-it-is]
+
+`cd` is for the “can you just send me that file?” moment. Pick a file, share a short code or QR link, and let the two browsers handle the handoff without parking the file on a random upload server.
+
+The actual file contents move directly between the two browsers through a WebRTC data channel. The hosted service is used to load the app and help the peers find each other; it is not intended to store the transferred files.
+
+## Quick start [#quick-start]
+
+1. Open the [cd website](https://cd.yash0.in/).
+2. Choose one or more files.
+3. Copy the receive code or show the QR code to the other person.
+4. Keep both tabs open and visible until the transfer completes.
+5. The receiver saves the file when the browser offers it.
+
+For a reliable handoff, keep both devices awake, use a stable network, and do not close or refresh either tab during the transfer.
+
+## What happens under the hood [#what-happens-under-the-hood]
+
+```text
+sender browser ── WebRTC data channel ── receiver browser
+       \              /
+        signaling / session setup
+             hosted Worker
+```
+
+The signaling step exchanges the information needed to establish the peer connection. Once connected, file data uses the browser's WebRTC data channel. This means large transfers are usually limited by the slower device, browser memory, network path, and WebRTC behavior rather than a server-side file quota.
+
+## Tech stack [#tech-stack]
+
+| Part                | Technology                      | Job                                        |
+| ------------------- | ------------------------------- | ------------------------------------------ |
+| Frontend            | Browser JavaScript/HTML/CSS     | File picker, code/QR UI, transfer progress |
+| Peer connection     | WebRTC data channels            | Direct browser-to-browser file transfer    |
+| Signaling           | Worker-hosted signaling service | Helps peers negotiate a connection         |
+| Deployment          | Cloudflare Workers              | Hosts the app and signaling endpoint       |
+| Repository language | Go plus web assets              | Current repo implementation and tooling    |
+
+## Privacy and limits [#privacy-and-limits]
+
+The app does not intentionally persist the file contents on the hosted service. It is still a browser application: the two people involved can see and save the files, and the network/browser environment can affect the connection. This is not an encrypted archive or an access-control system for highly sensitive material.
+
+Both browsers must stay connected. Some restrictive corporate networks, VPNs, or browser policies can interfere with WebRTC. Very large files can also run into memory or browser download limitations.
+
+## Troubleshooting [#troubleshooting]
+
+**The code does not connect:** refresh both sides and create a new transfer. Disable a VPN temporarily and try a normal network. Corporate or guest networks may restrict peer connections.
+
+**The QR code is not working:** copy the text code manually. The receiver can open the website on any modern browser and enter the code.
+
+**The transfer stops halfway:** prevent sleep, keep both tabs open, and retry with a stable connection. For very large files, split the archive or use a local network transfer tool.
+
+**The receiver cannot save:** check browser download permissions and available disk space.
+
+## Self-hosting and development [#self-hosting-and-development]
+
+```bash
+git clone https://github.com/YashasVM/cd.git
+cd cd
+```
+
+The repository README and deployment configuration are the source of truth for the current Worker commands and environment values. Inspect the signaling path before deploying a public instance, and never put secrets in browser-delivered code.
+
+## Links [#links]
+
+* [Website](https://cd.yash0.in/)
+* [GitHub repository](https://github.com/YashasVM/cd)
+* [Issues](https://github.com/YashasVM/cd/issues)
+
+
+# HOLEN (/docs/products/holen)
+
+
+
+## What it is [#what-it-is]
+
+HOLEN is my downloader in three shapes: Android app, tiny website, and terminal command. Paste a link, pick the format, and save the result where it belongs: on your device.
+
+There is no account, analytics dashboard, or mysterious hosted storage in the Android and terminal flows. The download is performed on your device. The hosted website is convenient, but it runs on an old laptop, so do not expect the fastest speeds.
+
+## Pick your version [#pick-your-version]
+
+| Version  | Best for                              | Start here                                                  |
+| -------- | ------------------------------------- | ----------------------------------------------------------- |
+| Android  | Sharing a link from your phone        | [Universal APK](https://github.com/YashasVM/HOLEN/releases) |
+| Terminal | Repeatable, keyboard-first downloads  | `npx holen-dl`                                              |
+| Website  | Trying it without installing anything | [holen.yash0.in](https://holen.yash0.in/)                   |
+
+## Android quick start [#android-quick-start]
+
+1. Download the latest APK from [GitHub Releases](https://github.com/YashasVM/HOLEN/releases).
+2. Install it on Android. If Android asks, allow installation from the browser or file manager you used.
+3. Share a link to HOLEN or paste it into the app.
+4. Select video or audio, then choose a format and quality.
+5. Pick the destination folder and wait for the download to finish.
+
+The Android app is deliberately simple: it is a local downloader, not a media library or a sync service.
+
+## Terminal quick start [#terminal-quick-start]
+
+You need an interactive terminal and Node.js/npm:
+
+```bash
+npx holen-dl
+```
+
+Aliases are also available:
+
+```bash
+npx yvm-yt
+npx yt-cmd
+```
+
+Paste the URL into the prompt, choose video or audio, select a quality preset or custom resolution, and let the tool handle the output. Video prefers MP4 and can fall back to MKV; audio is MP3. Files are saved to `~/Downloads`.
+
+The CLI checks for `yt-dlp` and `ffmpeg`. If they are missing, it can help install or download what is needed.
+
+## How it works [#how-it-works]
+
+```text
+link → HOLEN UI → yt-dlp selects and downloads streams → FFmpeg merges/converts → local file
+```
+
+The Android and website layers are interfaces around the same basic idea. `yt-dlp` understands the source site and available formats; FFmpeg handles merging separate video/audio streams and conversions.
+
+## Tech stack [#tech-stack]
+
+| Part             | Technology              | Job                                                  |
+| ---------------- | ----------------------- | ---------------------------------------------------- |
+| Android app      | Kotlin / native Android | Share target, picker, and local file saving          |
+| Web frontend     | React                   | Link input, format picker, and download UI           |
+| API              | FastAPI                 | Download orchestration for the hosted/web deployment |
+| Downloader       | yt-dlp                  | Extracts formats and downloads supported sources     |
+| Media processing | FFmpeg                  | Muxing and format conversion                         |
+| Packaging        | Docker                  | Repeatable backend deployment                        |
+| Terminal client  | Node.js/npm             | Interactive CLI distributed through npm              |
+
+## Privacy and legal limits [#privacy-and-legal-limits]
+
+Downloads stay on your device in the local flows. HOLEN does not bypass DRM, logins, age gates, private content, access controls, or platform restrictions. Only download content you are allowed to download and follow the source platform's terms.
+
+The hosted website is a different trust boundary from the Android and terminal clients. Do not use it for sensitive URLs or private material; run the local version if that matters.
+
+## Troubleshooting [#troubleshooting]
+
+**The CLI says `ffmpeg` is missing:** install FFmpeg with your operating system package manager, then run the command again. Some downloads need it even when the source itself is available.
+
+**The Android APK will not install:** download it again from Releases, check that Android allows the installer you are using, and remove an older broken build if necessary.
+
+**A source link fails:** sites change often. Try updating the app/CLI, verify that the URL is public, and check the upstream `yt-dlp` support before opening an issue.
+
+**The hosted download is slow:** that deployment is intentionally small and runs from an old laptop. The terminal or Android local flow will normally be faster because it writes directly to your device.
+
+## Develop [#develop]
+
+Clone the repo and follow its environment file and component-specific instructions:
+
+```bash
+git clone https://github.com/YashasVM/HOLEN.git
+cd HOLEN
+```
+
+The repository is split into `frontend`, `backend`, Android production files, and deployment helpers. It includes `.env.example`, Docker configuration, tests, and contribution/security docs. Do not commit local environment values or release signing material.
+
+## Links [#links]
+
+* [Website](https://holen.yash0.in/)
+* [HOLEN GitHub repository](https://github.com/YashasVM/HOLEN)
+* [HOLEN Releases](https://github.com/YashasVM/HOLEN/releases)
+* [Android source](https://github.com/YashasVM/HOLEN/tree/main/prod/android)
+* [Terminal client repo](https://github.com/YashasVM/yt-cmd)
+
+
+# Img-gen (/docs/products/img-gen)
+
+
+
+## What it is [#what-it-is]
+
+Drop an image into Img-gen and get a transparent PNG back. No sign-up, watermark, or mysterious upload step: the model runs in your browser using WebGPU when available and WASM as a fallback.
+
+After the first model download, the weights are cached by the browser, so repeat visits can work with little or no network access. The result keeps the original image resolution.
+
+## Use it [#use-it]
+
+1. Open [img-gen.yash0.in](https://img-gen.yash0.in/) in a supported browser.
+2. Drop an image or choose one from the file picker.
+3. Wait while the local model generates the alpha mask.
+4. Preview the transparent result.
+5. Export the PNG.
+
+Do not open the app directly as a `file://` URL. The model is fetched with `fetch()`, and the required browser security headers are not available from a file URL.
+
+## How it works [#how-it-works]
+
+```text
+image → createImageBitmap → resize/normalize → ONNX Runtime Web
+      → RMBG-1.4 alpha mask → scale to original size → transparent PNG
+```
+
+The image is decoded asynchronously, resized to the model's input size, normalized, and sent to the ONNX model. The returned single-channel mask becomes the image alpha channel. Export uses `canvas.toBlob()` so the result is written as a PNG in the browser.
+
+## Tech stack [#tech-stack]
+
+| Part         | Technology                                        | Job                                       |
+| ------------ | ------------------------------------------------- | ----------------------------------------- |
+| UI           | Vanilla HTML, CSS, and JavaScript                 | Small, dependency-light interface         |
+| Model        | RMBG-1.4 / BiRefNet-lite by BRIA AI               | Background segmentation                   |
+| Runtime      | ONNX Runtime Web 1.20.1                           | WebGPU or WASM inference                  |
+| Acceleration | WebGPU, WASM fallback                             | Fast GPU path and broad compatibility     |
+| Browser APIs | createImageBitmap, OffscreenCanvas, Cache Storage | Efficient decode, processing, and caching |
+| Hosting      | Cloudflare Pages                                  | Static deployment                         |
+
+## Browser support [#browser-support]
+
+| Browser     | WebGPU  | WASM |
+| ----------- | ------- | ---- |
+| Chrome 113+ | Yes     | Yes  |
+| Edge 113+   | Yes     | Yes  |
+| Firefox     | No      | Yes  |
+| Safari 17+  | Partial | Yes  |
+
+WebGPU can be several times faster depending on the GPU. WASM works on more machines but will feel slower on large images.
+
+## Privacy, performance, and limits [#privacy-performance-and-limits]
+
+The image stays in the browser during normal processing. The first visit still downloads the model weights, and the hosted page itself can fetch static assets. The app does not send your photo to a background-removal server.
+
+Segmentation quality depends on the image and the model. Hair, transparent objects, reflections, and cluttered backgrounds can produce imperfect edges. Large images may use significant RAM, especially on mobile devices.
+
+## Troubleshooting [#troubleshooting]
+
+**The model never loads:** use a current browser, open the HTTPS site instead of a `file://` URL, and check that an extension or network filter is not blocking Hugging Face model assets.
+
+**It is slow:** check whether WebGPU is available, close other heavy tabs, or use a smaller input. WASM is a valid fallback but slower.
+
+**The output has a rough edge:** this is model behavior, not a file-format problem. Try a clearer subject/background separation or clean up the PNG in an editor.
+
+**It asks to download the model again:** browser storage may have been cleared or the page origin changed. Let it finish once; later runs should use the cache.
+
+## Run locally [#run-locally]
+
+```bash
+git clone https://github.com/YashasVM/Img-gen.git
+cd Img-gen
+npx serve .
+```
+
+Then open `http://localhost:3000`. The repo's `_headers` file enables cross-origin isolation on Cloudflare Pages, which helps unlock WASM multi-threading.
+
+## Links [#links]
+
+* [Hosted app](https://img-gen.yash0.in/)
+* [GitHub repository](https://github.com/YashasVM/Img-gen)
+* [RMBG-1.4 model](https://huggingface.co/briaai/RMBG-1.4)
+* [ONNX Runtime Web](https://onnxruntime.ai/)
+
+
+# localhost (/docs/products/localhost)
+
+
+
+## What it is [#what-it-is]
+
+The localhost dashboard is a tiny public window into the services I run at home. It checks the configured endpoints and answers the important question: “is the thing on?”
+
+**Current status:** Live.
+
+## Use it [#use-it]
+
+Open the [status page](https://yvmx.dpdns.org/). The service list shows the latest reachability result exposed by the dashboard. An “online” result means the status checker could reach the service from the machine running the check; it does not guarantee that every network or user can reach the service.
+
+## How it works [#how-it-works]
+
+```text
+configured local services → status check endpoint → dashboard → public read-only page
+```
+
+The public page is intentionally just a status view. The checker runs from the host where the services are reachable, which avoids pretending that a service is healthy based only on a browser running somewhere else.
+
+## Tech stack [#tech-stack]
+
+The public dashboard is a lightweight static JavaScript/CSS site, with a small serverless status endpoint in `functions/api/localhost-status.js`. The surrounding personal dashboard is deployed as static web assets and Cloudflare Pages/Workers functions. The exact service list and deployment configuration live in the [dashboard repository](https://github.com/YashasVM/dash).
+
+## Privacy and limitations [#privacy-and-limitations]
+
+This page reports reachability, not a full monitoring/SLO system. It does not replace logs, uptime history, alerting, or health checks inside each service. Do not expose credentials or private service URLs in the public configuration. A service can be online from the checker host and still be blocked from the public internet by NAT, firewall, or DNS.
+
+## Troubleshooting [#troubleshooting]
+
+**Everything is offline:** check that the host is running, the local service ports are listening, and the status function can reach them. Then check DNS and the tunnel/reverse-proxy path.
+
+**One service is offline:** inspect that service's process and port first. A status failure is often the useful first signal, not the root cause.
+
+**The page is stale:** refresh the page and inspect the endpoint response. If the endpoint itself is unavailable, check the deployment logs and the host running the checks.
+
+## Develop [#develop]
+
+```bash
+git clone https://github.com/YashasVM/dash.git
+cd dash
+node --version
+```
+
+The repository contains the public dashboard assets, the status function, and a separate `docs-site` Next.js/Fumadocs application. Keep local hostnames, tokens, and private endpoints out of public files.
+
+## Links [#links]
+
+* [Live status page](https://yvmx.dpdns.org/)
+* [Dashboard and status function source](https://github.com/YashasVM/dash)
+* [Status endpoint source](https://github.com/YashasVM/dash/blob/main/functions/api/localhost-status.js)
+* [Documentation source](https://github.com/YashasVM/dash/tree/main/docs-site)
+
+
+# OpenStream (/docs/products/openstream)
+
+
+
+## What it is [#what-it-is]
+
+Your phone is already a camera. OpenStream turns it into a camera and microphone source inside OBS Studio, sending the media over local Wi-Fi to a native plugin on the Windows PC.
+
+This is useful for a second camera, a desk cam, a phone-on-a-tripod shot, or a multi-camera stream without running a cable across the room. There is no cloud relay in the normal setup: the phone and the OBS machine talk directly on the LAN.
+
+**Current status:** Beta. The supported V1.0.1 path is the Android app plus the Windows OBS plugin over local Wi-Fi. USB transport is not part of this release.
+
+## Quick start [#quick-start]
+
+1. Install the [Android APK](https://github.com/YashasVM/OpenStream/releases) and the Windows `openstream-obs-plugin-installer-windows-x64.exe`, then restart OBS.
+2. Put the phone and PC on the same normal Wi-Fi network. 5 GHz or Wi-Fi 6 is recommended.
+3. In OBS, choose **Sources → + → OpenStream V8** and name the camera slot.
+4. Open the Android app, allow camera/microphone access, and tap the slot it discovers.
+5. Open **Docks → OpenStream Camera Control** in OBS for lens, zoom, torch, labels, and reconnect controls.
+
+If discovery cannot find the PC, use manual connection and enter the PC address shown by the plugin. Guest Wi-Fi, VPNs, and router client isolation commonly block discovery.
+
+## What you can do with it [#what-you-can-do-with-it]
+
+* Stream 1080p30, with a 720p30 fallback profile.
+* Switch between front, rear, ultrawide, and telephoto lenses when available.
+* Use pinch-to-zoom, torch control, and a black screen streaming overlay.
+* Run multiple phones by creating one stable camera slot per angle.
+* Flash the slot name on the phone so physical cameras are easy to identify.
+* Recover from short Wi-Fi drops using the plugin's reconnect hold.
+
+## How it works [#how-it-works]
+
+```text
+Android Camera2 → MediaCodec AVC/H.264 + AAC → MPEG-TS → libsrt/SRT over Wi-Fi
+                                                          ↓
+Windows OBS ← native source plugin ← FFmpeg SRT receive/decode
+```
+
+Discovery uses UDP `51515`; media uses SRT `9000`; remote camera controls use HTTP `9001`. These ports are intended for the local network, not the public internet.
+
+## Tech stack [#tech-stack]
+
+| Part            | Technology                         | Job                                      |
+| --------------- | ---------------------------------- | ---------------------------------------- |
+| Android app     | Kotlin/Android, Camera2            | Capture, preview, camera selection       |
+| Encoding        | MediaCodec                         | Hardware AVC/H.264 video and AAC audio   |
+| Transport       | MPEG-TS, libsrt, SRT               | Low-latency delivery over Wi-Fi          |
+| OBS integration | Native OBS source/plugin           | Makes each phone a normal OBS source     |
+| Receive/decode  | OBS bundled FFmpeg SRT support     | Converts the stream back to frames/audio |
+| Pairing         | LAN UDP + phone HTTP server        | Discovery and remote controls            |
+| Distribution    | GitHub Releases + Cloudflare Pages | Downloads and website                    |
+
+## Defaults and tuning [#defaults-and-tuning]
+
+| Setting     | Default   | Notes                                       |
+| ----------- | --------- | ------------------------------------------- |
+| Resolution  | 1920×1080 | Full HD target                              |
+| Frame rate  | 30 fps    | Keeps heat and backlog reasonable           |
+| Video codec | AVC/H.264 | Hardware surface encoder                    |
+| Bitrate     | 12 Mbps   | Try 8–12 Mbps before changing anything else |
+| SRT latency | 120 ms    | 80–200 ms is a useful range                 |
+
+If the phone runs hot or the feed stutters, use 720p30 and lower the bitrate. Stable Wi-Fi matters more than chasing a tiny latency number.
+
+## Compatibility and limits [#compatibility-and-limits]
+
+* Android 10+ with Camera2 and hardware MediaCodec support is expected.
+* The OBS host is currently Windows x64 with OBS Studio 32.2.1 and bundled FFmpeg SRT support.
+* Devices must see each other on the same LAN/subnet.
+* Camera behavior differs between manufacturers and lenses.
+* USB transport and USB camera sources are not supported in V1.0.1.
+
+## Troubleshooting [#troubleshooting]
+
+**No slot appears:** check subnet, VPN, Windows Firewall, guest-network isolation, and the plugin restart. Use manual IP entry as a fallback.
+
+**Slot appears but no video:** confirm the source is enabled, the media port is open, and try 720p30. Restarting OBS after installing the plugin is important.
+
+**Delayed or glitchy feed:** use 5 GHz/Wi-Fi 6, move closer to the access point, lower bitrate, and increase SRT latency slightly.
+
+**Phone is hot:** use the black screen mode, 720p30, a lower bitrate, and keep the phone ventilated. Camera capture plus encoding is real work for a phone.
+
+## Build from source [#build-from-source]
+
+The repo has separate Android and OBS plugin projects. On Windows, build the Android debug APK with:
+
+```powershell
+cd android
+./gradlew.bat :app:assembleDebug
+```
+
+The APK is in `android/app/build/outputs/apk/debug/app-debug.apk`. Build the plugin with `./build_plugin.bat`; set `OPENSTREAM_SKIP_INSTALL=1` to package without installing. Release signing variables and the SRT smoke test are documented in the repo.
+
+## Links [#links]
+
+* [Website](https://openstream.yash0.in/)
+* [GitHub repository](https://github.com/YashasVM/OpenStream)
+* [Latest releases](https://github.com/YashasVM/OpenStream/releases)
+* [Issues](https://github.com/YashasVM/OpenStream/issues)
+* [Screenshot setup guide](https://github.com/YashasVM/OpenStream/blob/main/docs/set-up.md)
+
+
+# Wisper Low (/docs/products/wisper-low)
+
+
+
+## What it is [#what-it-is]
+
+I wanted dictation without renting my microphone to a cloud service. Press a shortcut, speak, release it, and Wisper Low pastes the words into whichever app was active.
+
+The repository currently contains the wider Handy desktop implementation, so you may see “Handy” in the source, releases, and build docs. The important idea is the same: an open, extensible, offline speech-to-text desktop app.
+
+**Current status:** Prototype. Expect model download time, microphone quirks, shortcut conflicts, and platform-specific rough edges.
+
+## Quick start [#quick-start]
+
+1. Download the available installer from the [GitHub releases page](https://github.com/YashasVM/Wisper-Low/releases).
+2. Launch the app and grant microphone and accessibility/input permissions when your OS asks.
+3. Use `Ctrl+Alt+P` or `Ctrl+Alt+Space` to start dictation.
+4. Speak, then press the same shortcut to stop and paste the result.
+5. Press `Ctrl+Alt+Backspace` to cancel without pasting.
+
+On macOS and Linux the exact release and permission flow can differ. Read the repo's build and platform notes before assuming a Windows shortcut will be identical everywhere.
+
+## How it works [#how-it-works]
+
+```text
+global shortcut → microphone → VAD removes silence → local speech model
+                 → optional cleanup/post-process → text input/paste into active app
+```
+
+Voice Activity Detection (VAD) reduces the amount of silence sent to inference. You can choose from Whisper-family models or the CPU-focused Parakeet V3 path. An optional Ollama-based post-process can clean up wording, but the core transcription remains local.
+
+## Tech stack [#tech-stack]
+
+| Part              | Technology                                    | Job                                             |
+| ----------------- | --------------------------------------------- | ----------------------------------------------- |
+| Desktop shell     | Tauri                                         | Small cross-platform native app shell           |
+| Settings UI       | React + TypeScript + Tailwind CSS             | Configuration and status screens                |
+| System backend    | Rust                                          | Native integration, audio, and ML orchestration |
+| Speech models     | whisper.cpp GGML/GGUF, transcribe-rs/Parakeet | Offline transcription paths                     |
+| Audio             | cpal + rubato                                 | Cross-platform capture and resampling           |
+| Silence detection | vad-rs / Silero VAD                           | Avoids processing long silence                  |
+| Global input      | rdev                                          | Keyboard shortcuts and system events            |
+| Optional cleanup  | Ollama                                        | Local rewrite/post-processing when enabled      |
+
+## Useful controls [#useful-controls]
+
+The default toggle shortcuts are `Ctrl+Alt+P` and `Ctrl+Alt+Space`; configure them in settings if another program already owns them. `Ctrl+Alt+Backspace` cancels the current capture. The full Handy build also exposes command-line controls such as `--toggle-transcription`, `--toggle-post-process`, `--start-hidden`, `--no-tray`, and `--debug`.
+
+On Wayland, global shortcuts are often best configured in your desktop environment or window manager to run `handy --toggle-transcription`. Text input may need `wtype` or `dotool`.
+
+## Privacy and model choices [#privacy-and-model-choices]
+
+Audio is processed locally by the selected model. If you enable Ollama cleanup, that request still goes to your own Ollama instance, not a hosted YashasVM service. Model quality, speed, and memory use trade off against each other: smaller models respond faster; larger models tend to transcribe more accurately but need more resources.
+
+## Troubleshooting [#troubleshooting]
+
+**Nothing happens on the shortcut:** check microphone/accessibility permission and whether another app owns the key combination. On Wayland, add the shortcut in the compositor/desktop settings.
+
+**Text is not inserted:** install the appropriate `wtype` (Wayland) or `xdotool` (X11), or use the clipboard-based fallback. The active app also needs a normal editable text field.
+
+**Transcription is slow:** use a smaller model, close other CPU/GPU-heavy apps, or try the Parakeet CPU path. First-run model loading can be much slower than later runs.
+
+**The app crashes:** enable debug mode and attach logs plus OS, model, audio device, and GPU details to an issue. Prototype model crashes can be configuration-specific.
+
+## Build from source [#build-from-source]
+
+The exact platform prerequisites are maintained in [BUILD.md](https://github.com/YashasVM/Wisper-Low/blob/main/BUILD.md). Clone the repository first:
+
+```bash
+git clone https://github.com/YashasVM/Wisper-Low.git
+cd Wisper-Low
+```
+
+The source includes the Tauri frontend, Rust backend, model integrations, and platform-specific packaging. Keep downloaded model files out of commits.
+
+## Links [#links]
+
+* [Website](https://wisper-low.yash0.in/)
+* [GitHub repository](https://github.com/YashasVM/Wisper-Low)
+* [Releases](https://github.com/YashasVM/Wisper-Low/releases)
+* [Issues](https://github.com/YashasVM/Wisper-Low/issues)
+
+
+# yt-cmd (/docs/products/yt-cmd)
+
+
+
+## What it is [#what-it-is]
+
+`yt-cmd` is the terminal piece of HOLEN. It wraps `yt-dlp` in a small interactive prompt so you can paste a URL, pick video or audio, choose quality, and skip memorising a wall of flags.
+
+The npm package is currently called `holen-dl`. The older command names still work.
+
+## Run it [#run-it]
+
+```bash
+npx holen-dl
+```
+
+Aliases:
+
+```bash
+npx yvm-yt
+npx yt-cmd
+```
+
+Choose from quality presets or a custom resolution, then select MP4, MKV, or MP3. Video downloads prefer MP4 and can fall back to MKV; audio downloads are MP3. Files are saved to `~/Downloads`.
+
+## Tech stack and flow [#tech-stack-and-flow]
+
+```text
+interactive Node.js CLI → yt-dlp format selection → FFmpeg merge/convert → ~/Downloads
+```
+
+| Part                 | Technology                   |
+| -------------------- | ---------------------------- |
+| Runtime/distribution | Node.js and npm              |
+| Source support       | yt-dlp                       |
+| Muxing/conversion    | FFmpeg                       |
+| User experience      | Interactive terminal prompts |
+
+The CLI looks for `yt-dlp` and can help fetch it. FFmpeg is needed for many video/audio combinations and should be installed on the system if the automatic setup cannot do it.
+
+## Troubleshooting [#troubleshooting]
+
+**A URL is unsupported:** source sites change. Update the package and check whether the URL is public and supported by the current `yt-dlp` release.
+
+**The output is MKV:** the requested MP4 combination was not available or could not be safely merged. MKV is the fallback because it can contain more stream combinations without re-encoding.
+
+**The command cannot write the file:** check `~/Downloads` permissions and free disk space.
+
+**FFmpeg is missing:** install it with your OS package manager and run the command again.
+
+## Develop [#develop]
+
+```bash
+git clone https://github.com/YashasVM/yt-cmd.git
+cd yt-cmd
+npm install
+npm run dev
+npm run check
+```
+
+## Responsible use [#responsible-use]
+
+Use this for media you own or are allowed to save. It does not bypass DRM, private content, logins, age gates, or access controls, and you are responsible for following the source platform's terms.
+
+## Links [#links]
+
+* [GitHub repository](https://github.com/YashasVM/yt-cmd)
+* [HOLEN suite](https://github.com/YashasVM/HOLEN)
+* [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+* [Issues](https://github.com/YashasVM/yt-cmd/issues)

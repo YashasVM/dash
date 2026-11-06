@@ -1,0 +1,71 @@
+# cd (/docs/products/cd)
+
+
+
+## What it is [#what-it-is]
+
+`cd` is for the “can you just send me that file?” moment. Pick a file, share a short code or QR link, and let the two browsers handle the handoff without parking the file on a random upload server.
+
+The actual file contents move directly between the two browsers through a WebRTC data channel. The hosted service is used to load the app and help the peers find each other; it is not intended to store the transferred files.
+
+## Quick start [#quick-start]
+
+1. Open the [cd website](https://cd.yash0.in/).
+2. Choose one or more files.
+3. Copy the receive code or show the QR code to the other person.
+4. Keep both tabs open and visible until the transfer completes.
+5. The receiver saves the file when the browser offers it.
+
+For a reliable handoff, keep both devices awake, use a stable network, and do not close or refresh either tab during the transfer.
+
+## What happens under the hood [#what-happens-under-the-hood]
+
+```text
+sender browser ── WebRTC data channel ── receiver browser
+       \              /
+        signaling / session setup
+             hosted Worker
+```
+
+The signaling step exchanges the information needed to establish the peer connection. Once connected, file data uses the browser's WebRTC data channel. This means large transfers are usually limited by the slower device, browser memory, network path, and WebRTC behavior rather than a server-side file quota.
+
+## Tech stack [#tech-stack]
+
+| Part                | Technology                      | Job                                        |
+| ------------------- | ------------------------------- | ------------------------------------------ |
+| Frontend            | Browser JavaScript/HTML/CSS     | File picker, code/QR UI, transfer progress |
+| Peer connection     | WebRTC data channels            | Direct browser-to-browser file transfer    |
+| Signaling           | Worker-hosted signaling service | Helps peers negotiate a connection         |
+| Deployment          | Cloudflare Workers              | Hosts the app and signaling endpoint       |
+| Repository language | Go plus web assets              | Current repo implementation and tooling    |
+
+## Privacy and limits [#privacy-and-limits]
+
+The app does not intentionally persist the file contents on the hosted service. It is still a browser application: the two people involved can see and save the files, and the network/browser environment can affect the connection. This is not an encrypted archive or an access-control system for highly sensitive material.
+
+Both browsers must stay connected. Some restrictive corporate networks, VPNs, or browser policies can interfere with WebRTC. Very large files can also run into memory or browser download limitations.
+
+## Troubleshooting [#troubleshooting]
+
+**The code does not connect:** refresh both sides and create a new transfer. Disable a VPN temporarily and try a normal network. Corporate or guest networks may restrict peer connections.
+
+**The QR code is not working:** copy the text code manually. The receiver can open the website on any modern browser and enter the code.
+
+**The transfer stops halfway:** prevent sleep, keep both tabs open, and retry with a stable connection. For very large files, split the archive or use a local network transfer tool.
+
+**The receiver cannot save:** check browser download permissions and available disk space.
+
+## Self-hosting and development [#self-hosting-and-development]
+
+```bash
+git clone https://github.com/YashasVM/cd.git
+cd cd
+```
+
+The repository README and deployment configuration are the source of truth for the current Worker commands and environment values. Inspect the signaling path before deploying a public instance, and never put secrets in browser-delivered code.
+
+## Links [#links]
+
+* [Website](https://cd.yash0.in/)
+* [GitHub repository](https://github.com/YashasVM/cd)
+* [Issues](https://github.com/YashasVM/cd/issues)

@@ -1,0 +1,83 @@
+# Img-gen (/docs/products/img-gen)
+
+
+
+## What it is [#what-it-is]
+
+Drop an image into Img-gen and get a transparent PNG back. No sign-up, watermark, or mysterious upload step: the model runs in your browser using WebGPU when available and WASM as a fallback.
+
+After the first model download, the weights are cached by the browser, so repeat visits can work with little or no network access. The result keeps the original image resolution.
+
+## Use it [#use-it]
+
+1. Open [img-gen.yash0.in](https://img-gen.yash0.in/) in a supported browser.
+2. Drop an image or choose one from the file picker.
+3. Wait while the local model generates the alpha mask.
+4. Preview the transparent result.
+5. Export the PNG.
+
+Do not open the app directly as a `file://` URL. The model is fetched with `fetch()`, and the required browser security headers are not available from a file URL.
+
+## How it works [#how-it-works]
+
+```text
+image → createImageBitmap → resize/normalize → ONNX Runtime Web
+      → RMBG-1.4 alpha mask → scale to original size → transparent PNG
+```
+
+The image is decoded asynchronously, resized to the model's input size, normalized, and sent to the ONNX model. The returned single-channel mask becomes the image alpha channel. Export uses `canvas.toBlob()` so the result is written as a PNG in the browser.
+
+## Tech stack [#tech-stack]
+
+| Part         | Technology                                        | Job                                       |
+| ------------ | ------------------------------------------------- | ----------------------------------------- |
+| UI           | Vanilla HTML, CSS, and JavaScript                 | Small, dependency-light interface         |
+| Model        | RMBG-1.4 / BiRefNet-lite by BRIA AI               | Background segmentation                   |
+| Runtime      | ONNX Runtime Web 1.20.1                           | WebGPU or WASM inference                  |
+| Acceleration | WebGPU, WASM fallback                             | Fast GPU path and broad compatibility     |
+| Browser APIs | createImageBitmap, OffscreenCanvas, Cache Storage | Efficient decode, processing, and caching |
+| Hosting      | Cloudflare Pages                                  | Static deployment                         |
+
+## Browser support [#browser-support]
+
+| Browser     | WebGPU  | WASM |
+| ----------- | ------- | ---- |
+| Chrome 113+ | Yes     | Yes  |
+| Edge 113+   | Yes     | Yes  |
+| Firefox     | No      | Yes  |
+| Safari 17+  | Partial | Yes  |
+
+WebGPU can be several times faster depending on the GPU. WASM works on more machines but will feel slower on large images.
+
+## Privacy, performance, and limits [#privacy-performance-and-limits]
+
+The image stays in the browser during normal processing. The first visit still downloads the model weights, and the hosted page itself can fetch static assets. The app does not send your photo to a background-removal server.
+
+Segmentation quality depends on the image and the model. Hair, transparent objects, reflections, and cluttered backgrounds can produce imperfect edges. Large images may use significant RAM, especially on mobile devices.
+
+## Troubleshooting [#troubleshooting]
+
+**The model never loads:** use a current browser, open the HTTPS site instead of a `file://` URL, and check that an extension or network filter is not blocking Hugging Face model assets.
+
+**It is slow:** check whether WebGPU is available, close other heavy tabs, or use a smaller input. WASM is a valid fallback but slower.
+
+**The output has a rough edge:** this is model behavior, not a file-format problem. Try a clearer subject/background separation or clean up the PNG in an editor.
+
+**It asks to download the model again:** browser storage may have been cleared or the page origin changed. Let it finish once; later runs should use the cache.
+
+## Run locally [#run-locally]
+
+```bash
+git clone https://github.com/YashasVM/Img-gen.git
+cd Img-gen
+npx serve .
+```
+
+Then open `http://localhost:3000`. The repo's `_headers` file enables cross-origin isolation on Cloudflare Pages, which helps unlock WASM multi-threading.
+
+## Links [#links]
+
+* [Hosted app](https://img-gen.yash0.in/)
+* [GitHub repository](https://github.com/YashasVM/Img-gen)
+* [RMBG-1.4 model](https://huggingface.co/briaai/RMBG-1.4)
+* [ONNX Runtime Web](https://onnxruntime.ai/)

@@ -1,0 +1,11 @@
+# Docs
+
+- [The toolbox](/docs): Practical notes behind my self-hosted, open-source tools.
+- Products
+  - [cd](/docs/products/cd): The “can you just send me that file?” button, without the upload queue.
+  - [HOLEN](/docs/products/holen): Downloads for people who would rather keep the file and skip the account.
+  - [Img-gen](/docs/products/img-gen): Drop an image in, get the background out — without uploading it.
+  - [localhost](/docs/products/localhost): A tiny public window into what is running at home.
+  - [OpenStream](/docs/products/openstream): Your phone is already a camera. This gets OBS to admit it.
+  - [Wisper Low](/docs/products/wisper-low): Dictation that keeps its ears on your machine.
+  - [yt-cmd](/docs/products/yt-cmd): A nicer front-end for the `yt-dlp` flag maze.

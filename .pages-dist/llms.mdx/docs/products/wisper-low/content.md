@@ -1,0 +1,81 @@
+# Wisper Low (/docs/products/wisper-low)
+
+
+
+## What it is [#what-it-is]
+
+I wanted dictation without renting my microphone to a cloud service. Press a shortcut, speak, release it, and Wisper Low pastes the words into whichever app was active.
+
+The repository currently contains the wider Handy desktop implementation, so you may see “Handy” in the source, releases, and build docs. The important idea is the same: an open, extensible, offline speech-to-text desktop app.
+
+**Current status:** Prototype. Expect model download time, microphone quirks, shortcut conflicts, and platform-specific rough edges.
+
+## Quick start [#quick-start]
+
+1. Download the available installer from the [GitHub releases page](https://github.com/YashasVM/Wisper-Low/releases).
+2. Launch the app and grant microphone and accessibility/input permissions when your OS asks.
+3. Use `Ctrl+Alt+P` or `Ctrl+Alt+Space` to start dictation.
+4. Speak, then press the same shortcut to stop and paste the result.
+5. Press `Ctrl+Alt+Backspace` to cancel without pasting.
+
+On macOS and Linux the exact release and permission flow can differ. Read the repo's build and platform notes before assuming a Windows shortcut will be identical everywhere.
+
+## How it works [#how-it-works]
+
+```text
+global shortcut → microphone → VAD removes silence → local speech model
+                 → optional cleanup/post-process → text input/paste into active app
+```
+
+Voice Activity Detection (VAD) reduces the amount of silence sent to inference. You can choose from Whisper-family models or the CPU-focused Parakeet V3 path. An optional Ollama-based post-process can clean up wording, but the core transcription remains local.
+
+## Tech stack [#tech-stack]
+
+| Part              | Technology                                    | Job                                             |
+| ----------------- | --------------------------------------------- | ----------------------------------------------- |
+| Desktop shell     | Tauri                                         | Small cross-platform native app shell           |
+| Settings UI       | React + TypeScript + Tailwind CSS             | Configuration and status screens                |
+| System backend    | Rust                                          | Native integration, audio, and ML orchestration |
+| Speech models     | whisper.cpp GGML/GGUF, transcribe-rs/Parakeet | Offline transcription paths                     |
+| Audio             | cpal + rubato                                 | Cross-platform capture and resampling           |
+| Silence detection | vad-rs / Silero VAD                           | Avoids processing long silence                  |
+| Global input      | rdev                                          | Keyboard shortcuts and system events            |
+| Optional cleanup  | Ollama                                        | Local rewrite/post-processing when enabled      |
+
+## Useful controls [#useful-controls]
+
+The default toggle shortcuts are `Ctrl+Alt+P` and `Ctrl+Alt+Space`; configure them in settings if another program already owns them. `Ctrl+Alt+Backspace` cancels the current capture. The full Handy build also exposes command-line controls such as `--toggle-transcription`, `--toggle-post-process`, `--start-hidden`, `--no-tray`, and `--debug`.
+
+On Wayland, global shortcuts are often best configured in your desktop environment or window manager to run `handy --toggle-transcription`. Text input may need `wtype` or `dotool`.
+
+## Privacy and model choices [#privacy-and-model-choices]
+
+Audio is processed locally by the selected model. If you enable Ollama cleanup, that request still goes to your own Ollama instance, not a hosted YashasVM service. Model quality, speed, and memory use trade off against each other: smaller models respond faster; larger models tend to transcribe more accurately but need more resources.
+
+## Troubleshooting [#troubleshooting]
+
+**Nothing happens on the shortcut:** check microphone/accessibility permission and whether another app owns the key combination. On Wayland, add the shortcut in the compositor/desktop settings.
+
+**Text is not inserted:** install the appropriate `wtype` (Wayland) or `xdotool` (X11), or use the clipboard-based fallback. The active app also needs a normal editable text field.
+
+**Transcription is slow:** use a smaller model, close other CPU/GPU-heavy apps, or try the Parakeet CPU path. First-run model loading can be much slower than later runs.
+
+**The app crashes:** enable debug mode and attach logs plus OS, model, audio device, and GPU details to an issue. Prototype model crashes can be configuration-specific.
+
+## Build from source [#build-from-source]
+
+The exact platform prerequisites are maintained in [BUILD.md](https://github.com/YashasVM/Wisper-Low/blob/main/BUILD.md). Clone the repository first:
+
+```bash
+git clone https://github.com/YashasVM/Wisper-Low.git
+cd Wisper-Low
+```
+
+The source includes the Tauri frontend, Rust backend, model integrations, and platform-specific packaging. Keep downloaded model files out of commits.
+
+## Links [#links]
+
+* [Website](https://wisper-low.yash0.in/)
+* [GitHub repository](https://github.com/YashasVM/Wisper-Low)
+* [Releases](https://github.com/YashasVM/Wisper-Low/releases)
+* [Issues](https://github.com/YashasVM/Wisper-Low/issues)

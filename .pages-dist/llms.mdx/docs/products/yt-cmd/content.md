@@ -1,0 +1,70 @@
+# yt-cmd (/docs/products/yt-cmd)
+
+
+
+## What it is [#what-it-is]
+
+`yt-cmd` is the terminal piece of HOLEN. It wraps `yt-dlp` in a small interactive prompt so you can paste a URL, pick video or audio, choose quality, and skip memorising a wall of flags.
+
+The npm package is currently called `holen-dl`. The older command names still work.
+
+## Run it [#run-it]
+
+```bash
+npx holen-dl
+```
+
+Aliases:
+
+```bash
+npx yvm-yt
+npx yt-cmd
+```
+
+Choose from quality presets or a custom resolution, then select MP4, MKV, or MP3. Video downloads prefer MP4 and can fall back to MKV; audio downloads are MP3. Files are saved to `~/Downloads`.
+
+## Tech stack and flow [#tech-stack-and-flow]
+
+```text
+interactive Node.js CLI → yt-dlp format selection → FFmpeg merge/convert → ~/Downloads
+```
+
+| Part                 | Technology                   |
+| -------------------- | ---------------------------- |
+| Runtime/distribution | Node.js and npm              |
+| Source support       | yt-dlp                       |
+| Muxing/conversion    | FFmpeg                       |
+| User experience      | Interactive terminal prompts |
+
+The CLI looks for `yt-dlp` and can help fetch it. FFmpeg is needed for many video/audio combinations and should be installed on the system if the automatic setup cannot do it.
+
+## Troubleshooting [#troubleshooting]
+
+**A URL is unsupported:** source sites change. Update the package and check whether the URL is public and supported by the current `yt-dlp` release.
+
+**The output is MKV:** the requested MP4 combination was not available or could not be safely merged. MKV is the fallback because it can contain more stream combinations without re-encoding.
+
+**The command cannot write the file:** check `~/Downloads` permissions and free disk space.
+
+**FFmpeg is missing:** install it with your OS package manager and run the command again.
+
+## Develop [#develop]
+
+```bash
+git clone https://github.com/YashasVM/yt-cmd.git
+cd yt-cmd
+npm install
+npm run dev
+npm run check
+```
+
+## Responsible use [#responsible-use]
+
+Use this for media you own or are allowed to save. It does not bypass DRM, private content, logins, age gates, or access controls, and you are responsible for following the source platform's terms.
+
+## Links [#links]
+
+* [GitHub repository](https://github.com/YashasVM/yt-cmd)
+* [HOLEN suite](https://github.com/YashasVM/HOLEN)
+* [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+* [Issues](https://github.com/YashasVM/yt-cmd/issues)

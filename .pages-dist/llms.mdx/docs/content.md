@@ -1,0 +1,40 @@
+# The toolbox (/docs)
+
+
+
+# The toolbox [#the-toolbox]
+
+These are the notes for the small tools I build when software starts getting on my nerves. Useful, understandable things that do one job properly and keep your data close when they can.
+
+Every page covers the useful bits: &#x2A;*how do I use this?**, &#x2A;*what is it doing?**, and &#x2A;*how do I run my own copy?** Expect quick starts, architecture notes, rough edges, and links to the code.
+
+## The toolbox [#the-toolbox-1]
+
+| Product                             | What it is                                     | Status    |
+| ----------------------------------- | ---------------------------------------------- | --------- |
+| [cd](./products/cd)                 | Send files browser-to-browser                  | Active    |
+| [HOLEN](./products/holen)           | Download things without handing them a profile | Active    |
+| [Wisper Low](./products/wisper-low) | Dictation that keeps its ears on your machine  | Prototype |
+| [OpenStream](./products/openstream) | Make your phone an OBS camera over Wi-Fi       | Beta      |
+| [yt-cmd](./products/yt-cmd)         | A nicer front-end for the `yt-dlp` flag maze   | Active    |
+| [Img-gen](./products/img-gen)       | Remove backgrounds without uploading the image | Active    |
+| [localhost](./products/localhost)   | A tiny window into what is running at home     | Live      |
+
+## How to use these docs [#how-to-use-these-docs]
+
+If you just want to use something, start with **Quick start** and stop there. If you are curious about the implementation, **How it works** and **Tech stack** are the useful sections. If something breaks, jump straight to **Troubleshooting** before opening an issue.
+
+The GitHub repository is still the final source of truth for release assets, exact dependency versions, and changes that have landed since these pages were written. I have linked the relevant repository, releases, issues, and important subdirectories on each page so you do not have to hunt for them.
+
+## The common ideas behind the projects [#the-common-ideas-behind-the-projects]
+
+* **Local first:** camera streams, dictation, background removal, and downloads are designed to run on your device or your own network.
+* **Small surfaces:** most of these products are thin layers over good existing tools such as OBS, WebRTC, ONNX Runtime Web, Whisper, `yt-dlp`, and FFmpeg.
+* **Useful fallbacks:** when hardware acceleration, discovery, or a preferred runtime is unavailable, the apps try to provide a slower or more manual path.
+* **Honest status:** these are personal products and some are still rough. The docs call out known limits instead of pretending everything is production-perfect.
+
+## Links [#links]
+
+* [All repositories on GitHub](https://github.com/YashasVM?tab=repositories)
+* [Source for this documentation site](https://github.com/YashasVM/dash)
+* [Open a documentation issue](https://github.com/YashasVM/dash/issues)

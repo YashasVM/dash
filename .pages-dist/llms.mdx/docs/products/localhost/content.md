@@ -1,0 +1,54 @@
+# localhost (/docs/products/localhost)
+
+
+
+## What it is [#what-it-is]
+
+The localhost dashboard is a tiny public window into the services I run at home. It checks the configured endpoints and answers the important question: “is the thing on?”
+
+**Current status:** Live.
+
+## Use it [#use-it]
+
+Open the [status page](https://yvmx.dpdns.org/). The service list shows the latest reachability result exposed by the dashboard. An “online” result means the status checker could reach the service from the machine running the check; it does not guarantee that every network or user can reach the service.
+
+## How it works [#how-it-works]
+
+```text
+configured local services → status check endpoint → dashboard → public read-only page
+```
+
+The public page is intentionally just a status view. The checker runs from the host where the services are reachable, which avoids pretending that a service is healthy based only on a browser running somewhere else.
+
+## Tech stack [#tech-stack]
+
+The public dashboard is a lightweight static JavaScript/CSS site, with a small serverless status endpoint in `functions/api/localhost-status.js`. The surrounding personal dashboard is deployed as static web assets and Cloudflare Pages/Workers functions. The exact service list and deployment configuration live in the [dashboard repository](https://github.com/YashasVM/dash).
+
+## Privacy and limitations [#privacy-and-limitations]
+
+This page reports reachability, not a full monitoring/SLO system. It does not replace logs, uptime history, alerting, or health checks inside each service. Do not expose credentials or private service URLs in the public configuration. A service can be online from the checker host and still be blocked from the public internet by NAT, firewall, or DNS.
+
+## Troubleshooting [#troubleshooting]
+
+**Everything is offline:** check that the host is running, the local service ports are listening, and the status function can reach them. Then check DNS and the tunnel/reverse-proxy path.
+
+**One service is offline:** inspect that service's process and port first. A status failure is often the useful first signal, not the root cause.
+
+**The page is stale:** refresh the page and inspect the endpoint response. If the endpoint itself is unavailable, check the deployment logs and the host running the checks.
+
+## Develop [#develop]
+
+```bash
+git clone https://github.com/YashasVM/dash.git
+cd dash
+node --version
+```
+
+The repository contains the public dashboard assets, the status function, and a separate `docs-site` Next.js/Fumadocs application. Keep local hostnames, tokens, and private endpoints out of public files.
+
+## Links [#links]
+
+* [Live status page](https://yvmx.dpdns.org/)
+* [Dashboard and status function source](https://github.com/YashasVM/dash)
+* [Status endpoint source](https://github.com/YashasVM/dash/blob/main/functions/api/localhost-status.js)
+* [Documentation source](https://github.com/YashasVM/dash/tree/main/docs-site)
